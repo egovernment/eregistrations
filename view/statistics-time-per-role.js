@@ -16,6 +16,7 @@ var assign               = require('es5-ext/object/assign')
   , getDurationDaysHours = require('./utils/get-duration-days-hours-fine-grain')
   , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
   , getDynamicUrl        = require('./utils/get-dynamic-url')
+  , initializeRowOnClick = require('./utils/statistics-time-row-onclick')
   , processingStepsMetaWithoutFrontDesk
 	= require('./utils/processing-steps-meta-without-front-desk');
 
@@ -33,7 +34,7 @@ var queryServer = memoize(function (query) {
 
 exports['statistics-main'] = function () {
 	var stepsMeta = processingStepsMetaWithoutFrontDesk(),
-		mainData, queryHandler, params;
+		mainData, queryHandler, params, queryResult;
 	mainData = new ObservableArray();
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
 		processingStepsMeta: stepsMeta
@@ -50,6 +51,7 @@ exports['statistics-main'] = function () {
 			query.dateTo = query.dateTo.toJSON();
 		}
 		queryServer(query)(function (result) {
+			queryResult = result;
 			var totalWithoutCorrections, total, totalCorrections, perRoleTotal;
 			mainData.splice(0, mainData.length);
 
@@ -64,6 +66,7 @@ exports['statistics-main'] = function () {
 
 			Object.keys(stepsMeta).forEach(function (key) {
 				perRoleTotal = result.steps.byStep[key].processing;
+				perRoleTotal.key = key;
 				perRoleTotal.label   = db['BusinessProcess' +
 					capitalize.call(stepsMeta[key]._services[0])].prototype
 					.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
@@ -135,7 +138,13 @@ exports['statistics-main'] = function () {
 				onEmpty: tr(td({ class: 'empty', colspan: 5 },
 						_("There is no data to display")))
 			}, mainData, function (row) {
-				return tr(
+
+				var step = queryResult.steps.byStep[row.key],
+					props = {};
+
+				initializeRowOnClick(step, props, true);
+
+				return tr(props,
 					td(row.label),
 					td({ class: 'statistics-table-number' }, row.timedCount),
 					td({ class: 'statistics-table-number' },
@@ -143,8 +152,7 @@ exports['statistics-main'] = function () {
 					td({ class: 'statistics-table-number' },
 						row.timedCount ? getDurationDaysHours(row.minTime) : "-"),
 					td({ class: 'statistics-table-number' },
-						row.timedCount ? getDurationDaysHours(row.maxTime) : "-")
-				);
+						row.timedCount ? getDurationDaysHours(row.maxTime) : "-"));
 			}))
 			));
 };
