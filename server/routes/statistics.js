@@ -256,7 +256,7 @@ module.exports = function (config) {
 					$group: {
 						_id: {
 							date: "$date.date",
-							rejectReasonConcat: "$rejectionReasonsConcat"
+							rejectionReasonsConcat: "$rejectionReasonsConcat"
 						},
 						count: {
 							$sum: 1
@@ -267,7 +267,7 @@ module.exports = function (config) {
 					return deferred.map(reasons, function (rejectionReason) {
 						groupedRejectionReasons.some(function (groupedRejectionReason) {
 							if (groupedRejectionReason._id.date === rejectionReason.date.date
-									&& groupedRejectionReason.rejectionReasonsConcat
+									&& groupedRejectionReason._id.rejectionReasonsConcat
 									=== rejectionReason.rejectionReasonsConcat) {
 								rejectionReason.occurrencesCount = groupedRejectionReason.count;
 								return true;
