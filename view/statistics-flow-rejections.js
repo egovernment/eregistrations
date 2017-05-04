@@ -90,7 +90,7 @@ exports['statistics-main'] = function () {
 							th(defaultOpts, _("Operator")),
 							th(defaultOpts, _("Role")),
 							th(defaultOpts, _("Date")),
-							th(defaultOpts, _("File")),
+							th({ class: "submitted-user-data-table-name" }, _("File")),
 							th({ class: "submitted-user-data-table-link" })
 						),
 						tbody(result.length ? result.map(function (dataRow) {
