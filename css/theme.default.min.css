@@ -2,8 +2,8 @@
 	cursor: pointer;
 }
 
-.tablesorter-default:focus .header:focus,
-.tablesorter-default:focus .tablesorter-header:focus {
+.tablesorter-default .header:focus,
+.tablesorter-default .tablesorter-header:focus {
 	outline: none;
 	visibility: visible;
 }
