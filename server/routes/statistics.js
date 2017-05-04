@@ -252,7 +252,20 @@ module.exports = function (config) {
 				data.pageCount = ensureNumber(Math.ceil(count / itemsPerPage));
 				return getRejectionReasons.find(queryData, portion);
 			}).then(function (reasons) {
-				data.rows = parseRejectionsForView(reasons);
+				return getRejectionReasons.group(reasons)(function (groupedRejectionReasons) {
+					return deferred.map(reasons, function (rejectionReason) {
+						groupedRejectionReasons.some(function (groupedRejectionReason) {
+							if (groupedRejectionReason._id.date === rejectionReason.date.date
+								&& groupedRejectionReason.rejectionReasonsConcat === rejectionReason.rejectionReasonsConcat) {
+								rejectionReason.occurrencesCount = groupedRejectionReason.count;
+								return true;
+							}
+						});
+						return rejectionReason;
+					});
+				})
+			}).then(function (reasonsWithOccurrence) {
+				data.rows = parseRejectionsForView(reasonsWithOccurrence);
 				return data;
 			});
 		},
