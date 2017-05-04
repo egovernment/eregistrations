@@ -92,14 +92,6 @@ module.exports = function (/* opts */) {
 				dateEnd: function () {
 					return moment();
 				}
-			}, {
-				text: _('Since launch'),
-				dateStart: function () {
-					return moment(("2016-09-01"));
-				},
-				dateEnd: function () {
-					return moment();
-				}
 			}],
 			datepickerOptions: {
 				firstDay: 1,
