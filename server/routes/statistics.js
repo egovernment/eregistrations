@@ -3,6 +3,7 @@
 var assign                     = require('es5-ext/object/assign')
   , ensureCallable             = require('es5-ext/object/valid-callable')
   , ensureObject               = require('es5-ext/object/valid-object')
+  , ensureNumber               = require('es5-ext/object/ensure-natural-number-value')
   , oForEach                   = require('es5-ext/object/for-each')
   , startsWith                 = require('es5-ext/string/#/starts-with')
   , deferred                   = require('deferred')
@@ -10,11 +11,8 @@ var assign                     = require('es5-ext/object/assign')
   , db                         = require('../../db')
   , QueryHandler               = require('../../utils/query-handler')
   , toDateInTz                 = require('../../utils/to-date-in-time-zone')
-  , sortData                   = require('../../utils/query/sort')
-  , getPage                    = require('../../utils/query/get-page')
   , anyIdToStorage             = require('../utils/any-id-to-storage')
   , getData                    = require('../business-process-query/get-data')
-  , getViewRecords             = require('../business-process-query/get-view-records')
   , filterSteps                = require('../business-process-query/steps/filter')
   , filterBusinessProcesses    = require('../business-process-query/business-processes/filter')
   , reduceSteps                = require('../business-process-query/steps/reduce-time')
@@ -24,31 +22,32 @@ var assign                     = require('es5-ext/object/assign')
   , getQueryHandlerConf        = require('../../apps/statistics/get-query-conf')
   , flowQueryHandlerConf       = require('../../apps/statistics/flow-query-conf')
   , rejectionsQueryHandlerConf = require('../../apps/statistics/rejections-query-conf')
-  , rejectionsListProperties   = require('../../apps/statistics/rejections-list-properties')
-  , rejectionsListComputedProperties
-		= require('../../apps/statistics/rejections-list-computed-properties')
   , timePerPersonPrint         = require('../pdf-renderers/statistics-time-per-person')
   , timePerRolePrint           = require('../pdf-renderers/statistics-time-per-role')
   , flowCertificatesPrint      = require('../pdf-renderers/statistics-flow-certificates')
   , flowRolesPrint             = require('../pdf-renderers/statistics-flow-roles')
   , flowOperatorsPrint         = require('../pdf-renderers/statistics-flow-operators')
+  , flowRejectionsPrint        = require('../pdf-renderers/statistics-flow-rejections')
   , timePerRoleCsv             = require('../csv-renderers/statistics-time-per-role')
   , flowCertificatesCsv        = require('../csv-renderers/statistics-flow-certificates')
   , flowRolesCsv               = require('../csv-renderers/statistics-flow-roles')
   , flowOperatorsCsv           = require('../csv-renderers/statistics-flow-operators')
+  , flowRejectionsCsv          = require('../csv-renderers/statistics-flow-rejections')
   , makePdf                    = require('./utils/pdf')
   , makeCsv                    = require('./utils/csv')
   , getBaseRoutes              = require('./authenticated')
   , processingStepsMeta        = require('../../processing-steps-meta')
   , getDateRangesByMode        = require('../../utils/get-date-ranges-by-mode')
   , getStepLabelByShortPath    = require('../../utils/get-step-label-by-short-path')
+  , parseRejectionsForView     = require('../../utils/statistics-flow-rejection-reason-results')
   , modes                      = require('../../utils/statistics-flow-group-modes')
   , flowCertificatesFilter     = require('../../utils/statistics-flow-certificates-filter-result')
   , flowRolesFilter            = require('../../utils/statistics-flow-roles-filter-result')
   , flowReduceOperators        = require('../../utils/statistics-flow-reduce-operators')
   , flowRolesReduceSteps       = require('../../utils/statistics-flow-reduce-processing-step')
   , itemsPerPage               = require('../../conf/objects-list-items-per-page')
-  , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf');
+  , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf')
+  , getRejectionReasons           = require('../mongo-queries/get-rejection-reasons');
 
 var flowQueryHandlerCertificatesPrintConf = [
 	require('../../apps-common/query-conf/date-from'),
@@ -241,39 +240,36 @@ module.exports = function (config) {
 			return resolveOperatorsDataPrint(unresolvedQuery, flowOperatorsCsv);
 		}),
 		'get-flow-rejections-data': function (unresolvedQuery) {
+			var data = { rows: [] }, page, queryData;
 			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
-				return getData(driver)(function (data) {
-					var fullSize;
-
-					data = sortData(
-						filterBusinessProcesses(data.businessProcesses, assign({
-							flowStatus: 'rejected'
-						}, query)),
-						function (bpA, bpB) {
-							return bpA.rejectedDateTime - bpB.rejectedDateTime;
-						}
-					);
-
-					if (!data.length) {
-						return { size: 0, view: [] };
-					}
-
-					fullSize = data.length;
-
-					data = getPage(data, query.page);
-
-					return getViewRecords(
-						data,
-						rejectionsListProperties,
-						rejectionsListComputedProperties
-					)(function (result) {
-						result.size = fullSize;
-
-						return result;
-					});
-				});
+				page = ensureNumber(query.page);
+				queryData = query;
+				return getRejectionReasons.count(queryData);
+			}).then(function (count) {
+				var portion = {};
+				portion.offset = (page - 1) * itemsPerPage;
+				if (page * itemsPerPage < count) portion.limit = itemsPerPage;
+				data.pageCount = ensureNumber(Math.ceil(count / itemsPerPage));
+				return getRejectionReasons.find(queryData, portion);
+			}).then(function (reasons) {
+				data.rows = parseRejectionsForView(reasons, { useBpId: true });
+				return data;
 			});
 		},
+		'flow-rejections-data.pdf': makePdf(function (unresolvedQuery) {
+			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
+				return getRejectionReasons.find(query);
+			}).then(function (data) {
+				return flowRejectionsPrint(parseRejectionsForView(data), rendererConfig);
+			});
+		}),
+		'flow-rejections-data.csv': makeCsv(function (unresolvedQuery) {
+			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
+				return getRejectionReasons.find(query);
+			}).then(function (data) {
+				return flowRejectionsCsv(parseRejectionsForView(data), rendererConfig);
+			});
+		}),
 		'get-time-per-role': function (query) {
 			return queryHandler.resolve(query)(resolveTimePerRole);
 		},
