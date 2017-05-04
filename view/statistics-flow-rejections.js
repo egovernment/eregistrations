@@ -3,7 +3,7 @@
 var _                            = require('mano').i18n.bind('View: Statistics')
   , db                = require('../db')
   , location          = require('mano/lib/client/location')
-  , queryHandlerConf  = require('../apps/statistics/flow-query-operators-conf')
+  , rejectionsHandlerConf  = require('../apps/statistics/rejections-query-conf')
   , setupQueryHandler = require('../utils/setup-client-query-handler')
   , copy              = require('es5-ext/object/copy')
   , ObservableValue   = require('observable-value')
@@ -11,7 +11,8 @@ var _                            = require('mano').i18n.bind('View: Statistics')
   , selectService     = require('./components/filter-bar/select-service')
   , selectRejectionReason = require('./components/filter-bar/select-rejection-reason')
   , queryServer       = require('./utils/statistics-rejections-query-server')
-  , dateFromToBlock    = require('./components/filter-bar/select-date-range-safe-fallback');
+  , dateFromToBlock    = require('./components/filter-bar/select-date-range-safe-fallback')
+  , getDynamicUrl      = require('./utils/get-dynamic-url');
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
@@ -21,10 +22,15 @@ exports['flow-rejections-nav'] = { class: { 'pills-nav-active': true } };
 
 exports['statistics-main'] = function () {
 	var queryHandler, data = new ObservableValue([])
-	  , pagination = new Pagination('/flow/rejections/');
+	  , pagination = new Pagination('/flow/rejections/')
+	  , params;
 
-	queryHandler = setupQueryHandler(queryHandlerConf,
+	queryHandler = setupQueryHandler(rejectionsHandlerConf,
 		location, '/flow/rejections/');
+
+	params = queryHandler._handlers.map(function (handler) {
+		return handler.name;
+	});
 
 	queryHandler.on('query', function (query) {
 		var serverQuery = copy(query), dateFrom, dateTo;
@@ -54,6 +60,22 @@ exports['statistics-main'] = function () {
 					div({ class: 'users-table-filter-bar-status' },
 						selectRejectionReason())
 				),
+				div(
+					div(
+						a({
+							class: 'users-table-filter-bar-print',
+							href: getDynamicUrl('/flow-rejections-data.pdf', { only: params }),
+							target: '_blank'
+						}, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
+					),
+					div(
+						a({
+							class: 'users-table-filter-bar-print',
+							href: getDynamicUrl('/flow-rejections-data.csv', { only: params }),
+							target: '_blank'
+						}, span({ class: 'fa fa-print' }), " ", _("Print csv"))
+					)
+				),
 				p({ class: 'submit' }, input({ type: 'submit' }))),
 			section({ class: 'pad-if-pagination' }, pagination),
 			br(),
@@ -71,8 +93,13 @@ exports['statistics-main'] = function () {
 						),
 						tbody(result.length ? result.map(function (dataRow) {
 							return tr(dataRow.map(function (cellContent, index) {
-								if (index === 1) {
-									return td(span({ class: "fa fa-star" }, cellContent));
+								if (index === 0) {
+									return td(cellContent.map(function (cellItem) {
+										return p(cellItem);
+									}));
+								}
+								if (index === 1 && cellContent === '*') {
+									return td(span({ class: "fa fa-star" }));
 								}
 								return td(cellContent);
 							}));
