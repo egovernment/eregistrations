@@ -12,6 +12,7 @@ var db                    = require('../db')
   , setupQueryHandler     = require('../utils/setup-client-query-handler')
   , getQueryHandlerConf   = require('../apps/statistics/get-query-conf')
   , dateFromToBlock       = require('./components/filter-bar/select-date-range-safe-fallback')
+  , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , completedFilesPeriods = ['inPeriod', 'today', 'thisWeek', 'thisMonth', 'thisYear',
 		'sinceLaunch'];
 
@@ -149,12 +150,5 @@ exports['statistics-main'] = function () {
 			})
 		));
 
-	var checkExist = setInterval(function () {
-		var element = window.jQuery('.statistics-table-registrations');
-		if (element.length) {
-			element.tablesorter();
-			clearInterval(checkExist);
-		}
-	}, 500);
-
+	initTableSortingOnClient('.statistics-table-registrations');
 };

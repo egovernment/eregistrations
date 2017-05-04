@@ -5,7 +5,9 @@ var _                            = require('mano').i18n.bind('View: Statistics')
   , location                     = require('mano/lib/client/location')
   , selectService                = require('./components/filter-bar/select-service')
   , tableColumns                 = require('./components/statistics-rejections-table-columns')
-  , dateFromToBlock     = require('./components/filter-bar/select-date-range-safe-fallback')
+  , dateFromToBlock              =
+	require('./components/filter-bar/select-date-range-safe-fallback')
+  , initTableSortingOnClient     = require('./utils/init-table-sorting-on-client')
   , getStatisticsRejectionsTable = require('./components/statistics-rejections-table');
 
 exports._parent        = require('./statistics-flow');
@@ -36,14 +38,7 @@ exports['statistics-main'] = function () {
 		section({ class: 'table-responsive-container' }, rejectionsTable),
 		section({ class: 'pad-if-pagination' }, rejectionsTable.pagination));
 
-	var checkExist = setInterval(function () {
-		var element = window.jQuery('.datatable');
-		if (element.length) {
-			element.tablesorter();
-			clearInterval(checkExist);
-		}
-	}, 500);
-
+	initTableSortingOnClient('.datatable');
 };
 
 exports._getOrderIndex = function (businessProcess) {
