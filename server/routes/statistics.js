@@ -252,7 +252,18 @@ module.exports = function (config) {
 				data.pageCount = ensureNumber(Math.ceil(count / itemsPerPage));
 				return getRejectionReasons.find(queryData, portion);
 			}).then(function (reasons) {
-				return getRejectionReasons.group(reasons)(function (groupedRejectionReasons) {
+				var groupBy = {
+					"$group" : {
+						_id : {
+							date: "$date.date",
+							rejectReasonConcat: "$rejectionReasonsConcat"
+						},
+						count : {
+							$sum : 1
+						}
+					}
+				};
+				return getRejectionReasons.group(groupBy)(function (groupedRejectionReasons) {
 					return deferred.map(reasons, function (rejectionReason) {
 						groupedRejectionReasons.some(function (groupedRejectionReason) {
 							if (groupedRejectionReason._id.date === rejectionReason.date.date

@@ -39,18 +39,7 @@ exports.count = function (query) {
 	});
 };
 
-exports.group = function (rejectionReasons) {
-	var groupBy = {
-		"$group" : {
-			_id : {
-				date: "$date.date",
-				rejectReasonConcat: "$rejectionReasonsConcat"
-			},
-			count : {
-				$sum : 1
-			}
-		}
-	};
+exports.group = function (groupBy) {
 	return mongo.connect()(function (db) {
 		return db.collection('rejectionReasons')
 			.aggregate(groupBy).toArray();
