@@ -183,6 +183,38 @@ module.exports = function (config) {
 		});
 	};
 
+	var resolveRejectReasonOccurrence = function (query, reasons) {
+		var match = { 'date.date': {} }
+		  , groupBy = [{
+			$group: {
+				_id: {
+					rejectionReasonsConcat: "$rejectionReasonsConcat"
+				},
+				count: {
+					$sum: 1
+				}
+			}
+		}];
+
+		if (query.dateFrom) match['date.date'].$gte = Number(db.Date(query.dateFrom));
+		if (query.dateTo) match['date.date'].$lte = Number(db.Date(query.dateTo));
+		if (Object.keys(match['date.date']).length > 0) groupBy.unshift({ $match: match });
+
+		return getRejectionReasons.group(groupBy)
+			.then(function (groupedRejectionReasons) {
+				return deferred.map(reasons, function (rejectionReason) {
+				groupedRejectionReasons.some(function (groupedRejectionReason) {
+					if (groupedRejectionReason._id.rejectionReasonsConcat
+							=== rejectionReason.rejectionReasonsConcat) {
+						rejectionReason.occurrencesCount = groupedRejectionReason.count;
+						return true;
+					}
+				});
+				return rejectionReason;
+				});
+			});
+	};
+
 	// Initialize data map.
 	getData(driver).done();
 	// Initialize status history date map.
@@ -252,47 +284,32 @@ module.exports = function (config) {
 				data.pageCount = ensureNumber(Math.ceil(count / itemsPerPage));
 				return getRejectionReasons.find(queryData, portion);
 			}).then(function (reasons) {
-				var groupBy = {
-					$group: {
-						_id: {
-							date: "$date.date",
-							rejectionReasonsConcat: "$rejectionReasonsConcat"
-						},
-						count: {
-							$sum: 1
-						}
-					}
-				};
-				return getRejectionReasons.group(groupBy)(function (groupedRejectionReasons) {
-					return deferred.map(reasons, function (rejectionReason) {
-						groupedRejectionReasons.some(function (groupedRejectionReason) {
-							if (groupedRejectionReason._id.date === rejectionReason.date.date
-									&& groupedRejectionReason._id.rejectionReasonsConcat
-									=== rejectionReason.rejectionReasonsConcat) {
-								rejectionReason.occurrencesCount = groupedRejectionReason.count;
-								return true;
-							}
-						});
-						return rejectionReason;
-					});
-				});
+				return resolveRejectReasonOccurrence(queryData, reasons);
 			}).then(function (reasonsWithOccurrence) {
 				data.rows = parseRejectionsForView(reasonsWithOccurrence);
 				return data;
 			});
 		},
 		'flow-rejections-data.pdf': makePdf(function (unresolvedQuery) {
+			var queryData;
 			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
-				return getRejectionReasons.find(query);
-			}).then(function (data) {
-				return flowRejectionsPrint(parseRejectionsForView(data), rendererConfig);
+				queryData = query;
+				return getRejectionReasons.find(queryData);
+			}).then(function (reasons) {
+				return resolveRejectReasonOccurrence(queryData, reasons);
+			}).then(function (reasonsWithOccurrence) {
+				return flowRejectionsPrint(parseRejectionsForView(reasonsWithOccurrence), rendererConfig);
 			});
 		}),
 		'flow-rejections-data.csv': makeCsv(function (unresolvedQuery) {
+			var queryData;
 			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
-				return getRejectionReasons.find(query);
-			}).then(function (data) {
-				return flowRejectionsCsv(parseRejectionsForView(data), rendererConfig);
+				queryData = query;
+				return getRejectionReasons.find(queryData);
+			}).then(function (reasons) {
+				return resolveRejectReasonOccurrence(queryData, reasons);
+			}).then(function (reasonsWithOccurrence) {
+				return flowRejectionsCsv(parseRejectionsForView(reasonsWithOccurrence), rendererConfig);
 			});
 		}),
 		'get-time-per-role': function (query) {
