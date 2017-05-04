@@ -1,11 +1,9 @@
+/*csslint important: false*/
 .tablesorter-default .header, .tablesorter-default .tablesorter-header {
 	cursor: pointer;
-}
-
-.tablesorter-default:focus .header:focus,
-.tablesorter-default:focus .tablesorter-header:focus  {
 	outline: none;
 }
+/*csslint important: true*/
 
 .headerSortUp::after,
 .tablesorter-headerAsc::after,
