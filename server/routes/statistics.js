@@ -286,7 +286,7 @@ module.exports = function (config) {
 			}).then(function (reasons) {
 				return resolveRejectReasonOccurrence(queryData, reasons);
 			}).then(function (reasonsWithOccurrence) {
-				data.rows = parseRejectionsForView(reasonsWithOccurrence);
+				data.rows = parseRejectionsForView(reasonsWithOccurrence, { useBpId: true });
 				return data;
 			});
 		},

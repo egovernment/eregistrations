@@ -16,6 +16,8 @@ var copy                 = require('es5-ext/object/copy')
   , getDurationDaysHours = require('./utils/get-duration-days-hours-fine-grain')
   , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
   , getDynamicUrl        = require('./utils/get-dynamic-url')
+  , initializeRowOnClick = require('./utils/statistics-time-row-onclick')
+  , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , processingStepsMetaWithoutFrontDesk
 	= require('./utils/processing-steps-meta-without-front-desk');
 
@@ -43,7 +45,7 @@ var getRowResult = function (rowData, label) {
 
 exports['statistics-main'] = function () {
 	var stepsMeta = processingStepsMetaWithoutFrontDesk(),
-		stepsMap = {}, queryHandler, params;
+		stepsMap = {}, queryHandler, params, queryResult;
 	Object.keys(stepsMeta).forEach(function (stepShortPath) {
 		stepsMap[stepShortPath]   = new ObservableValue();
 	});
@@ -61,18 +63,22 @@ exports['statistics-main'] = function () {
 			query.dateTo = query.dateTo.toJSON();
 		}
 		queryServer(query).done(function (result) {
+			queryResult = result;
 			Object.keys(stepsMap).forEach(function (key) {
-				var preparedResult = [];
+				var preparedResults = [];
 				if (!result.byStep[key]) {
 					stepsMap[key].value = null;
 					return;
 				}
 				forEach(result.byStepAndProcessor[key], function (rowData, userId) {
-					preparedResult.push(getRowResult(rowData.processing,
-						db.User.getById(userId).fullName));
+					var preparedResult = getRowResult(rowData.processing,
+						db.User.getById(userId).fullName);
+					preparedResult.key = key;
+					preparedResult.userId = userId;
+					preparedResults.push(preparedResult);
 				});
-				preparedResult.push(getRowResult(result.byStep[key].processing, _("Total & times")));
-				stepsMap[key].value = preparedResult;
+				preparedResults.push(getRowResult(result.byStep[key].processing, _("Total & times")));
+				stepsMap[key].value = preparedResults;
 			});
 		});
 	});
@@ -130,25 +136,39 @@ exports['statistics-main'] = function () {
 					h3(step.label),
 					table({ class: 'statistics-table' },
 						thead(
-							th(),
-							th({ class: 'statistics-table-number' }, _("Files processed")),
-							th({ class: 'statistics-table-number' }, _("Average time")),
-							th({ class: 'statistics-table-number' }, _("Min time")),
-							th({ class: 'statistics-table-number' }, _("Max time"))
+							tr(
+								th(),
+								th({ class: 'statistics-table-number' }, _("Files processed")),
+								th({ class: 'statistics-table-number' }, _("Average time")),
+								th({ class: 'statistics-table-number' }, _("Min time")),
+								th({ class: 'statistics-table-number' }, _("Max time"))
+							)
 						),
 						tbody({
 							onEmpty: tr(td({ class: 'empty statistics-table-number', colspan: 5 },
 								_("There are no files processed at this step")))
 						}, data, function (rowData) {
-							return tr(
+
+							var step, props = {};
+
+							if (rowData && rowData.key && rowData.userId) {
+								step = queryResult.byStepAndProcessor[rowData.key][rowData.userId];
+							}
+
+							initializeRowOnClick(step, props, false);
+
+							return tr(props,
 								td(rowData.label),
 								td({ class: 'statistics-table-number' }, rowData.timedCount),
 								td({ class: 'statistics-table-number' }, rowData.avgTime),
 								td({ class: 'statistics-table-number' }, rowData.minTime),
 								td({ class: 'statistics-table-number' }, rowData.maxTime)
-							);
+								);
 						})
 						)), br()];
 			});
 		})));
+
+	initTableSortingOnClient('.statistics-table');
+
 };
