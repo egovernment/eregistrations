@@ -203,14 +203,14 @@ module.exports = function (config) {
 		return getRejectionReasons.group(groupBy)
 			.then(function (groupedRejectionReasons) {
 				return deferred.map(reasons, function (rejectionReason) {
-				groupedRejectionReasons.some(function (groupedRejectionReason) {
-					if (groupedRejectionReason._id.rejectionReasonsConcat
-							=== rejectionReason.rejectionReasonsConcat) {
-						rejectionReason.occurrencesCount = groupedRejectionReason.count;
-						return true;
-					}
-				});
-				return rejectionReason;
+					groupedRejectionReasons.some(function (groupedRejectionReason) {
+						if (groupedRejectionReason._id.rejectionReasonsConcat
+								=== rejectionReason.rejectionReasonsConcat) {
+							rejectionReason.occurrencesCount = groupedRejectionReason.count;
+							return true;
+						}
+					});
+					return rejectionReason;
 				});
 			});
 	};
