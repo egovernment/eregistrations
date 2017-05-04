@@ -113,7 +113,7 @@ exports['statistics-main'] = function () {
 								}
 								return td(defaultOpts, cellContent);
 							}));
-						}) : tr(td({ class: 'empty', colspan: 8 },
+						}) : tr({ class: 'empty' }, td({ colspan: 8 },
 							_("No data for this criteria"))))));
 			})));
 };
