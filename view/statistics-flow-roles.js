@@ -173,10 +173,10 @@ exports['statistics-main'] = function () {
 
 		section({ class: 'pad-if-pagination' }, pagination),
 		br(),
-		section({ class: "section-primary statistics-table-scrollable" },
 			data.map(function (result) {
-				var mode = modes.get(location.query.mode || 'daily');
-				return table({ class: 'statistics-table' },
+			var mode = modes.get(location.query.mode || 'daily');
+			return div({ class: 'overflow-x-scroll width-1050px' },
+					table({ class: 'submitted-user-data-table statistics-table' },
 					thead(
 						th({ class: 'statistics-table-number' }, mode.labelNoun),
 						list(Object.keys(processingSteps), function (shortStepPath) {
@@ -199,6 +199,6 @@ exports['statistics-main'] = function () {
 								colspan: Object.keys(processingSteps).length
 							}, _("Nothing to report for this period"))
 						);
-					}));
-			})));
+					})));
+		}));
 };

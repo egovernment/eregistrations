@@ -266,3 +266,11 @@ script { display: none !important; }
 .width-25{
 	width: 25%;
 }
+
+.overflow-x{
+	overflow-x: auto;
+}
+
+.width-1050px{
+	width: 1050px;
+}
