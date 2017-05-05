@@ -142,7 +142,7 @@ exports['statistics-main'] = function () {
 		br(),
 			data.map(function (result) {
 			var mode = modes.get(location.query.mode || 'daily');
-			return div({ class: 'overflow-x' },
+			return div({ class: 'table-responsive-container overflow-x' },
 					table({ class: 'statistics-table submitted-user-data-table' },
 					thead(
 						th({ class: 'statistics-table-number' }, mode.labelNoun),
