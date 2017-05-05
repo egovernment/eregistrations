@@ -17,6 +17,7 @@ var copy                 = require('es5-ext/object/copy')
   , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
   , getDynamicUrl        = require('./utils/get-dynamic-url')
   , initializeRowOnClick = require('./utils/statistics-time-row-onclick')
+  , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , processingStepsMetaWithoutFrontDesk
 	= require('./utils/processing-steps-meta-without-front-desk');
 
@@ -135,11 +136,13 @@ exports['statistics-main'] = function () {
 					h3(step.label),
 					table({ class: 'statistics-table' },
 						thead(
-							th(),
-							th({ class: 'statistics-table-number' }, _("Files processed")),
-							th({ class: 'statistics-table-number' }, _("Average time")),
-							th({ class: 'statistics-table-number' }, _("Min time")),
-							th({ class: 'statistics-table-number' }, _("Max time"))
+							tr(
+								th(),
+								th({ class: 'statistics-table-number' }, _("Files processed")),
+								th({ class: 'statistics-table-number' }, _("Average time")),
+								th({ class: 'statistics-table-number' }, _("Min time")),
+								th({ class: 'statistics-table-number' }, _("Max time"))
+							)
 						),
 						tbody({
 							onEmpty: tr(td({ class: 'empty statistics-table-number', colspan: 5 },
@@ -165,4 +168,7 @@ exports['statistics-main'] = function () {
 						)), br()];
 			});
 		})));
+
+	initTableSortingOnClient('.statistics-table');
+
 };

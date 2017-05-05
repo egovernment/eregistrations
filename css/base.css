@@ -267,6 +267,10 @@ script { display: none !important; }
 	width: 25%;
 }
 
+.comiseo-daterangepicker-buttonpanel>button:nth-child(2){
+	display: none;
+}
+
 .overflow-x{
 	overflow-x: auto;
 }
