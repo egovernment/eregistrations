@@ -14,8 +14,10 @@ module.exports = function (result, config) {
 	];
 
 	data.push.apply(data, result.map(function (row) {
-		row[0] = '\"' + row[0].join(' ').replace(/\r?\n|\r/g, ' ').replace(/"/g, "'") + '\"';
-		row[row.length - 1] = '\"' + row[row.length - 1].replace(/"/g, "'") + '\"';
+		row.forEach(function (column, index) {
+			if (column.constructor === Array) column = column.join(' ');
+			row[index] = '\"' + column.replace(/\r?\n|\r/g, ' ').replace(/"/g, "'") + '\"';
+		});
 		return row;
 	}));
 
