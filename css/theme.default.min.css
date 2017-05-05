@@ -17,9 +17,9 @@
 	line-height: 21px;
 }
 
-.tablesorter-default thead .headerSortDown::after,
-.tablesorter-default thead .tablesorter-headerDesc::after,
-.tablesorter-default thead .tablesorter-headerSortDown::after {
+.headerSortDown::after,
+.tablesorter-headerDesc::after,
+.tablesorter-headerSortDown::after {
 	content: "\f0de";
 	font: normal normal normal 14px/1 FontAwesome;
 	vertical-align: text-bottom;
