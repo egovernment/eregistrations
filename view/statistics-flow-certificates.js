@@ -140,10 +140,10 @@ exports['statistics-main'] = function () {
 			p({ class: 'submit' }, input({ type: 'submit' }))),
 		section({ class: 'pad-if-pagination' }, pagination),
 		br(),
-		section({ class: "section-primary" },
 			data.map(function (result) {
-				var mode = modes.get(location.query.mode || 'daily');
-				return table({ class: 'statistics-table' },
+			var mode = modes.get(location.query.mode || 'daily');
+			return div({ class: 'table-responsive-container overflow-x' },
+					table({ class: 'statistics-table submitted-user-data-table' },
 					thead(
 						th({ class: 'statistics-table-number' }, mode.labelNoun),
 						th({ class: 'statistics-table-number' }, _("Submitted")),
@@ -163,6 +163,6 @@ exports['statistics-main'] = function () {
 								return td({ class: 'statistics-table-number' }, result[key][status]);
 							})
 						);
-					}));
-			}))));
+					})));
+		})));
 };
