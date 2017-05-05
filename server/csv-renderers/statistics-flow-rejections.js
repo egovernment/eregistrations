@@ -15,6 +15,7 @@ module.exports = function (result, config) {
 
 	data.push.apply(data, result.map(function (row) {
 		row.forEach(function (column, index) {
+			if (column.constructor === Number) return;
 			if (column.constructor === Array) column = column.join(' ');
 			row[index] = '\"' + column.replace(/\r?\n|\r/g, ' ').replace(/"/g, "'") + '\"';
 		});
