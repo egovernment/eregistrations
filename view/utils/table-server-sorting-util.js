@@ -2,7 +2,7 @@
 
 module.exports = function (id, opts) {
 	setTimeout(function () {
-		var elem = window.jQuery('#' + id + '[col=' + opts.col + ']');
+		var elem = window.jQuery('#' + id + ' [col=' + opts.col + ']');
 		elem.addClass('tablesorter-default');
 		if (opts.asc === '1') {
 			elem.addClass('headerSortUp');
