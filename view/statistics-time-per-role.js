@@ -130,11 +130,13 @@ exports['statistics-main'] = function () {
 		div({ class: 'overflow-x width-1050px' },
 			(table({ class: 'statistics-table submitted-user-data-table' },
 				thead(
-					th(),
-					th({ class: 'statistics-table-number' }, _("Files processed")),
-					th({ class: 'statistics-table-number' }, _("Average time")),
-					th({ class: 'statistics-table-number' }, _("Min time")),
-					th({ class: 'statistics-table-number' }, _("Max time"))
+					tr(
+						th(),
+						th({ class: 'statistics-table-number' }, _("Files processed")),
+						th({ class: 'statistics-table-number' }, _("Average time")),
+						th({ class: 'statistics-table-number' }, _("Min time")),
+						th({ class: 'statistics-table-number' }, _("Max time"))
+					)
 				),
 				tbody({
 					onEmpty: tr(td({ class: 'empty', colspan: 5 },
@@ -146,17 +148,16 @@ exports['statistics-main'] = function () {
 
 					initializeRowOnClick(step, props, true);
 
-				return tr(props,
-					td(row.label),
-					td({ class: 'statistics-table-number' }, row.timedCount),
-					td({ class: 'statistics-table-number' },
-						row.timedCount ? getDurationDaysHours(row.avgTime) : "-"),
-					td({ class: 'statistics-table-number' },
-						row.timedCount ? getDurationDaysHours(row.minTime) : "-"),
-					td({ class: 'statistics-table-number' },
-						row.timedCount ? getDurationDaysHours(row.maxTime) : "-"));
-			}))
-			));
-
+					return tr(props,
+						td(row.label),
+						td({ class: 'statistics-table-number' }, row.timedCount),
+						td({ class: 'statistics-table-number' },
+							row.timedCount ? getDurationDaysHours(row.avgTime) : "-"),
+						td({ class: 'statistics-table-number' },
+							row.timedCount ? getDurationDaysHours(row.minTime) : "-"),
+						td({ class: 'statistics-table-number' },
+							row.timedCount ? getDurationDaysHours(row.maxTime) : "-"));
+				}))
+			)));
 	initTableSortingOnClient('.statistics-table');
 };
