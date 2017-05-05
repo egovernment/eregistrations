@@ -23,7 +23,7 @@ exports['flow-rejections-nav'] = { class: { 'pills-nav-active': true } };
 
 function buildOps(col) {
 	var opts = { class: "submitted-user-data-table-date-time" };
-	if(col){
+	if (col) {
 		opts.col = col;
 	}
 	return opts;
@@ -42,11 +42,11 @@ exports['statistics-main'] = function () {
 	});
 
 	queryHandler.on('query', function (query) {
-		var serverQuery = copy(query), dateFrom, dateTo, asc, col;
+		var serverQuery = copy(query), dateFrom, dateTo;
 
 		dateFrom = query.dateFrom;
 		dateTo   = query.dateTo || new db.Date();
-		tableServerSortingUtil('rejections-table', {col:query.col, asc:query.asc});
+		tableServerSortingUtil('rejections-table', { col: query.col, asc: query.asc });
 
 		serverQuery.dateFrom = dateFrom.toJSON();
 		serverQuery.dateTo = dateTo.toJSON();
@@ -100,8 +100,8 @@ exports['statistics-main'] = function () {
 							th(buildOps('operator'), _("Operator")),
 							th(buildOps('role'), _("Role")),
 							th(buildOps('date'), _("Date")),
-							th({col:'entity', class: "submitted-user-data-table-name" }, _("Entity")),
-							th({class: "submitted-user-data-table-link" })
+							th({ col: 'entity', class: "submitted-user-data-table-name" }, _("Entity")),
+							th({ class: "submitted-user-data-table-link" })
 						),
 						tbody(result.length ? result.map(function (dataRow) {
 							return tr(dataRow.map(function (cellContent, index) {
