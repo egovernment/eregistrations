@@ -127,7 +127,7 @@ exports['statistics-main'] = function () {
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
 			))),
 		br(),
-		div({ class: 'overflow-x width-1050px' },
+		div({ class: 'overflow-x' },
 			(table({ class: 'statistics-table submitted-user-data-table' },
 				thead(
 					tr(
