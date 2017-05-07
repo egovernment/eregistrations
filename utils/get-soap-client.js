@@ -11,10 +11,10 @@ var memoize          = require('memoizee')
 
   , createSoapClient = promisify(soap.createClient);
 
-var getSoapClientImpl = memoize(function (wsdlUrl, soapUrl) {
-	debug('creating soap client (%s)', soapUrl);
+var getSoapClientImpl = memoize(function (wsdlUrl, options) {
+	debug('creating soap client (%s)', options.endpoint);
 
-	return createSoapClient(wsdlUrl, { endpoint: soapUrl })(function (client) {
+	return createSoapClient(wsdlUrl, options)(function (client) {
 		var services = client.wsdl.definitions.services
 		  , ports, methods, method, promisifiedMethodName;
 
@@ -39,8 +39,10 @@ var getSoapClientImpl = memoize(function (wsdlUrl, soapUrl) {
 	});
 }, { primitive: true });
 
-module.exports = function (wsdlUrl, soapUrl) {
-	return getSoapClientImpl(wsdlUrl, soapUrl).aside(null, function (err) {
-		getSoapClientImpl.clear(wsdlUrl, soapUrl);
+module.exports = function (wsdlUrl, soapUrl/*, options*/) {
+	var options = Object(arguments[2]);
+	options.endpoint = soapUrl;
+	return getSoapClientImpl(wsdlUrl, options).aside(null, function (err) {
+		getSoapClientImpl.clear(wsdlUrl, options);
 	});
 };
