@@ -11,7 +11,8 @@ var memoize          = require('memoizee')
 
   , createSoapClient = promisify(soap.createClient);
 
-var getSoapClientImpl = memoize(function (wsdlUrl, options) {
+var getSoapClientImpl = memoize(function (wsdlUrl/*, options*/) {
+	var options = Object(arguments[1]);
 	debug('creating soap client (%s)', options.endpoint);
 
 	return createSoapClient(wsdlUrl, options)(function (client) {
