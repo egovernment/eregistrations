@@ -28,12 +28,12 @@ var getResultItem = function (statusHistoryItem, db, query) {
 			ts: null
 		}
 	};
-	var processingStep = statusHistoryItem.owner.owner, processor;
+	var processingStep = statusHistoryItem.owner.owner.owner, processor;
 	result.service.businessName = processingStep.master.businessName;
 	result.service.id = processingStep.master.__id__;
 	result.service.type = processingStep.master.constructor.__id__;
 	result.processingStep.label = processingStep.label;
-	result.processingStep.path = processingStep.__id__.slice(processingStep.__id__.indexOf('/'));
+	result.processingStep.path = processingStep.__id__.slice(processingStep.__id__.indexOf('/') + 1);
 	if (query && query.processorId) {
 		processor = db.User.getById(query.processorId);
 	} else {
