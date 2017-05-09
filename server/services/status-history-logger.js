@@ -11,6 +11,7 @@ var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step
   , uniqIdPrefix                  = 'abcdefghiklmnopqrstuvxyz'[Math.floor(Math.random() * 24)]
   , mano                          = require('mano')
   , mongoDB                       = require('../mongo-db')
+  , debug                         = require('debug-ext')('status-history-logger')
   , deferred                      = require('deferred');
 
 var getPathSuffix = function () {
@@ -32,17 +33,24 @@ var storeLog = function (storage, logPath/*, options */) {
 
 		// We ignore such cases, they may happen when direct overwrites computed
 		if (status === oldStatus) return result;
+		result = {};
 		return deferred(
 			options.processorPath ? storage.get(event.ownerId + '/' +
 					options.processorPath)(function (data) {
 				if (data && data.value[0] === '7') {
 					resolvedPath = event.ownerId + '/' + logPathResolved + '/processor';
+					result.processorId = data.value.slice(1);
 					return storage.store(resolvedPath, data.value);
 				}
 			}) : null,
 			storage.store(event.ownerId + '/' + logPathResolved + '/status', serializeValue(status))
 		).then(function () {
-			return logPathResolved;
+			result.ts                    = Math.round(event.data.stamp / 1000);
+			result.status                = status;
+			result.statusHistoryItemPath = logPathResolved;
+			result.businessProcessId     = event.ownerId;
+
+			return result;
 		});
 	};
 };
@@ -66,18 +74,17 @@ var saveRejectionReason = function (event) {
 	});
 };
 
-var storeLogMongo = function (historyStatusItemPath) {
-	var bpId, historyItemPath;
-	bpId = historyStatusItemPath.split('/')[0];
-	historyItemPath = historyStatusItemPath.slice(historyStatusItemPath.indexOf('/'));
-	return mano.queryMemoryDb([bpId], 'processingStepStatusHistoryEntry', {
-		businessProcessId: bpId,
-		statusHistoryItemPath: historyItemPath
-	})(function (processingStepLogData) {
-		return mongoDB.connect()(function (db) {
+var storeLogMongo = function (storeResult) {
+	return mano.queryMemoryDb([storeResult.businessProcessId],
+		'processingStepStatusHistoryEntry',
+		storeResult).then(function (processingStepLogData) {
+		return mongoDB.connect().then(function (db) {
 			var collection = db.collection('processingStepsHistory');
+			debug('Will store log to mongo %s', JSON.stringify(processingStepLogData));
 			return collection.insertOne(processingStepLogData);
 		});
+	}).done(null, function (err) {
+		console.error(err);
 	});
 };
 
@@ -97,8 +104,9 @@ module.exports = function () {
 			allStorages.add(storage);
 			storage.on('key:' + stepPath + '/status', function (event) {
 				storeLog(storage, stepPath, { processorPath: stepPath + '/processor' })(event)
-					.then(function (historyStatusItemPath) {
-						return storeLogMongo(historyStatusItemPath);
+					.then(function (storeResult) {
+						if (!storeResult) return deferred(null);
+						return storeLogMongo(storeResult);
 					});
 				saveRejectionReason(event);
 			});
