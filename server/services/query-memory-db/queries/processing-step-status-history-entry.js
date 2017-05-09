@@ -76,7 +76,7 @@ module.exports = exports = function (db) {
 		if (statusHistoryItemPath) {
 			statusHistoryItem = businessProcess.resolveSKeyPath(statusHistoryItemPath);
 			if (!statusHistoryItem) return;
-			statusHistoryItem = statusHistoryItem.object;
+			statusHistoryItem = statusHistoryItem.value;
 		}
 
 		if (statusHistoryItem) {
