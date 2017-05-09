@@ -45,7 +45,7 @@ module.exports = function (t, a) {
 				path: "/processingSteps/map/revision",
 				label: "Revision"
 			},
-			occurrencesCount: 0,
+			occurrencesCount: '',
 			date: {
 				ts: 1493307837863,
 				date: 1493251200000

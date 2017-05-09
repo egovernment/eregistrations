@@ -38,3 +38,10 @@ exports.count = function (query) {
 			.find(criteria).count();
 	});
 };
+
+exports.group = function (groupBy) {
+	return mongo.connect()(function (db) {
+		return db.collection('rejectionReasons')
+			.aggregate(groupBy).toArray();
+	});
+};
