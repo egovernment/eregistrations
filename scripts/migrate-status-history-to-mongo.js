@@ -60,5 +60,8 @@ dbService().done(function () {
 		});
 	}).done(function () {
 		process.exit();
+	}, function (err) {
+		console.error(err);
+		process.exit();
 	});
 });
