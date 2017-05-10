@@ -39,7 +39,15 @@ dbService().done(function () {
 			var migrationIndex = db.collection('processingStepsHistoryMigrationIndex');
 			return deferred.map(bpStorages, function (storage) {
 				debug('searching storage...........', storage.name);
-				return storage.getAllObjectIds().then(function (ids) {
+				return storage.search({
+					keyPath: 'isSubmitted',
+					value: '11'
+				}, function (path, record) {
+					if (record.stamp < 1484434800000000) return deferred(null); //Jan 15 2017
+					return deferred(path.slice(0, -('isSubmitted'.length + 1)));
+				}).then(function (ids) {
+					ids = ids.filter(Boolean);
+
 					return deferred.map(ids, deferred.gate(function (id) {
 						var bpId = id;
 						return migrationIndex.find({ _id: bpId }).count().then(function (migratedAlready) {
