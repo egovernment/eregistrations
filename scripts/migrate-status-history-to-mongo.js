@@ -36,29 +36,32 @@ dbService().done(function () {
 
 		return mongoDB.connect().then(function (db) {
 			var collection = db.collection('processingStepsHistory');
+			var migrationIndex = db.collection('processingStepsHistoryMigrationIndex');
 			return deferred.map(bpStorages, function (storage) {
 				debug('searching storage...........', storage.name);
 				return storage.getAllObjectIds().then(function (ids) {
-					return deferred.map(ids, function (id) {
+					return deferred.map(ids, deferred.gate(function (id) {
 						var bpId = id;
-						return collection.find({ 'service.id': bpId }).count().then(function (count) {
-							if (count) return deferred(null);
+						return migrationIndex.find({ _id: bpId }).count().then(function (migratedAlready) {
+							if (migratedAlready) return deferred(null);
 							debug('LOAD BP TO MEMORY %s', bpId);
 							return mano.queryMemoryDb([bpId], 'processingStepStatusHistoryEntry', {
 								businessProcessId: bpId
 							});
 						}).then(function (result) {
+							migrationIndex.insertOne({ _id: bpId });
 							if (!result || !result.length) return deferred(null);
 							debug('GOT result %s', JSON.stringify(result));
 							return collection.insert(result);
 						}).then(null, function (err) {
 							console.error(err);
 						});
-					});
+					}, 100));
 				});
 			});
 		});
 	}).done(function () {
+		console.log('HURRAY, migration ended successfully!');
 		process.exit();
 	}, function (err) {
 		console.error(err);
