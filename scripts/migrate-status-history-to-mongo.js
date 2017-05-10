@@ -51,7 +51,10 @@ dbService().done(function () {
 					return deferred.map(ids, deferred.gate(function (id) {
 						var bpId = id;
 						return migrationIndex.find({ _id: bpId }).count().then(function (migratedAlready) {
-							if (migratedAlready) return deferred(null);
+							if (migratedAlready) return deferred(true);
+							return collection.find({ 'service.id': bpId }).count();
+						}).then(function (alreadyInData) {
+							if (alreadyInData) return deferred(null);
 							debug('LOAD BP TO MEMORY %s', bpId);
 							return mano.queryMemoryDb([bpId], 'processingStepStatusHistoryEntry', {
 								businessProcessId: bpId
