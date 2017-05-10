@@ -34,29 +34,27 @@ dbService().done(function () {
 			}
 		});
 
-		return deferred.map(bpStorages, function (storage) {
-			debug('searching storage...........', storage.name);
-			return storage.getAllObjectIds().then(function (ids) {
-				return deferred.map(ids, function (id) {
-					var bpId = id;
-					return mongoDB.connect()(function (db) {
-						var collection = db.collection('processingStepsHistory');
-						return collection.find({ 'service.id': bpId }).count();
-					}).then(function (count) {
-						if (count) return deferred(null);
-						debug('LOAD BP TO MEMORY %s', bpId);
-						return mano.queryMemoryDb([bpId], 'processingStepStatusHistoryEntry', {
-							businessProcessId: bpId
-						});
-					}).then(function (result) {
-						if (!result || !result.length) return deferred(null);
-						debug('GOT result %s', JSON.stringify(result));
-						return mongoDB.connect()(function (db) {
-							var collection = db.collection('processingStepsHistory');
+		return mongoDB.connect()(function (db) {
+			return db.collection('processingStepsHistory');
+		}).then(function (collection) {
+			return deferred.map(bpStorages, function (storage) {
+				debug('searching storage...........', storage.name);
+				return storage.getAllObjectIds().then(function (ids) {
+					return deferred.map(ids, function (id) {
+						var bpId = id;
+						return collection.find({ 'service.id': bpId }).count().then(function (count) {
+							if (count) return deferred(null);
+							debug('LOAD BP TO MEMORY %s', bpId);
+							return mano.queryMemoryDb([bpId], 'processingStepStatusHistoryEntry', {
+								businessProcessId: bpId
+							});
+						}).then(function (result) {
+							if (!result || !result.length) return deferred(null);
+							debug('GOT result %s', JSON.stringify(result));
 							return collection.insert(result);
+						}).then(null, function (err) {
+							console.error(err);
 						});
-					}).then(null, function (err) {
-						console.error(err);
 					});
 				});
 			});
