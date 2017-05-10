@@ -34,9 +34,8 @@ dbService().done(function () {
 			}
 		});
 
-		return mongoDB.connect()(function (db) {
-			return db.collection('processingStepsHistory');
-		}).then(function (collection) {
+		return mongoDB.connect().then(function (db) {
+			var collection = db.collection('processingStepsHistory');
 			return deferred.map(bpStorages, function (storage) {
 				debug('searching storage...........', storage.name);
 				return storage.getAllObjectIds().then(function (ids) {
