@@ -14,7 +14,10 @@ exports._parent = require('./business-process-base');
 exports.step = function () {
 	var businessProcess = this.businessProcess
 	  , dataForms       = businessProcess.dataForms
-	  , guideProgress   = businessProcess._guideProgress;
+	  , guideProgress   = businessProcess._guideProgress
+	  , requirements    = businessProcess.requirements.applicable
+	  , costs           = businessProcess.costs
+	  , nextStep;
 
 	exports._formsHeading.call(this);
 
@@ -28,10 +31,12 @@ exports.step = function () {
 		exports._forms.call(this)
 	);
 
+	nextStep = requirements._size > 0 ? 'documents' : costs.totalAmount > 0 ? 'pay' : 'submission';
+
 	insert(_if(and(eq(guideProgress, 1),
 		eq(dataForms._progress, 1)),
 		div({ class: 'user-next-step-button' },
-			a({ href: '/documents/' }, _("Continue to next step"))),
+			a({ href: '/' + nextStep + '/' }, _("Continue to next step"))),
 		_if(gt(dataForms._progress, 0), section({ class: 'section-warning' },
 			incompleteFormNav(dataForms.applicable)))
 		));
