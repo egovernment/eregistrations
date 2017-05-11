@@ -47,7 +47,9 @@ var assign                     = require('es5-ext/object/assign')
   , flowRolesReduceSteps       = require('../../utils/statistics-flow-reduce-processing-step')
   , itemsPerPage               = require('../../conf/objects-list-items-per-page')
   , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf')
-  , getRejectionReasons           = require('../mongo-queries/get-rejection-reasons');
+  , getRejectionReasons           = require('../mongo-queries/get-rejection-reasons')
+  , getStatusHistory              = require('../mongo-queries/get-status-history')
+  , getProcessingWorkingHoursTime = require('../../utils/get-processing-working-hours-time');
 
 var flowQueryHandlerCertificatesPrintConf = [
 	require('../../apps-common/query-conf/date-from'),
@@ -120,12 +122,64 @@ module.exports = function (config) {
 			// We need:
 			// steps | filter(query) | reduce()[byStep, all]
 			// businessProcesses | filter(query) | reduce().all
-			stepsResult = reduceSteps(filterSteps(data, query), { includeBusinessProcesses: true });
-			return {
+			stepsResult = reduceSteps(filterSteps(data, query));
+			Object.keys(stepsResult.byStep).forEach(function (stepKey) {
+				stepsResult.byStep[stepKey].businessProcesses = [];
+			});
+			var result = {
 				steps: { byStep: stepsResult.byStep, all: stepsResult.all },
 				businessProcesses: reduceBusinessProcesses(filterBusinessProcesses(data.businessProcesses,
 					query)).all
 			};
+
+			return getStatusHistory.find({ onlyFullItems: true, sort: {
+				'service.businessName': 1,
+				'date.ts': 1
+			} }).then(function (statusHistory) {
+				var currentItem, step;
+				statusHistory.forEach(function (statusHistoryItem) {
+					if (!currentItem) {
+						currentItem = {};
+					}
+					if (statusHistoryItem.status.code === 'pending') {
+						currentItem.processingStart = statusHistoryItem.date.ts;
+					} else {
+						if (!db[statusHistoryItem.service.type]) {
+							currentItem = null;
+							return;
+						}
+						step =
+							db[statusHistoryItem.service.type].prototype.resolveSKeyPath(
+								statusHistoryItem.processingStep.path
+							);
+						if (step && step.value) {
+							step = step.value;
+						} else {
+							currentItem = null;
+							return;
+						}
+						if (currentItem.processingStart > statusHistoryItem.date.ts ||
+								!currentItem.processingStart) {
+							currentItem = null;
+							return;
+						}
+						currentItem.processingEnd = statusHistoryItem.date.ts;
+						currentItem.businessName  = statusHistoryItem.service.businessName;
+						currentItem.processingTime =
+							getProcessingWorkingHoursTime(currentItem.processingStart, currentItem.processingEnd);
+						currentItem.processor = statusHistoryItem.operator.name;
+						var stepPath =  step.key;
+						if (!result.steps.byStep[stepPath]) { // child of group step
+							stepPath = step.owner.owner.owner.key + '/' + step.key;
+						}
+						result.steps.byStep[stepPath].businessProcesses.push(currentItem);
+						currentItem = null;
+					}
+				});
+				console.log('RESULT', result);
+				return result;
+			});
+
 		});
 	};
 

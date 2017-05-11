@@ -1,46 +1,51 @@
 'use strict';
-var getDurationDaysHours = require('./get-duration-days-hours-fine-grain'),
-	db                   = require('../../db'),
-	statisticsTimeRowOnClick = function (currentRow, businessProcessesOfRow, showUserName) {
-		var jQuery = window.jQuery,
-			detailRow = currentRow.next('.detail');
+var getDurationDaysHours = require('./get-duration-days-hours-fine-grain')
+  , db                   = require('../../db')
+  , toDateTimeInTz       = require('../../utils/to-date-time-in-time-zone')
+  , statisticsTimeRowOnClick;
 
-		if (detailRow.length === 0) {
-			var rows = businessProcessesOfRow.map(function (bp, index) {
+statisticsTimeRowOnClick = function (currentRow, businessProcessesOfRow, showUserName) {
+	var jQuery = window.jQuery,
+		detailRow = currentRow.next('.detail');
 
-				var user = db.User.getById(bp.processor),
-					userName = user === null ? bp.processor : user.fullName,
-					lastTdContent = index === 0 ? span({
-						onclick: function () {
-							detailRow.hide();
-						},
-						class: 'cursor-pointer'
-					}, 'x') : '',
-					tdArr = [];
+	if (detailRow.length === 0) {
+		var rows = businessProcessesOfRow.map(function (bp, index) {
 
-				tdArr.push(td({ class: 'background-secondary width-30' }, bp.businessName));
-				if (showUserName) {
-					tdArr.push(td({ class: 'background-secondary width-25' }, userName));
-				}
-				tdArr.push(td({ class: 'background-secondary ' }, getDurationDaysHours(bp.processingTime)));
-				tdArr.push(td({ class: 'background-secondary' }, new db.DateTime(bp.processingStart)));
-				tdArr.push(td({ class: 'background-secondary' }, new db.DateTime(bp.processingEnd)));
-				tdArr.push(td({ class: 'background-secondary' }, lastTdContent));
+			var lastTdContent = index === 0 ? span({
+				onclick: function () {
+					detailRow.hide();
+				},
+				class: 'cursor-pointer'
+			}, 'x') : '',
+				tdArr = [];
 
-				return tr(tdArr);
-			});
+			tdArr.push(td({ class: 'background-secondary width-30' }, bp.businessName));
+			if (showUserName) {
+				tdArr.push(td({ class: 'background-secondary width-25' }, bp.processor));
+			}
+			tdArr.push(td({ class: 'background-secondary ' }, getDurationDaysHours(bp.processingTime)));
+			tdArr.push(td({ class: 'background-secondary' },
+				String(
+					db.DateTime(toDateTimeInTz(new Date(bp.processingStart), db.timeZone))
+				).slice(0, -3)));
+			tdArr.push(td({ class: 'background-secondary' },
+				String(db.DateTime(toDateTimeInTz(new Date(bp.processingEnd), db.timeZone))).slice(0, -3)));
+			tdArr.push(td({ class: 'background-secondary' }, lastTdContent));
 
-			detailRow = jQuery(tr({
-				class: 'detail',
-				style: 'display:none'
-			}, td({ colspan: 5 }, table(rows))));
+			return tr(tdArr);
+		});
 
-			detailRow.insertAfter(currentRow);
-		}
+		detailRow = jQuery(tr({
+			class: 'detail',
+			style: 'display:none'
+		}, td({ colspan: 5 }, table(rows))));
 
-		detailRow.toggle();
-		return jQuery;
-	};
+		detailRow.insertAfter(currentRow);
+	}
+
+	detailRow.toggle();
+	return jQuery;
+};
 
 module.exports = function (step, props, showUserName) {
 	if (step && step.businessProcesses.length !== 0) {
