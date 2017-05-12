@@ -4,12 +4,12 @@ var getDurationDaysHours = require('./get-duration-days-hours-fine-grain')
   , toDateTimeInTz       = require('../../utils/to-date-time-in-time-zone')
   , statisticsTimeRowOnClick;
 
-statisticsTimeRowOnClick = function (currentRow, businessProcessesOfRow, showUserName) {
+statisticsTimeRowOnClick = function (currentRow, periodsOfRow, showUserName) {
 	var jQuery = window.jQuery,
 		detailRow = currentRow.next('.detail');
 
 	if (detailRow.length === 0) {
-		var rows = businessProcessesOfRow.map(function (bp, index) {
+		var rows = periodsOfRow.map(function (bp, index) {
 
 			var lastTdContent = index === 0 ? span({
 				onclick: function () {
@@ -48,10 +48,10 @@ statisticsTimeRowOnClick = function (currentRow, businessProcessesOfRow, showUse
 };
 
 module.exports = function (step, props, showUserName) {
-	if (step && step.businessProcesses.length !== 0) {
+	if (step && step.processingPeriods && step.processingPeriods.length !== 0) {
 		props.class = 'cursor-pointer';
 		props.onclick = function () {
-			statisticsTimeRowOnClick(window.jQuery(this), step.businessProcesses, showUserName);
+			statisticsTimeRowOnClick(window.jQuery(this), step.processingPeriods, showUserName);
 		};
 	}
 };

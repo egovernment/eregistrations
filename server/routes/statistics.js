@@ -49,7 +49,9 @@ var assign                     = require('es5-ext/object/assign')
   , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf')
   , getRejectionReasons           = require('../mongo-queries/get-rejection-reasons')
   , getStatusHistory              = require('../mongo-queries/get-status-history')
-  , getProcessingWorkingHoursTime = require('../../utils/get-processing-working-hours-time');
+  , getProcessingWorkingHoursTime = require('../../utils/get-processing-working-hours-time')
+  , capitalize                    = require('es5-ext/string/#/capitalize')
+  , resolveFullStepPath  = require('../../utils/resolve-processing-step-full-path');
 
 var flowQueryHandlerCertificatesPrintConf = [
 	require('../../apps-common/query-conf/date-from'),
@@ -130,43 +132,33 @@ module.exports = function (config) {
 		var stepsResult = {};
 		Object.keys(processingStepsMeta).forEach(function (stepShortPath) {
 			stepsResult[stepShortPath] = {};
-			stepsResult[stepShortPath].businessProcesses = [];
+			stepsResult[stepShortPath].label = db['BusinessProcess' +
+				capitalize.call(processingStepsMeta[stepShortPath]._services[0])].prototype
+				.processingSteps.map.getBySKeyPath(resolveFullStepPath(stepShortPath)).label;
+
+			stepsResult[stepShortPath].processingPeriods = [];
 			stepsResult[stepShortPath].processing = getTimeItemTemplate();
 		});
-		var result = {
-			steps: { byStep: stepsResult },
-			businessProcesses: {
-				correction: getTimeItemTemplate(),
-				processing: getTimeItemTemplate()
-			}
-		};
+		stepsResult.totalProcessing  = getTimeItemTemplate();
+		stepsResult.totalCorrections = getTimeItemTemplate();
+		stepsResult.totalWithoutCorrections = getTimeItemTemplate();
 
 		return getStatusHistory.find({
 			onlyFullItems: true,
 			dateFrom: query.dateFrom,
 			dateTo: query.dateTo,
+			service: query.service,
 			sort: {
 				'service.businessName': 1,
 				'date.ts': 1
 			}
 		}).then(function (statusHistory) {
-			var currentItem, step, bpTimeData = {}, currentBpDataTotal, currentBpDataStep;
+			var currentItem, step;
 			statusHistory.forEach(function (statusHistoryItem) {
 				if (!currentItem) {
 					currentItem = {};
 				}
 				if (statusHistoryItem.status.code === 'pending') {
-					if (!bpTimeData[statusHistoryItem.service.id]) {
-						bpTimeData[statusHistoryItem.service.id] =
-							{ total: getTimeItemTemplate() };
-						currentBpDataTotal = bpTimeData[statusHistoryItem.service.id].total;
-					}
-					if (!bpTimeData[statusHistoryItem.service.id][statusHistoryItem.processingStep.path]) {
-						currentBpDataStep =
-							bpTimeData[statusHistoryItem.service.id][statusHistoryItem.processingStep.path] = {
-								totalTime: 0
-							};
-					}
 					currentItem.processingStart = statusHistoryItem.date.ts;
 				} else {
 					if (!db[statusHistoryItem.service.type]) {
@@ -194,71 +186,58 @@ module.exports = function (config) {
 						getProcessingWorkingHoursTime(currentItem.processingStart, currentItem.processingEnd);
 					currentItem.processor = statusHistoryItem.operator.name;
 					var stepPath = step.key;
-					if (!result.steps.byStep[stepPath]) { // child of group step
+					if (!stepsResult[stepPath]) { // child of group step
 						stepPath = step.owner.owner.owner.key + '/' + step.key;
 					}
-					currentBpDataStep.totalTime += currentItem.processingTime;
-					result.steps.byStep[stepPath].businessProcesses.push(currentItem);
-					if (statusHistoryItem.status.code === 'approved' ||
-							statusHistoryItem.status.code === 'rejected') {
-						var currentStepData = result.steps.byStep[stepPath].processing;
+					stepsResult[stepPath].processingPeriods.push(currentItem);
 
-						currentStepData.timedCount++;
-						currentStepData.totalTime += currentBpDataStep.totalTime;
-						currentBpDataTotal.totalTime += currentBpDataStep.totalTime;
-						currentStepData.minTime =
-							Math.min(currentStepData.minTime, currentBpDataStep.totalTime);
-						currentStepData.maxTime =
-							Math.max(currentStepData.maxTime, currentBpDataStep.totalTime);
-						currentStepData.avgTime =
-							Math.round(currentStepData.totalTime / currentStepData.timedCount);
+					stepsResult[stepPath].processing.timedCount++;
+					stepsResult[stepPath].processing.totalTime += currentItem.processingTime;
+					stepsResult[stepPath].processing.minTime =
+						Math.min(stepsResult[stepPath].processing.minTime, currentItem.processingTime);
+					stepsResult[stepPath].processing.maxTime =
+						Math.max(stepsResult[stepPath].processing.maxTime, currentItem.processingTime);
+					stepsResult[stepPath].processing.avgTime =
+						Math.round(stepsResult[stepPath].processing.totalTime
+							/ stepsResult[stepPath].processing.timedCount);
 
-						if (statusHistoryItem.status.code === 'rejected') {
-							result.businessProcesses.processing.timedCount++;
-							result.businessProcesses.processing.totalTime += currentBpDataTotal.totalTime;
-							currentBpDataTotal.isProcessingCounted = true;
-						} else if (startsWith.call(step.key, 'frontDesk')) { // approved
-							result.businessProcesses.processing.timedCount++;
-							result.businessProcesses.processing.totalTime += currentBpDataTotal.totalTime;
-						}
-					} else if (statusHistoryItem.status.code === 'sentBack') {
-						if (!currentBpDataTotal.isSentBackCounted) {
-							result.businessProcesses.correction.timedCount++;
-							currentBpDataTotal.isSentBackCounted = true;
-						}
-						result.businessProcesses.correction.totalTime += currentBpDataTotal.totalTime;
+					stepsResult.totalProcessing.timedCount++;
+					stepsResult.totalProcessing.totalTime += currentItem.processingTime;
+					stepsResult.totalProcessing.minTime =
+						Math.min(stepsResult.totalProcessing.minTime, currentItem.processingTime);
+					stepsResult.totalProcessing.maxTime =
+						Math.max(stepsResult.totalProcessing.maxTime, currentItem.processingTime);
+					stepsResult.totalProcessing.avgTime =
+						Math.round(stepsResult.totalProcessing.totalTime /
+							stepsResult.totalProcessing.timedCount);
+
+					if (statusHistoryItem.status.code === 'sentBack') {
+						stepsResult.totalCorrections.timedCount++;
+						stepsResult.totalCorrections.totalTime += currentItem.processingTime;
+						stepsResult.totalCorrections.minTime =
+							Math.min(stepsResult.totalCorrections.minTime, currentItem.processingTime);
+						stepsResult.totalCorrections.maxTime =
+							Math.max(stepsResult.totalCorrections.maxTime, currentItem.processingTime);
+						stepsResult.totalCorrections.avgTime =
+							Math.round(stepsResult.totalCorrections.totalTime /
+								stepsResult.totalCorrections.timedCount);
+					} else {
+						stepsResult.totalWithoutCorrections.timedCount++;
+						stepsResult.totalWithoutCorrections.totalTime += currentItem.processingTime;
+						stepsResult.totalWithoutCorrections.minTime =
+							Math.min(stepsResult.totalWithoutCorrections.minTime, currentItem.processingTime);
+						stepsResult.totalWithoutCorrections.maxTime =
+							Math.max(stepsResult.totalWithoutCorrections.maxTime, currentItem.processingTime);
+
+						stepsResult.totalWithoutCorrections.avgTime =
+							Math.round(stepsResult.totalWithoutCorrections.totalTime /
+								stepsResult.totalWithoutCorrections.timedCount);
 					}
 					currentItem = null;
 				}
 			});
 
-			// process bp data
-			Object.keys(bpTimeData).forEach(function (bpId) {
-				var currentBpDataTotal = bpTimeData[bpId].total;
-				if (currentBpDataTotal.isProcessingCounted) {
-					result.businessProcesses.processing.minTime =
-						Math.min(result.businessProcesses.processing.minTime, currentBpDataTotal.totalTime);
-
-					result.businessProcesses.processing.maxTime =
-						Math.max(result.businessProcesses.processing.maxTime, currentBpDataTotal.totalTime);
-
-					result.businessProcesses.processing.avgTime =
-						Math.round(result.businessProcesses.processing.totalTime /
-							result.businessProcesses.processing.timedCount);
-				}
-				if (currentBpDataTotal.isSentBackCounted) {
-					result.businessProcesses.correction.minTime =
-						Math.min(result.businessProcesses.correction.minTime, currentBpDataTotal.totalTime);
-
-					result.businessProcesses.correction.maxTime =
-						Math.max(result.businessProcesses.correction.maxTime, currentBpDataTotal.totalTime);
-
-					result.businessProcesses.correction.avgTime =
-						Math.round(result.businessProcesses.correction.totalTime /
-							result.businessProcesses.correction.timedCount);
-				}
-			});
-			return result;
+			return stepsResult;
 		});
 	};
 

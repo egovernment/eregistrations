@@ -2,7 +2,6 @@
 
 var assign               = require('es5-ext/object/assign')
   , normalizeOptions     = require('es5-ext/object/normalize-options')
-  , capitalize           = require('es5-ext/string/#/capitalize')
   , uncapitalize         = require('es5-ext/string/#/uncapitalize')
   , memoize              = require('memoizee')
   , ObservableArray      = require('observable-array')
@@ -12,7 +11,6 @@ var assign               = require('es5-ext/object/assign')
   , getData              = require('mano/lib/client/xhr-driver').get
   , getQueryHandlerConf  = require('../apps/statistics/get-query-conf')
   , setupQueryHandler    = require('../utils/setup-client-query-handler')
-  , resolveFullStepPath  = require('../utils/resolve-processing-step-full-path')
   , getDurationDaysHours = require('./utils/get-duration-days-hours-fine-grain')
   , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
   , getDynamicUrl        = require('./utils/get-dynamic-url')
@@ -52,25 +50,23 @@ exports['statistics-main'] = function () {
 			query.dateTo = query.dateTo.toJSON();
 		}
 		queryServer(query)(function (result) {
-			queryResult = result;
 			var totalWithoutCorrections, total, totalCorrections, perRoleTotal;
 			mainData.splice(0, mainData.length);
+			queryResult = result;
 
-			totalWithoutCorrections = result.businessProcesses.processing;
+			totalWithoutCorrections = queryResult.totalWithoutCorrections;
 			totalWithoutCorrections.label = _("Total process without corrections");
 
-			totalCorrections = result.businessProcesses.correction;
+			totalCorrections = queryResult.totalCorrections;
 			totalCorrections.label = _("Total correcting time");
 
-			total = result.businessProcesses.processing;
-			total.label = _("Total process");
+			total = queryResult.totalProcessing;
+			total.label = _("Total processing periods");
 
 			Object.keys(stepsMeta).forEach(function (key) {
-				perRoleTotal = result.steps.byStep[key].processing;
-				perRoleTotal.key = key;
-				perRoleTotal.label   = db['BusinessProcess' +
-					capitalize.call(stepsMeta[key]._services[0])].prototype
-					.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
+				perRoleTotal       = queryResult[key].processing;
+				perRoleTotal.key   = key;
+				perRoleTotal.label = queryResult[key].label;
 				mainData.push(perRoleTotal);
 			});
 
@@ -132,7 +128,7 @@ exports['statistics-main'] = function () {
 				thead(
 					tr(
 						th(),
-						th({ class: 'statistics-table-number' }, _("Files processed")),
+						th({ class: 'statistics-table-number' }, _("Processing periods")),
 						th({ class: 'statistics-table-number' }, _("Average time")),
 						th({ class: 'statistics-table-number' }, _("Min time")),
 						th({ class: 'statistics-table-number' }, _("Max time"))
@@ -142,11 +138,11 @@ exports['statistics-main'] = function () {
 					onEmpty: tr(td({ class: 'empty', colspan: 5 },
 							_("There is no data to display")))
 				}, mainData, function (row) {
-
-					var step = queryResult.steps.byStep[row.key],
-						props = {};
-
-					initializeRowOnClick(step, props, true);
+					var step, props = {};
+					if (row.key) {
+						step = queryResult[row.key];
+						initializeRowOnClick(step, props, true);
+					}
 
 					return tr(props,
 						td(row.label),
