@@ -12,4 +12,7 @@ module.exports = function (t, a) {
 		new Date(2016, 9, 24, 11, 3, 30).valueOf());
 	a.deep(t(new Date(Date.UTC(2016, 9, 24, 18, 3, 30)), 'America/Guatemala').valueOf(),
 		new Date(2016, 9, 24, 12, 3, 30).valueOf());
+
+	a.deep(t(new Date(Date.UTC(2017, 3, 24, 6, 3, 32)), 'America/El_Salvador').valueOf(),
+		new Date(2017, 3, 24, 0, 3, 32).valueOf());
 };
