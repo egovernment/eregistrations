@@ -127,91 +127,138 @@ module.exports = function (config) {
 	var rejectionsQueryHandler = new QueryHandler(rejectionsQueryHandlerConf);
 
 	var resolveTimePerRole = function (query) {
-		return getData(driver)(function (data) {
-			var stepsResult;
-			// We need:
-			// steps | filter(query) | reduce()[byStep, all]
-			// businessProcesses | filter(query) | reduce().all
-			stepsResult = reduceSteps(filterSteps(data, query));
-			Object.keys(stepsResult.byStep).forEach(function (stepKey) {
-				stepsResult.byStep[stepKey].businessProcesses = [];
-				stepsResult.byStep[stepKey].processing = getTimeItemTemplate();
-			});
-			var result = {
-				steps: { byStep: stepsResult.byStep },
-				businessProcesses: {
-					correction: getTimeItemTemplate(),
-					processing: getTimeItemTemplate()
-				}
-			};
+		var stepsResult = {};
+		Object.keys(processingStepsMeta).forEach(function (stepShortPath) {
+			stepsResult[stepShortPath] = {};
+			stepsResult[stepShortPath].businessProcesses = [];
+			stepsResult[stepShortPath].processing = getTimeItemTemplate();
+		});
+		var result = {
+			steps: { byStep: stepsResult },
+			businessProcesses: {
+				correction: getTimeItemTemplate(),
+				processing: getTimeItemTemplate()
+			}
+		};
 
-			return getStatusHistory.find({ onlyFullItems: true, sort: {
+		return getStatusHistory.find({
+			onlyFullItems: true,
+			dateFrom: query.dateFrom,
+			dateTo: query.dateTo,
+			sort: {
 				'service.businessName': 1,
 				'date.ts': 1
-			} }).then(function (statusHistory) {
-				var currentItem, step, bpTimeData = {}, currentBpData;
-				statusHistory.forEach(function (statusHistoryItem) {
-					if (!currentItem) {
-						currentItem = {};
+			}
+		}).then(function (statusHistory) {
+			var currentItem, step, bpTimeData = {}, currentBpDataTotal, currentBpDataStep;
+			statusHistory.forEach(function (statusHistoryItem) {
+				if (!currentItem) {
+					currentItem = {};
+				}
+				if (statusHistoryItem.status.code === 'pending') {
+					if (!bpTimeData[statusHistoryItem.service.id]) {
+						bpTimeData[statusHistoryItem.service.id] =
+							{ total: getTimeItemTemplate() };
+						currentBpDataTotal = bpTimeData[statusHistoryItem.service.id].total;
 					}
-					if (statusHistoryItem.status.code === 'pending') {
-						if (!bpTimeData[statusHistoryItem.service.id]) {
-							bpTimeData[statusHistoryItem.service.id] = {};
-						}
-						if (!bpTimeData[statusHistoryItem.service.id][statusHistoryItem.processingStep.path]) {
-							currentBpData =
-								bpTimeData[statusHistoryItem.service.id][statusHistoryItem.processingStep.path] = {
-									totalTime: 0
-								};
-						}
-						currentItem.processingStart = statusHistoryItem.date.ts;
-					} else {
-						if (!db[statusHistoryItem.service.type]) {
-							currentItem = null;
-							return;
-						}
-						step =
-							db[statusHistoryItem.service.type].prototype.resolveSKeyPath(
-								statusHistoryItem.processingStep.path
-							);
-						if (step && step.value) {
-							step = step.value;
-						} else {
-							currentItem = null;
-							return;
-						}
-						if (currentItem.processingStart > statusHistoryItem.date.ts ||
-								!currentItem.processingStart) {
-							currentItem = null;
-							return;
-						}
-						currentItem.processingEnd = statusHistoryItem.date.ts;
-						currentItem.businessName  = statusHistoryItem.service.businessName;
-						currentItem.processingTime =
-							getProcessingWorkingHoursTime(currentItem.processingStart, currentItem.processingEnd);
-						currentItem.processor = statusHistoryItem.operator.name;
-						var stepPath =  step.key;
-						if (!result.steps.byStep[stepPath]) { // child of group step
-							stepPath = step.owner.owner.owner.key + '/' + step.key;
-						}
-						currentBpData.totalTime += currentItem.processingTime;
-						result.steps.byStep[stepPath].businessProcesses.push(currentItem);
-						if (statusHistoryItem.status.code === 'approved' ||
-								statusHistoryItem.status.code === 'rejected') {
-							var currentStepData = result.steps.byStep[stepPath].processing;
-
-							currentStepData.timedCount++;
-							currentStepData.totalTime += currentBpData.totalTime;
-							currentStepData.minTime = Math.min(currentStepData.minTime, currentBpData.totalTime);
-							currentStepData.maxTime = Math.max(currentStepData.maxTime, currentBpData.totalTime);
-							currentStepData.avgTime =
-								Math.round(currentStepData.totalTime / currentStepData.timedCount);
-						}
+					if (!bpTimeData[statusHistoryItem.service.id][statusHistoryItem.processingStep.path]) {
+						currentBpDataStep =
+							bpTimeData[statusHistoryItem.service.id][statusHistoryItem.processingStep.path] = {
+								totalTime: 0
+							};
+					}
+					currentItem.processingStart = statusHistoryItem.date.ts;
+				} else {
+					if (!db[statusHistoryItem.service.type]) {
 						currentItem = null;
+						return;
 					}
-				});
-				return result;
+					step =
+						db[statusHistoryItem.service.type].prototype.resolveSKeyPath(
+							statusHistoryItem.processingStep.path
+						);
+					if (step && step.value) {
+						step = step.value;
+					} else {
+						currentItem = null;
+						return;
+					}
+					if (currentItem.processingStart > statusHistoryItem.date.ts
+							|| !currentItem.processingStart) {
+						currentItem = null;
+						return;
+					}
+					currentItem.processingEnd = statusHistoryItem.date.ts;
+					currentItem.businessName = statusHistoryItem.service.businessName;
+					currentItem.processingTime =
+						getProcessingWorkingHoursTime(currentItem.processingStart, currentItem.processingEnd);
+					currentItem.processor = statusHistoryItem.operator.name;
+					var stepPath = step.key;
+					if (!result.steps.byStep[stepPath]) { // child of group step
+						stepPath = step.owner.owner.owner.key + '/' + step.key;
+					}
+					currentBpDataStep.totalTime += currentItem.processingTime;
+					result.steps.byStep[stepPath].businessProcesses.push(currentItem);
+					if (statusHistoryItem.status.code === 'approved' ||
+							statusHistoryItem.status.code === 'rejected') {
+						var currentStepData = result.steps.byStep[stepPath].processing;
+
+						currentStepData.timedCount++;
+						currentStepData.totalTime += currentBpDataStep.totalTime;
+						currentBpDataTotal.totalTime += currentBpDataStep.totalTime;
+						currentStepData.minTime =
+							Math.min(currentStepData.minTime, currentBpDataStep.totalTime);
+						currentStepData.maxTime =
+							Math.max(currentStepData.maxTime, currentBpDataStep.totalTime);
+						currentStepData.avgTime =
+							Math.round(currentStepData.totalTime / currentStepData.timedCount);
+
+						if (statusHistoryItem.status.code === 'rejected') {
+							result.businessProcesses.processing.timedCount++;
+							result.businessProcesses.processing.totalTime += currentBpDataTotal.totalTime;
+							currentBpDataTotal.isProcessingCounted = true;
+						} else if (startsWith.call(step.key, 'frontDesk')) { // approved
+							result.businessProcesses.processing.timedCount++;
+							result.businessProcesses.processing.totalTime += currentBpDataTotal.totalTime;
+						}
+					} else if (statusHistoryItem.status.code === 'sentBack') {
+						if (!currentBpDataTotal.isSentBackCounted) {
+							result.businessProcesses.correction.timedCount++;
+							currentBpDataTotal.isSentBackCounted = true;
+						}
+						result.businessProcesses.correction.totalTime += currentBpDataTotal.totalTime;
+					}
+					currentItem = null;
+				}
 			});
+
+			// process bp data
+			Object.keys(bpTimeData).forEach(function (bpId) {
+				var currentBpDataTotal = bpTimeData[bpId].total;
+				if (currentBpDataTotal.isProcessingCounted) {
+					result.businessProcesses.processing.minTime =
+						Math.min(result.businessProcesses.processing.minTime, currentBpDataTotal.totalTime);
+
+					result.businessProcesses.processing.maxTime =
+						Math.max(result.businessProcesses.processing.maxTime, currentBpDataTotal.totalTime);
+
+					result.businessProcesses.processing.avgTime =
+						Math.round(result.businessProcesses.processing.totalTime /
+							result.businessProcesses.processing.timedCount);
+				}
+				if (currentBpDataTotal.isSentBackCounted) {
+					result.businessProcesses.correction.minTime =
+						Math.min(result.businessProcesses.correction.minTime, currentBpDataTotal.totalTime);
+
+					result.businessProcesses.correction.maxTime =
+						Math.max(result.businessProcesses.correction.maxTime, currentBpDataTotal.totalTime);
+
+					result.businessProcesses.correction.avgTime =
+						Math.round(result.businessProcesses.correction.totalTime /
+							result.businessProcesses.correction.timedCount);
+				}
+			});
+			return result;
 		});
 	};
 
