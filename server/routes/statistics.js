@@ -151,7 +151,6 @@ module.exports = function (config) {
 				capitalize.call(processingStepsMeta[stepShortPath]._services[0])].prototype
 				.processingSteps.map.getBySKeyPath(resolveFullStepPath(stepShortPath)).label;
 
-			stepsResult[stepShortPath].processingPeriods = [];
 			stepsResult[stepShortPath].processing = getTimeItemTemplate();
 		});
 		stepsResult.totalCorrections = getTimeItemTemplate();
@@ -255,11 +254,88 @@ module.exports = function (config) {
 	};
 
 	var resolveTimePerPerson = function (query) {
-		return getData(driver)(function (data) {
-			// We need:
-			// steps | filter(query) | reduce()[byStepAndProcessor, byStep]
-			data = reduceSteps(filterSteps(data, query), { includeBusinessProcesses: true });
-			return { byStep: data.byStep, byStepAndProcessor: data.byStepAndProcessor };
+		var stepsResult = {};
+		Object.keys(processingStepsMetaWithoutFrontDesk).forEach(function (stepShortPath) {
+			stepsResult[stepShortPath] = {};
+			stepsResult[stepShortPath].label = db['BusinessProcess' +
+				capitalize.call(processingStepsMeta[stepShortPath]._services[0])].prototype
+				.processingSteps.map.getBySKeyPath(resolveFullStepPath(stepShortPath)).label;
+			stepsResult[stepShortPath] = { rows: {} };
+
+			stepsResult[stepShortPath].rows.totalProcessing = getTimeItemTemplate();
+		});
+
+		return getStatusHistory.find({
+			onlyFullItems: true,
+			dateFrom: query.dateFrom,
+			dateTo: query.dateTo,
+			service: query.service,
+			excludeFrontDesk: true,
+			sort: {
+				'service.businessName': 1,
+				'date.ts': 1
+			}
+		}).then(function (statusHistory) {
+			var currentItem, step;
+			statusHistory.forEach(function (statusHistoryItem) {
+				if (!currentItem) {
+					currentItem = { bpId: statusHistoryItem.service.id };
+				}
+
+				if (statusHistoryItem.status.code === 'pending') {
+					currentItem.processingStart = statusHistoryItem.date.ts;
+				} else {
+					if (!db[statusHistoryItem.service.type]) {
+						currentItem = null;
+						return;
+					}
+					step =
+						db[statusHistoryItem.service.type].prototype.resolveSKeyPath(
+							statusHistoryItem.processingStep.path
+						);
+					if (step && step.value) {
+						step = step.value;
+					} else {
+						currentItem = null;
+						return;
+					}
+					if (currentItem.processingStart > statusHistoryItem.date.ts
+							|| !currentItem.processingStart ||
+							currentItem.bpId !== statusHistoryItem.service.id) {
+						currentItem = null;
+						return;
+					}
+					currentItem.processingEnd = statusHistoryItem.date.ts;
+					currentItem.businessName = statusHistoryItem.service.businessName;
+					currentItem.processingTime =
+						getProcessingWorkingHoursTime(currentItem.processingStart, currentItem.processingEnd);
+					currentItem.processor = statusHistoryItem.operator.id;
+					var stepPath = step.key;
+					if (!stepsResult[stepPath]) { // child of group step
+						stepPath = step.owner.owner.owner.key + '/' + step.key;
+					}
+					if (!stepsResult[stepPath].rows[currentItem.processor]) {
+						stepsResult[stepPath].rows[currentItem.processor] = {
+							processing: assign(getTimeItemTemplate(), {
+								processor: statusHistoryItem.operator.name,
+								processingPeriods: []
+							})
+						};
+					}
+					stepsResult[stepPath].rows[currentItem.processor]
+						.processing.processingPeriods.push(currentItem);
+
+					accumulateProcessingTimeItems(
+						stepsResult[stepPath].rows[currentItem.processor].processing,
+						currentItem
+					);
+					accumulateProcessingTimeItems(stepsResult[stepPath].rows.totalProcessing, currentItem);
+
+					currentItem = null;
+				}
+			});
+
+			return stepsResult;
 		});
 	};
 
