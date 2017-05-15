@@ -19,7 +19,7 @@ var copy                 = require('es5-ext/object/copy')
   , initializeRowOnClick = require('./utils/statistics-time-row-onclick')
   , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , processingStepsMetaWithoutFrontDesk
-	= require('./utils/processing-steps-meta-without-front-desk');
+	= require('./../utils/processing-steps-meta-without-front-desk');
 
 exports._parent        = require('./statistics-time');
 exports._customFilters = Function.prototype;

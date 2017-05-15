@@ -1,7 +1,7 @@
 'use strict';
 
 var startsWith = require('es5-ext/string/#/starts-with')
-  , stepsMeta = require('../../processing-steps-meta');
+  , stepsMeta = require('../processing-steps-meta');
 
 module.exports = function () {
 	var processingStepsMetaWithoutFrontDesk = {};

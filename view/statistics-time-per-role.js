@@ -15,7 +15,7 @@ var uncapitalize         = require('es5-ext/string/#/uncapitalize')
   , initializeRowOnClick = require('./utils/statistics-time-row-onclick')
   , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , processingStepsMetaWithoutFrontDesk
-	= require('./utils/processing-steps-meta-without-front-desk');
+	= require('./../utils/processing-steps-meta-without-front-desk');
 
 exports._parent = require('./statistics-time');
 exports._customFilters = Function.prototype;
@@ -48,22 +48,11 @@ exports['statistics-main'] = function () {
 			query.dateTo = query.dateTo.toJSON();
 		}
 		queryServer(query)(function (result) {
-			var perRoleTotal;
 			mainData.splice(0, mainData.length);
 			queryResult = result;
-
-			Object.keys(stepsMeta).forEach(function (key) {
-				perRoleTotal       = queryResult[key].processing;
-				perRoleTotal.key   = key;
-				perRoleTotal.label = queryResult[key].label;
-				mainData.push(perRoleTotal);
+			Object.keys(queryResult).forEach(function (key) {
+				mainData.push(queryResult[key]);
 			});
-
-			mainData.push(queryResult.totalWithoutCorrections);
-			// Below line was explicitly requested, though doesn't give anything interesting right now
-			mainData.push(queryResult.totalCorrectionsByUser);
-			mainData.push(queryResult.totalCorrections);
-			mainData.push(queryResult.totalProcessing);
 		}).done();
 	});
 
@@ -126,21 +115,21 @@ exports['statistics-main'] = function () {
 					onEmpty: tr(td({ class: 'empty', colspan: 5 },
 							_("There is no data to display")))
 				}, mainData, function (row) {
-					var step, props = {};
-					if (row.key) {
-						step = queryResult[row.key];
-						initializeRowOnClick(step, props, true);
+					var props = {}, rowResult;
+					rowResult = row.processing || row;
+					if (row.processingPeriods && row.processingPeriods.length) {
+						initializeRowOnClick(row, props, true);
 					}
 
 					return tr(props,
 						td(row.label),
-						td({ class: 'statistics-table-number' }, row.timedCount),
+						td({ class: 'statistics-table-number' }, rowResult.timedCount),
 						td({ class: 'statistics-table-number' },
-							row.timedCount ? getDurationDaysHours(row.avgTime) : "-"),
+							rowResult.timedCount ? getDurationDaysHours(rowResult.avgTime) : "-"),
 						td({ class: 'statistics-table-number' },
-							row.timedCount ? getDurationDaysHours(row.minTime) : "-"),
+							rowResult.timedCount ? getDurationDaysHours(rowResult.minTime) : "-"),
 						td({ class: 'statistics-table-number' },
-							row.timedCount ? getDurationDaysHours(row.maxTime) : "-"));
+							rowResult.timedCount ? getDurationDaysHours(rowResult.maxTime) : "-"));
 				}))
 			)));
 	initTableSortingOnClient('.statistics-table');

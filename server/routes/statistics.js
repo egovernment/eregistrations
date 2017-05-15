@@ -52,7 +52,9 @@ var assign                     = require('es5-ext/object/assign')
   , getProcessingWorkingHoursTime = require('../../utils/get-processing-working-hours-time')
   , capitalize                    = require('es5-ext/string/#/capitalize')
   , resolveFullStepPath  = require('../../utils/resolve-processing-step-full-path')
-  , _                    = require('mano').i18n;
+  , _                    = require('mano').i18n
+  , processingStepsMetaWithoutFrontDesk =
+		require('../../utils/processing-steps-meta-without-front-desk')();
 
 var flowQueryHandlerCertificatesPrintConf = [
 	require('../../apps-common/query-conf/date-from'),
@@ -143,7 +145,7 @@ module.exports = function (config) {
 
 	var resolveTimePerRole = function (query) {
 		var stepsResult = {};
-		Object.keys(processingStepsMeta).forEach(function (stepShortPath) {
+		Object.keys(processingStepsMetaWithoutFrontDesk).forEach(function (stepShortPath) {
 			stepsResult[stepShortPath] = {};
 			stepsResult[stepShortPath].label = db['BusinessProcess' +
 				capitalize.call(processingStepsMeta[stepShortPath]._services[0])].prototype
