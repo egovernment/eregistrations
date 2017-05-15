@@ -17,6 +17,9 @@ var queryCriteria = function (query) {
 	if (query.service) {
 		criteria["service.type"] = 'BusinessProcess' + capitalize.call(query.service);
 	}
+	if (query.excludeFrontDesk) {
+		criteria['processingStep.path'] = { $not: /frontDesk/ };
+	}
 	return criteria;
 
 };

@@ -168,6 +168,7 @@ module.exports = function (config) {
 			dateFrom: query.dateFrom,
 			dateTo: query.dateTo,
 			service: query.service,
+			excludeFrontDesk: true,
 			sort: {
 				'service.businessName': 1,
 				'date.ts': 1
@@ -196,6 +197,7 @@ module.exports = function (config) {
 								currentSendBackItem.processingEnd);
 						currentSendBackItem.processor = statusHistoryItem.operator.name;
 						accumulateProcessingTimeItems(stepsResult.totalCorrections, currentSendBackItem);
+						accumulateProcessingTimeItems(stepsResult.totalProcessing, currentSendBackItem);
 
 						currentSendBackItem = null;
 					}
@@ -233,12 +235,11 @@ module.exports = function (config) {
 
 					accumulateProcessingTimeItems(stepsResult[stepPath].processing, currentItem);
 					accumulateProcessingTimeItems(stepsResult.totalProcessing, currentItem);
+					accumulateProcessingTimeItems(stepsResult.totalWithoutCorrections, currentItem);
 
 					if (statusHistoryItem.status.code === 'sentBack') {
 						currentSendBackItem = { bpId: statusHistoryItem.service.id,
 							processingStart: statusHistoryItem.date.ts };
-					} else {
-						accumulateProcessingTimeItems(stepsResult.totalWithoutCorrections, currentItem);
 					}
 					currentItem = null;
 				}
