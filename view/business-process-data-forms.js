@@ -17,7 +17,6 @@ exports.step = function () {
 	  , guideProgress   = businessProcess._guideProgress
 	  , applicableDocs  = businessProcess.requirementUploads.applicable._size;
 
-
 	exports._formsHeading.call(this);
 
 	insert(errorMsg(this));
