@@ -153,13 +153,40 @@ module.exports = function (config) {
 				'date.ts': 1
 			}
 		}).then(function (statusHistory) {
-			var currentItem, step;
+			var currentItem, step, currentSendBackItem;
 			statusHistory.forEach(function (statusHistoryItem) {
 				if (!currentItem) {
-					currentItem = {};
+					currentItem = { bpId: statusHistoryItem.service.id };
 				}
+
 				if (statusHistoryItem.status.code === 'pending') {
 					currentItem.processingStart = statusHistoryItem.date.ts;
+
+					if (currentSendBackItem) {
+						if (currentSendBackItem.processingStart > statusHistoryItem.date.ts
+								|| !currentSendBackItem.processingStart ||
+								currentSendBackItem.bpId !== statusHistoryItem.service.id) {
+							currentSendBackItem = null;
+							return;
+						}
+						currentSendBackItem.processingEnd = statusHistoryItem.date.ts;
+						currentSendBackItem.businessName = statusHistoryItem.service.businessName;
+						currentSendBackItem.processingTime =
+							getProcessingWorkingHoursTime(currentSendBackItem.processingStart,
+								currentSendBackItem.processingEnd);
+						currentSendBackItem.processor = statusHistoryItem.operator.name;
+						stepsResult.totalCorrections.timedCount++;
+						stepsResult.totalCorrections.totalTime += currentSendBackItem.processingTime;
+						stepsResult.totalCorrections.minTime =
+							Math.min(stepsResult.totalCorrections.minTime, currentSendBackItem.processingTime);
+						stepsResult.totalCorrections.maxTime =
+							Math.max(stepsResult.totalCorrections.maxTime, currentSendBackItem.processingTime);
+						stepsResult.totalCorrections.avgTime =
+							Math.round(stepsResult.totalCorrections.totalTime /
+								stepsResult.totalCorrections.timedCount);
+
+						currentSendBackItem = null;
+					}
 				} else {
 					if (!db[statusHistoryItem.service.type]) {
 						currentItem = null;
@@ -176,7 +203,8 @@ module.exports = function (config) {
 						return;
 					}
 					if (currentItem.processingStart > statusHistoryItem.date.ts
-							|| !currentItem.processingStart) {
+							|| !currentItem.processingStart ||
+							currentItem.bpId !== statusHistoryItem.service.id) {
 						currentItem = null;
 						return;
 					}
@@ -212,15 +240,8 @@ module.exports = function (config) {
 							stepsResult.totalProcessing.timedCount);
 
 					if (statusHistoryItem.status.code === 'sentBack') {
-						stepsResult.totalCorrections.timedCount++;
-						stepsResult.totalCorrections.totalTime += currentItem.processingTime;
-						stepsResult.totalCorrections.minTime =
-							Math.min(stepsResult.totalCorrections.minTime, currentItem.processingTime);
-						stepsResult.totalCorrections.maxTime =
-							Math.max(stepsResult.totalCorrections.maxTime, currentItem.processingTime);
-						stepsResult.totalCorrections.avgTime =
-							Math.round(stepsResult.totalCorrections.totalTime /
-								stepsResult.totalCorrections.timedCount);
+						currentSendBackItem = { bpId: statusHistoryItem.service.id,
+							processingStart: statusHistoryItem.date.ts };
 					} else {
 						stepsResult.totalWithoutCorrections.timedCount++;
 						stepsResult.totalWithoutCorrections.totalTime += currentItem.processingTime;
