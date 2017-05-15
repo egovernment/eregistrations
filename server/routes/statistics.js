@@ -51,7 +51,8 @@ var assign                     = require('es5-ext/object/assign')
   , getStatusHistory              = require('../mongo-queries/get-status-history')
   , getProcessingWorkingHoursTime = require('../../utils/get-processing-working-hours-time')
   , capitalize                    = require('es5-ext/string/#/capitalize')
-  , resolveFullStepPath  = require('../../utils/resolve-processing-step-full-path');
+  , resolveFullStepPath  = require('../../utils/resolve-processing-step-full-path')
+  , _                    = require('mano').i18n;
 
 var flowQueryHandlerCertificatesPrintConf = [
 	require('../../apps-common/query-conf/date-from'),
@@ -112,6 +113,18 @@ var getTimeItemTemplate = function () {
 	};
 };
 
+var accumulateProcessingTimeItems = function (collection, item) {
+	collection.timedCount++;
+	collection.totalTime += item.processingTime;
+	collection.minTime =
+		Math.min(collection.minTime, item.processingTime);
+	collection.maxTime =
+		Math.max(collection.maxTime, item.processingTime);
+	collection.avgTime =
+		Math.round(collection.totalTime
+			/ collection.timedCount);
+};
+
 module.exports = function (config) {
 	var driver = ensureDriver(ensureObject(config).driver)
 	  , customChartsController;
@@ -139,9 +152,16 @@ module.exports = function (config) {
 			stepsResult[stepShortPath].processingPeriods = [];
 			stepsResult[stepShortPath].processing = getTimeItemTemplate();
 		});
-		stepsResult.totalProcessing  = getTimeItemTemplate();
 		stepsResult.totalCorrections = getTimeItemTemplate();
+		stepsResult.totalCorrections.label =
+			_("Total correction periods");
+		stepsResult.totalCorrectionsByUser = getTimeItemTemplate();
 		stepsResult.totalWithoutCorrections = getTimeItemTemplate();
+		stepsResult.totalWithoutCorrections.label =
+			_("Total processing periods without corrections");
+		stepsResult.totalProcessing  = getTimeItemTemplate();
+		stepsResult.totalProcessing.label =
+			_("Total processing periods");
 
 		return getStatusHistory.find({
 			onlyFullItems: true,
@@ -175,15 +195,7 @@ module.exports = function (config) {
 							getProcessingWorkingHoursTime(currentSendBackItem.processingStart,
 								currentSendBackItem.processingEnd);
 						currentSendBackItem.processor = statusHistoryItem.operator.name;
-						stepsResult.totalCorrections.timedCount++;
-						stepsResult.totalCorrections.totalTime += currentSendBackItem.processingTime;
-						stepsResult.totalCorrections.minTime =
-							Math.min(stepsResult.totalCorrections.minTime, currentSendBackItem.processingTime);
-						stepsResult.totalCorrections.maxTime =
-							Math.max(stepsResult.totalCorrections.maxTime, currentSendBackItem.processingTime);
-						stepsResult.totalCorrections.avgTime =
-							Math.round(stepsResult.totalCorrections.totalTime /
-								stepsResult.totalCorrections.timedCount);
+						accumulateProcessingTimeItems(stepsResult.totalCorrections, currentSendBackItem);
 
 						currentSendBackItem = null;
 					}
@@ -219,44 +231,21 @@ module.exports = function (config) {
 					}
 					stepsResult[stepPath].processingPeriods.push(currentItem);
 
-					stepsResult[stepPath].processing.timedCount++;
-					stepsResult[stepPath].processing.totalTime += currentItem.processingTime;
-					stepsResult[stepPath].processing.minTime =
-						Math.min(stepsResult[stepPath].processing.minTime, currentItem.processingTime);
-					stepsResult[stepPath].processing.maxTime =
-						Math.max(stepsResult[stepPath].processing.maxTime, currentItem.processingTime);
-					stepsResult[stepPath].processing.avgTime =
-						Math.round(stepsResult[stepPath].processing.totalTime
-							/ stepsResult[stepPath].processing.timedCount);
-
-					stepsResult.totalProcessing.timedCount++;
-					stepsResult.totalProcessing.totalTime += currentItem.processingTime;
-					stepsResult.totalProcessing.minTime =
-						Math.min(stepsResult.totalProcessing.minTime, currentItem.processingTime);
-					stepsResult.totalProcessing.maxTime =
-						Math.max(stepsResult.totalProcessing.maxTime, currentItem.processingTime);
-					stepsResult.totalProcessing.avgTime =
-						Math.round(stepsResult.totalProcessing.totalTime /
-							stepsResult.totalProcessing.timedCount);
+					accumulateProcessingTimeItems(stepsResult[stepPath].processing, currentItem);
+					accumulateProcessingTimeItems(stepsResult.totalProcessing, currentItem);
 
 					if (statusHistoryItem.status.code === 'sentBack') {
 						currentSendBackItem = { bpId: statusHistoryItem.service.id,
 							processingStart: statusHistoryItem.date.ts };
 					} else {
-						stepsResult.totalWithoutCorrections.timedCount++;
-						stepsResult.totalWithoutCorrections.totalTime += currentItem.processingTime;
-						stepsResult.totalWithoutCorrections.minTime =
-							Math.min(stepsResult.totalWithoutCorrections.minTime, currentItem.processingTime);
-						stepsResult.totalWithoutCorrections.maxTime =
-							Math.max(stepsResult.totalWithoutCorrections.maxTime, currentItem.processingTime);
-
-						stepsResult.totalWithoutCorrections.avgTime =
-							Math.round(stepsResult.totalWithoutCorrections.totalTime /
-								stepsResult.totalWithoutCorrections.timedCount);
+						accumulateProcessingTimeItems(stepsResult.totalWithoutCorrections, currentItem);
 					}
 					currentItem = null;
 				}
 			});
+
+			stepsResult.totalCorrectionsByUser = assign({}, stepsResult.totalCorrectionsByUser,
+				stepsResult.totalCorrections, { label: _("Corrections by the users") });
 
 			return stepsResult;
 		});

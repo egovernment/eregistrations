@@ -1,8 +1,6 @@
 'use strict';
 
-var assign               = require('es5-ext/object/assign')
-  , normalizeOptions     = require('es5-ext/object/normalize-options')
-  , uncapitalize         = require('es5-ext/string/#/uncapitalize')
+var uncapitalize         = require('es5-ext/string/#/uncapitalize')
   , memoize              = require('memoizee')
   , ObservableArray      = require('observable-array')
   , location             = require('mano/lib/client/location')
@@ -50,18 +48,9 @@ exports['statistics-main'] = function () {
 			query.dateTo = query.dateTo.toJSON();
 		}
 		queryServer(query)(function (result) {
-			var totalWithoutCorrections, total, totalCorrections, perRoleTotal;
+			var perRoleTotal;
 			mainData.splice(0, mainData.length);
 			queryResult = result;
-
-			totalWithoutCorrections = queryResult.totalWithoutCorrections;
-			totalWithoutCorrections.label = _("Total process without corrections");
-
-			totalCorrections = queryResult.totalCorrections;
-			totalCorrections.label = _("Total correcting time");
-
-			total = queryResult.totalProcessing;
-			total.label = _("Total processing periods");
 
 			Object.keys(stepsMeta).forEach(function (key) {
 				perRoleTotal       = queryResult[key].processing;
@@ -70,12 +59,11 @@ exports['statistics-main'] = function () {
 				mainData.push(perRoleTotal);
 			});
 
-			mainData.push(totalWithoutCorrections);
+			mainData.push(queryResult.totalWithoutCorrections);
 			// Below line was explicitly requested, though doesn't give anything interesting right now
-			mainData.push(assign(normalizeOptions(totalCorrections),
-				{ label: _("Corrections by the users") }));
-			mainData.push(totalCorrections);
-			mainData.push(total);
+			mainData.push(queryResult.totalCorrectionsByUser);
+			mainData.push(queryResult.totalCorrections);
+			mainData.push(queryResult.totalProcessing);
 		}).done();
 	});
 
