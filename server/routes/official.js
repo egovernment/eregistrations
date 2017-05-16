@@ -309,8 +309,7 @@ var initializeHandler = function (conf) {
 	};
 };
 
-var getStatsOverviewData = memoize(function (query, userId) {
-	console.log('RETRIEVING DATA NOW.,............................................');
+var getStatsOverviewData = memoize(function (query) {
 	return resolveTimePerPerson(query);
 }, {
 	normalizer: function (args) {
@@ -407,12 +406,11 @@ module.exports = exports = function (mainConf/*, options */) {
 		'get-processing-time-data': function (query) {
 			if (!statsOverviewQueryHandler) return null;
 			return resolveHandler(this.req)(function (handler) {
-				var userId = this.req.$user;
 				if (!handler.roleName) return;
 				query.step = handler.roleName;
 
 				return statsOverviewQueryHandler.resolve(query)(function (query) {
-					return getStatsOverviewData(query, userId);
+					return getStatsOverviewData(query);
 				});
 			}.bind(this));
 		},
