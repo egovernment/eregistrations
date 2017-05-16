@@ -14,7 +14,6 @@ var copy                 = require('es5-ext/object/copy')
   , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
   , getDynamicUrl        = require('./utils/get-dynamic-url')
   , initializeRowOnClick = require('./utils/statistics-time-row-onclick')
-  , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , processingStepsMetaWithoutFrontDesk
 	= require('./../utils/processing-steps-meta-without-front-desk');
 
@@ -154,7 +153,5 @@ exports['statistics-main'] = function () {
 						)), br()];
 			});
 		})));
-
-	initTableSortingOnClient('.statistics-table');
 
 };

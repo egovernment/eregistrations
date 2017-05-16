@@ -13,7 +13,6 @@ var uncapitalize         = require('es5-ext/string/#/uncapitalize')
   , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
   , getDynamicUrl        = require('./utils/get-dynamic-url')
   , initializeRowOnClick = require('./utils/statistics-time-row-onclick')
-  , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , processingStepsMetaWithoutFrontDesk
 	= require('./../utils/processing-steps-meta-without-front-desk');
 
@@ -132,5 +131,4 @@ exports['statistics-main'] = function () {
 							rowResult.timedCount ? getDurationDaysHours(rowResult.maxTime) : "-"));
 				}))
 			)));
-	initTableSortingOnClient('.statistics-table');
 };
