@@ -81,7 +81,7 @@ exports['statistics-main'] = function () {
 			section({ class: 'date-period-selector-positioned-on-submenu' },
 				dateFromToBlock()),
 			section({ class: 'entities-overview-info' },
-				_("As processing time is properly recorded since 25th of October." +
+				_("As processing time is properly recorded since 1st of February 2017." +
 					" Below table only exposes data for files submitted after that day.")),
 			br(),
 			section({ class: 'section-primary users-table-filter-bar' },
@@ -121,14 +121,13 @@ exports['statistics-main'] = function () {
 		insert(list(Object.keys(stepsMap), function (shortStepPath) {
 			return stepsMap[shortStepPath].map(function (data) {
 				if (!data) return;
-
 				return [section({ class: "section-primary" },
 					h3(queryResult[shortStepPath].label),
 					table({ class: 'statistics-table' },
 						thead(
 							tr(
 								th(),
-								th({ class: 'statistics-table-number' }, _("Files processed")),
+								th({ class: 'statistics-table-number' }, _("Processing periods")),
 								th({ class: 'statistics-table-number' }, _("Average time")),
 								th({ class: 'statistics-table-number' }, _("Min time")),
 								th({ class: 'statistics-table-number' }, _("Max time"))

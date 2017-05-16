@@ -60,7 +60,7 @@ exports['statistics-main'] = function () {
 		section({ class: 'date-period-selector-positioned-on-submenu' },
 			dateFromToBlock()),
 		section({ class: 'entities-overview-info' },
-			_("As processing time is properly recorded since 25th of October." +
+			_("As processing time is properly recorded since 1st of February 2017." +
 				" Below table only exposes data for files submitted after that day.")),
 		br(),
 		section({ class: 'section-primary users-table-filter-bar' },

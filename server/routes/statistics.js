@@ -151,6 +151,7 @@ module.exports = function (config) {
 				capitalize.call(processingStepsMeta[stepShortPath]._services[0])].prototype
 				.processingSteps.map.getBySKeyPath(resolveFullStepPath(stepShortPath)).label;
 
+			stepsResult[stepShortPath].processingPeriods = [];
 			stepsResult[stepShortPath].processing = getTimeItemTemplate();
 		});
 		stepsResult.totalCorrections = getTimeItemTemplate();
@@ -260,9 +261,8 @@ module.exports = function (config) {
 			stepsResult[stepShortPath].label = db['BusinessProcess' +
 				capitalize.call(processingStepsMeta[stepShortPath]._services[0])].prototype
 				.processingSteps.map.getBySKeyPath(resolveFullStepPath(stepShortPath)).label;
-			stepsResult[stepShortPath] = { rows: {} };
-
-			stepsResult[stepShortPath].rows.totalProcessing = getTimeItemTemplate();
+			stepsResult[stepShortPath].rows = { totalProcessing: assign(getTimeItemTemplate(),
+				{ processor: _("Total & times") }) };
 		});
 
 		return getStatusHistory.find({
@@ -333,6 +333,11 @@ module.exports = function (config) {
 
 					currentItem = null;
 				}
+			});
+			Object.keys(stepsResult).forEach(function (key) { // put totals in the end
+				var totalProcessing = stepsResult[key].rows.totalProcessing;
+				delete stepsResult[key].rows.totalProcessing;
+				stepsResult[key].rows.totalProcessing = totalProcessing;
 			});
 
 			return stepsResult;
