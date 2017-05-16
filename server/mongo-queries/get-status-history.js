@@ -1,8 +1,9 @@
 'use strict';
 
-var db         = require('mano').db
-  , capitalize = require('es5-ext/string/#/capitalize')
-  , mongo      = require('../mongo-db');
+var db                  = require('mano').db
+  , capitalize          = require('es5-ext/string/#/capitalize')
+  , mongo               = require('../mongo-db')
+  , resolveFullStepPath = require('../../utils/resolve-processing-step-full-path');
 
 exports.fullItemsThreshold = 1485907200000; // TS in milliseconds of introduction of statusHistory
 
@@ -20,8 +21,11 @@ var queryCriteria = function (query) {
 	if (query.excludeFrontDesk) {
 		criteria['processingStep.path'] = { $not: /frontDesk/ };
 	}
-	return criteria;
+	if (query.step) {
+		criteria['processingStep.path'] = { $regex: new RegExp(resolveFullStepPath(query.step + '$')) };
+	}
 
+	return criteria;
 };
 
 exports.find = function (query/*, options */) {

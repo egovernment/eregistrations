@@ -26,8 +26,9 @@ var mapDurationValue = function (value) {
 };
 
 module.exports = function (context) {
-	var data = {}, queryHandler, formAction;
+	var data = {}, queryHandler, formAction, user;
 	queryHandler = setupQueryHandler(getQueryHandlerConf(), location, '/');
+	user = context.user;
 
 	renderedProps.forEach(function (prop) {
 		data[prop] = new ObservableValue();
@@ -45,13 +46,13 @@ module.exports = function (context) {
 			renderedProps.forEach(function (prop) {
 				data[prop].value = null;
 			});
-			if (!result || !result.stepTotal) return;
+			if (!result || !result.rows.totalProcessing || !result.rows.totalProcessing.avgTime) return;
 			renderedProps.forEach(function (prop) {
-				if (result.processor && result.processor[prop]) {
-					data[prop].value = result.processor[prop];
+				if (result.rows[user.__id__] && result.rows[user.__id__].processing[prop]) {
+					data[prop].value = result.rows[user.__id__].processing[prop];
 				}
 				if (prop === 'totalAvgTime') {
-					data.totalAvgTime.value = result.stepTotal.avgTime;
+					data.totalAvgTime.value = result.rows.totalProcessing.avgTime;
 				}
 			});
 		}).done();
@@ -64,7 +65,7 @@ module.exports = function (context) {
 			table({ class: 'statistics-table statistics-table-officials' },
 				thead(
 					tr(
-						th(_("Files processed")),
+						th(_("Processing periods")),
 						th(_("Min time")),
 						th(_("Max time")),
 						th(_("Average time")),
@@ -72,8 +73,9 @@ module.exports = function (context) {
 					)
 				),
 				tbody(
-					tr(td({ colspan: 5 }, _("As processing time is properly recorded since 25th of October." +
-						" Below table only exposes data for files submitted after that day."))),
+					tr(td({ colspan: 5 },
+						_("As processing time is properly recorded since 1st of February 2017. " +
+							"Below table only exposes data for files submitted after that day."))),
 					tr(
 						td(data.timedCount.map(function (value) {
 							if (!value) return '-';
