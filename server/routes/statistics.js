@@ -173,16 +173,14 @@ module.exports = function (config) {
 			excludeFrontDesk: true,
 			sort: {
 				'service.businessName': 1,
+				'service.businessId': 1,
 				'date.ts': 1
 			}
 		}).then(function (statusHistory) {
 			var currentItem, step, currentSendBackItem;
 			statusHistory.forEach(function (statusHistoryItem) {
-				if (!currentItem) {
-					currentItem = { bpId: statusHistoryItem.service.id };
-				}
-
 				if (statusHistoryItem.status.code === 'pending') {
+					currentItem = { bpId: statusHistoryItem.service.id };
 					currentItem.processingStart = statusHistoryItem.date.ts;
 
 					if (currentSendBackItem) {
@@ -203,7 +201,7 @@ module.exports = function (config) {
 
 						currentSendBackItem = null;
 					}
-				} else {
+				} else if (currentItem) {
 					if (!db[statusHistoryItem.service.type]) {
 						currentItem = null;
 						return;
@@ -273,18 +271,16 @@ module.exports = function (config) {
 			excludeFrontDesk: true,
 			sort: {
 				'service.businessName': 1,
+				'service.businessId': 1,
 				'date.ts': 1
 			}
 		}).then(function (statusHistory) {
 			var currentItem, step;
 			statusHistory.forEach(function (statusHistoryItem) {
-				if (!currentItem) {
-					currentItem = { bpId: statusHistoryItem.service.id };
-				}
-
 				if (statusHistoryItem.status.code === 'pending') {
+					currentItem = { bpId: statusHistoryItem.service.id };
 					currentItem.processingStart = statusHistoryItem.date.ts;
-				} else {
+				} else if (currentItem) {
 					if (!db[statusHistoryItem.service.type]) {
 						currentItem = null;
 						return;
