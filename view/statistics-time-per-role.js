@@ -86,17 +86,17 @@ exports['statistics-main'] = function () {
 			),
 			div(
 				{ class: 'users-table-filter-bar-status' },
-				exports._customFilters.call(this)
-			),
-			div(
-				a({ class: 'users-table-filter-bar-print', href: getDynamicUrl('/time-per-role.csv',
-					{ only: params }),
-					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print csv"))
-			),
-			div(
-				a({ class: 'users-table-filter-bar-print', href: getDynamicUrl('/time-per-role.pdf',
-					{ only: params }),
-					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
+				exports._customFilters.call(this),
+				div(
+					a({ class: 'users-table-filter-bar-print', href: getDynamicUrl('/time-per-role.csv',
+						{ only: params }),
+						target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print csv"))
+				),
+				div(
+					a({ class: 'users-table-filter-bar-print', href: getDynamicUrl('/time-per-role.pdf',
+						{ only: params }),
+						target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
+				)
 			))),
 		br(),
 		div({ class: 'overflow-x table-responsive-container' },
