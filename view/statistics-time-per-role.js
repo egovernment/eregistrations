@@ -1,9 +1,6 @@
 'use strict';
 
-var assign               = require('es5-ext/object/assign')
-  , normalizeOptions     = require('es5-ext/object/normalize-options')
-  , capitalize           = require('es5-ext/string/#/capitalize')
-  , uncapitalize         = require('es5-ext/string/#/uncapitalize')
+var uncapitalize         = require('es5-ext/string/#/uncapitalize')
   , memoize              = require('memoizee')
   , ObservableArray      = require('observable-array')
   , location             = require('mano/lib/client/location')
@@ -12,14 +9,12 @@ var assign               = require('es5-ext/object/assign')
   , getData              = require('mano/lib/client/xhr-driver').get
   , getQueryHandlerConf  = require('../apps/statistics/get-query-conf')
   , setupQueryHandler    = require('../utils/setup-client-query-handler')
-  , resolveFullStepPath  = require('../utils/resolve-processing-step-full-path')
   , getDurationDaysHours = require('./utils/get-duration-days-hours-fine-grain')
   , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
   , getDynamicUrl        = require('./utils/get-dynamic-url')
   , initializeRowOnClick = require('./utils/statistics-time-row-onclick')
-  , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , processingStepsMetaWithoutFrontDesk
-	= require('./utils/processing-steps-meta-without-front-desk');
+	= require('./../utils/processing-steps-meta-without-front-desk');
 
 exports._parent = require('./statistics-time');
 exports._customFilters = Function.prototype;
@@ -52,34 +47,11 @@ exports['statistics-main'] = function () {
 			query.dateTo = query.dateTo.toJSON();
 		}
 		queryServer(query)(function (result) {
-			queryResult = result;
-			var totalWithoutCorrections, total, totalCorrections, perRoleTotal;
 			mainData.splice(0, mainData.length);
-
-			totalWithoutCorrections = result.businessProcesses.processing;
-			totalWithoutCorrections.label = _("Total process without corrections");
-
-			totalCorrections = result.businessProcesses.correction;
-			totalCorrections.label = _("Total correcting time");
-
-			total = result.businessProcesses.processing;
-			total.label = _("Total process");
-
-			Object.keys(stepsMeta).forEach(function (key) {
-				perRoleTotal = result.steps.byStep[key].processing;
-				perRoleTotal.key = key;
-				perRoleTotal.label   = db['BusinessProcess' +
-					capitalize.call(stepsMeta[key]._services[0])].prototype
-					.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
-				mainData.push(perRoleTotal);
+			queryResult = result;
+			Object.keys(queryResult).forEach(function (key) {
+				mainData.push(queryResult[key]);
 			});
-
-			mainData.push(totalWithoutCorrections);
-			// Below line was explicitly requested, though doesn't give anything interesting right now
-			mainData.push(assign(normalizeOptions(totalCorrections),
-				{ label: _("Corrections by the users") }));
-			mainData.push(totalCorrections);
-			mainData.push(total);
 		}).done();
 	});
 
@@ -87,7 +59,7 @@ exports['statistics-main'] = function () {
 		section({ class: 'date-period-selector-positioned-on-submenu' },
 			dateFromToBlock()),
 		section({ class: 'entities-overview-info' },
-			_("As processing time is properly recorded since 25th of October." +
+			_("As processing time is properly recorded since 1st of February 2017." +
 				" Below table only exposes data for files submitted after that day.")),
 		br(),
 		section({ class: 'section-primary users-table-filter-bar' },
@@ -114,17 +86,17 @@ exports['statistics-main'] = function () {
 			),
 			div(
 				{ class: 'users-table-filter-bar-status' },
-				exports._customFilters.call(this)
-			),
-			div(
-				a({ class: 'users-table-filter-bar-print', href: getDynamicUrl('/time-per-role.csv',
-					{ only: params }),
-					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print csv"))
-			),
-			div(
-				a({ class: 'users-table-filter-bar-print', href: getDynamicUrl('/time-per-role.pdf',
-					{ only: params }),
-					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
+				exports._customFilters.call(this),
+				div(
+					a({ class: 'users-table-filter-bar-print', href: getDynamicUrl('/time-per-role.csv',
+						{ only: params }),
+						target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print csv"))
+				),
+				div(
+					a({ class: 'users-table-filter-bar-print', href: getDynamicUrl('/time-per-role.pdf',
+						{ only: params }),
+						target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
+				)
 			))),
 		br(),
 		div({ class: 'overflow-x table-responsive-container' },
@@ -132,7 +104,7 @@ exports['statistics-main'] = function () {
 				thead(
 					tr(
 						th(),
-						th({ class: 'statistics-table-number' }, _("Files processed")),
+						th({ class: 'statistics-table-number' }, _("Processing periods")),
 						th({ class: 'statistics-table-number' }, _("Average time")),
 						th({ class: 'statistics-table-number' }, _("Min time")),
 						th({ class: 'statistics-table-number' }, _("Max time"))
@@ -142,22 +114,21 @@ exports['statistics-main'] = function () {
 					onEmpty: tr(td({ class: 'empty', colspan: 5 },
 							_("There is no data to display")))
 				}, mainData, function (row) {
-
-					var step = queryResult.steps.byStep[row.key],
-						props = {};
-
-					initializeRowOnClick(step, props, true);
+					var props = {}, rowResult;
+					rowResult = row.processing || row;
+					if (row.processingPeriods && row.processingPeriods.length) {
+						initializeRowOnClick(row, props, true);
+					}
 
 					return tr(props,
 						td(row.label),
-						td({ class: 'statistics-table-number' }, row.timedCount),
+						td({ class: 'statistics-table-number' }, rowResult.timedCount),
 						td({ class: 'statistics-table-number' },
-							row.timedCount ? getDurationDaysHours(row.avgTime) : "-"),
+							rowResult.timedCount ? getDurationDaysHours(rowResult.avgTime) : "-"),
 						td({ class: 'statistics-table-number' },
-							row.timedCount ? getDurationDaysHours(row.minTime) : "-"),
+							rowResult.timedCount ? getDurationDaysHours(rowResult.minTime) : "-"),
 						td({ class: 'statistics-table-number' },
-							row.timedCount ? getDurationDaysHours(row.maxTime) : "-"));
+							rowResult.timedCount ? getDurationDaysHours(rowResult.maxTime) : "-"));
 				}))
 			)));
-	initTableSortingOnClient('.statistics-table');
 };

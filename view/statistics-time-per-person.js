@@ -1,8 +1,6 @@
 'use strict';
 
 var copy                 = require('es5-ext/object/copy')
-  , forEach              = require('es5-ext/object/for-each')
-  , capitalize           = require('es5-ext/string/#/capitalize')
   , uncapitalize         = require('es5-ext/string/#/uncapitalize')
   , memoize              = require('memoizee')
   , ObservableValue      = require('observable-value')
@@ -11,15 +9,13 @@ var copy                 = require('es5-ext/object/copy')
   , db                   = require('mano').db
   , getData              = require('mano/lib/client/xhr-driver').get
   , setupQueryHandler    = require('../utils/setup-client-query-handler')
-  , resolveFullStepPath  = require('../utils/resolve-processing-step-full-path')
   , getQueryHandlerConf  = require('../apps/statistics/get-query-conf')
   , getDurationDaysHours = require('./utils/get-duration-days-hours-fine-grain')
   , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
   , getDynamicUrl        = require('./utils/get-dynamic-url')
   , initializeRowOnClick = require('./utils/statistics-time-row-onclick')
-  , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , processingStepsMetaWithoutFrontDesk
-	= require('./utils/processing-steps-meta-without-front-desk');
+	= require('./../utils/processing-steps-meta-without-front-desk');
 
 exports._parent        = require('./statistics-time');
 exports._customFilters = Function.prototype;
@@ -33,9 +29,8 @@ var queryServer = memoize(function (query) {
 	normalizer: function (args) { return JSON.stringify(args[0]); }
 });
 
-var getRowResult = function (rowData, label) {
+var getRowResult = function (rowData) {
 	var result     = copy(rowData);
-	result.label   = label;
 	result.avgTime = rowData.timedCount ? getDurationDaysHours(rowData.avgTime) : '-';
 	result.minTime = rowData.timedCount ? getDurationDaysHours(rowData.minTime) : '-';
 	result.maxTime = rowData.timedCount ? getDurationDaysHours(rowData.maxTime) : '-';
@@ -64,20 +59,17 @@ exports['statistics-main'] = function () {
 		}
 		queryServer(query).done(function (result) {
 			queryResult = result;
-			Object.keys(stepsMap).forEach(function (key) {
+			Object.keys(result).forEach(function (key) {
 				var preparedResults = [];
-				if (!result.byStep[key]) {
+				if (!stepsMap[key]) {
 					stepsMap[key].value = null;
 					return;
 				}
-				forEach(result.byStepAndProcessor[key], function (rowData, userId) {
-					var preparedResult = getRowResult(rowData.processing,
-						db.User.getById(userId).fullName);
-					preparedResult.key = key;
-					preparedResult.userId = userId;
-					preparedResults.push(preparedResult);
+
+				Object.keys(result[key].rows).forEach(function (rowId) {
+					preparedResults.push(getRowResult(result[key].rows[rowId].processing ||
+						result[key].rows[rowId]));
 				});
-				preparedResults.push(getRowResult(result.byStep[key].processing, _("Total & times")));
 				stepsMap[key].value = preparedResults;
 			});
 		});
@@ -88,7 +80,7 @@ exports['statistics-main'] = function () {
 			section({ class: 'date-period-selector-positioned-on-submenu' },
 				dateFromToBlock()),
 			section({ class: 'entities-overview-info' },
-				_("As processing time is properly recorded since 25th of October." +
+				_("As processing time is properly recorded since 1st of February 2017." +
 					" Below table only exposes data for files submitted after that day.")),
 			br(),
 			section({ class: 'section-primary users-table-filter-bar' },
@@ -128,17 +120,13 @@ exports['statistics-main'] = function () {
 		insert(list(Object.keys(stepsMap), function (shortStepPath) {
 			return stepsMap[shortStepPath].map(function (data) {
 				if (!data) return;
-				var step = db['BusinessProcess' +
-					capitalize.call(stepsMeta[shortStepPath]._services[0])]
-					.prototype
-					.processingSteps.map.getBySKeyPath(resolveFullStepPath(shortStepPath));
 				return [section({ class: "section-primary" },
-					h3(step.label),
+					h3(queryResult[shortStepPath].label),
 					table({ class: 'statistics-table' },
 						thead(
 							tr(
 								th(),
-								th({ class: 'statistics-table-number' }, _("Files processed")),
+								th({ class: 'statistics-table-number' }, _("Processing periods")),
 								th({ class: 'statistics-table-number' }, _("Average time")),
 								th({ class: 'statistics-table-number' }, _("Min time")),
 								th({ class: 'statistics-table-number' }, _("Max time"))
@@ -148,17 +136,14 @@ exports['statistics-main'] = function () {
 							onEmpty: tr(td({ class: 'empty statistics-table-number', colspan: 5 },
 								_("There are no files processed at this step")))
 						}, data, function (rowData) {
+							var props = {};
 
-							var step, props = {};
-
-							if (rowData && rowData.key && rowData.userId) {
-								step = queryResult.byStepAndProcessor[rowData.key][rowData.userId];
+							if (rowData && rowData.processor && rowData.processingPeriods) {
+								initializeRowOnClick(rowData, props, false);
 							}
 
-							initializeRowOnClick(step, props, false);
-
 							return tr(props,
-								td(rowData.label),
+								td(rowData.processor),
 								td({ class: 'statistics-table-number' }, rowData.timedCount),
 								td({ class: 'statistics-table-number' }, rowData.avgTime),
 								td({ class: 'statistics-table-number' }, rowData.minTime),
@@ -168,7 +153,5 @@ exports['statistics-main'] = function () {
 						)), br()];
 			});
 		})));
-
-	initTableSortingOnClient('.statistics-table');
 
 };

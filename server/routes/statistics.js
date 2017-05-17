@@ -47,7 +47,17 @@ var assign                     = require('es5-ext/object/assign')
   , flowRolesReduceSteps       = require('../../utils/statistics-flow-reduce-processing-step')
   , itemsPerPage               = require('../../conf/objects-list-items-per-page')
   , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf')
-  , getRejectionReasons           = require('../mongo-queries/get-rejection-reasons');
+  , getRejectionReasons           = require('../mongo-queries/get-rejection-reasons')
+  , getStatusHistory              = require('../mongo-queries/get-status-history')
+  , getProcessingWorkingHoursTime = require('../../utils/get-processing-working-hours-time')
+  , capitalize                    = require('es5-ext/string/#/capitalize')
+  , resolveFullStepPath           = require('../../utils/resolve-processing-step-full-path')
+  , _                             = require('mano').i18n
+  , getTimeItemTemplate           = require('./utils/get-time-template')
+  , accumulateProcessingTimeItems = require('./utils/accumulate-processing-time-items')
+  , resolveTimePerPerson          = require('./utils/resolve-time-per-person')
+  , processingStepsMetaWithoutFrontDesk =
+		require('../../utils/processing-steps-meta-without-front-desk')();
 
 var flowQueryHandlerCertificatesPrintConf = [
 	require('../../apps-common/query-conf/date-from'),
@@ -115,26 +125,111 @@ module.exports = function (config) {
 	var rejectionsQueryHandler = new QueryHandler(rejectionsQueryHandlerConf);
 
 	var resolveTimePerRole = function (query) {
-		return getData(driver)(function (data) {
-			var stepsResult;
-			// We need:
-			// steps | filter(query) | reduce()[byStep, all]
-			// businessProcesses | filter(query) | reduce().all
-			stepsResult = reduceSteps(filterSteps(data, query), { includeBusinessProcesses: true });
-			return {
-				steps: { byStep: stepsResult.byStep, all: stepsResult.all },
-				businessProcesses: reduceBusinessProcesses(filterBusinessProcesses(data.businessProcesses,
-					query)).all
-			};
-		});
-	};
+		var stepsResult = {};
+		Object.keys(processingStepsMetaWithoutFrontDesk).forEach(function (stepShortPath) {
+			stepsResult[stepShortPath] = {};
+			stepsResult[stepShortPath].label = db['BusinessProcess' +
+				capitalize.call(processingStepsMeta[stepShortPath]._services[0])].prototype
+				.processingSteps.map.getBySKeyPath(resolveFullStepPath(stepShortPath)).label;
 
-	var resolveTimePerPerson = function (query) {
-		return getData(driver)(function (data) {
-			// We need:
-			// steps | filter(query) | reduce()[byStepAndProcessor, byStep]
-			data = reduceSteps(filterSteps(data, query), { includeBusinessProcesses: true });
-			return { byStep: data.byStep, byStepAndProcessor: data.byStepAndProcessor };
+			stepsResult[stepShortPath].processingPeriods = [];
+			stepsResult[stepShortPath].processing = getTimeItemTemplate();
+		});
+		stepsResult.totalCorrections = getTimeItemTemplate();
+		stepsResult.totalCorrections.label =
+			_("Total correction periods");
+		stepsResult.totalCorrectionsByUser = getTimeItemTemplate();
+		stepsResult.totalWithoutCorrections = getTimeItemTemplate();
+		stepsResult.totalWithoutCorrections.label =
+			_("Total processing periods without corrections");
+		stepsResult.totalProcessing  = getTimeItemTemplate();
+		stepsResult.totalProcessing.label =
+			_("Total processing periods");
+
+		return getStatusHistory.find({
+			onlyFullItems: true,
+			dateFrom: query.dateFrom,
+			dateTo: query.dateTo,
+			service: query.service,
+			excludeFrontDesk: true,
+			sort: {
+				'service.businessName': 1,
+				'service.businessId': 1,
+				'date.ts': 1
+			}
+		}).then(function (statusHistory) {
+			var currentItem, step, currentSendBackItem;
+			statusHistory.forEach(function (statusHistoryItem) {
+				if (statusHistoryItem.status.code === 'pending') {
+					currentItem = { bpId: statusHistoryItem.service.id };
+					currentItem.processingStart = statusHistoryItem.date.ts;
+
+					if (currentSendBackItem) {
+						if (currentSendBackItem.processingStart > statusHistoryItem.date.ts
+								|| !currentSendBackItem.processingStart ||
+								currentSendBackItem.bpId !== statusHistoryItem.service.id) {
+							currentSendBackItem = null;
+							return;
+						}
+						currentSendBackItem.processingEnd = statusHistoryItem.date.ts;
+						currentSendBackItem.businessName = statusHistoryItem.service.businessName;
+						currentSendBackItem.processingTime =
+							getProcessingWorkingHoursTime(currentSendBackItem.processingStart,
+								currentSendBackItem.processingEnd);
+						currentSendBackItem.processor = statusHistoryItem.operator.name;
+						accumulateProcessingTimeItems(stepsResult.totalCorrections, currentSendBackItem);
+						accumulateProcessingTimeItems(stepsResult.totalProcessing, currentSendBackItem);
+
+						currentSendBackItem = null;
+					}
+				} else if (currentItem) {
+					if (!db[statusHistoryItem.service.type]) {
+						currentItem = null;
+						return;
+					}
+					step =
+						db[statusHistoryItem.service.type].prototype.resolveSKeyPath(
+							statusHistoryItem.processingStep.path
+						);
+					if (step && step.value) {
+						step = step.value;
+					} else {
+						currentItem = null;
+						return;
+					}
+					if (currentItem.processingStart > statusHistoryItem.date.ts
+							|| !currentItem.processingStart ||
+							currentItem.bpId !== statusHistoryItem.service.id) {
+						currentItem = null;
+						return;
+					}
+					currentItem.processingEnd = statusHistoryItem.date.ts;
+					currentItem.businessName = statusHistoryItem.service.businessName;
+					currentItem.processingTime =
+						getProcessingWorkingHoursTime(currentItem.processingStart, currentItem.processingEnd);
+					currentItem.processor = statusHistoryItem.operator.name;
+					var stepPath = step.key;
+					if (!stepsResult[stepPath]) { // child of group step
+						stepPath = step.owner.owner.owner.key + '/' + step.key;
+					}
+					stepsResult[stepPath].processingPeriods.push(currentItem);
+
+					accumulateProcessingTimeItems(stepsResult[stepPath].processing, currentItem);
+					accumulateProcessingTimeItems(stepsResult.totalProcessing, currentItem);
+					accumulateProcessingTimeItems(stepsResult.totalWithoutCorrections, currentItem);
+
+					if (statusHistoryItem.status.code === 'sentBack') {
+						currentSendBackItem = { bpId: statusHistoryItem.service.id,
+							processingStart: statusHistoryItem.date.ts };
+					}
+					currentItem = null;
+				}
+			});
+
+			stepsResult.totalCorrectionsByUser = assign({}, stepsResult.totalCorrectionsByUser,
+				stepsResult.totalCorrections, { label: _("Corrections by the users") });
+
+			return stepsResult;
 		});
 	};
 
