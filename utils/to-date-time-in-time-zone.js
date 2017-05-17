@@ -6,7 +6,7 @@
 var ensureDate   = require('es5-ext/date/valid-date')
   , ensureString = require('es5-ext/object/validate-stringifiable-value');
 
-module.exports = function (date, timeZone, debug) {
+module.exports = function (date, timeZone) {
 	var result;
 
 	ensureDate(date);

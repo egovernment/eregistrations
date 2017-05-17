@@ -13,10 +13,10 @@ module.exports = {
 		}
 		if (!value) {
 			if (dateTo) {
-				return new db.Date(dateTo.getUTCFullYear());
+				return new db.Date(dateTo.getUTCFullYear(), 0);
 			}
 			// current year by default
-			return new db.Date(now.getUTCFullYear());
+			return new db.Date(now.getUTCFullYear(), 0);
 		}
 		dateFrom = dateStringtoDbDate(db, value);
 		if (dateFrom > now) {
