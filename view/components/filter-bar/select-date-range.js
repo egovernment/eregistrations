@@ -40,6 +40,7 @@ module.exports = function (/* opts */) {
 			console.error('Probably you will have to integrate JQuery and all ' +
 				'rangepicker dependencies into into index.html.tpl file. ' +
 				'Check select-date-range.js for instructions.');
+			return;
 		}
 		var elem = jQuery('[rangepicker]');
 		elem.daterangepicker({
