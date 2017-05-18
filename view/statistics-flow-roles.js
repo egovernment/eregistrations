@@ -176,8 +176,7 @@ exports['statistics-main'] = function () {
 		br(),
 			data.map(function (result) {
 			var mode = modes.get(location.query.mode || 'daily');
-			return div({ class: 'overflow-x table-responsive-container' },
-					table({ class: 'submitted-user-data-table statistics-table' },
+				var tableElement = table({ class: 'submitted-user-data-table statistics-table' },
 					thead(
 						tr(
 							th({ class: 'statistics-table-number' }, mode.labelNoun),
@@ -194,16 +193,17 @@ exports['statistics-main'] = function () {
 						return tr(
 							td(key),
 							Object.keys(result[key]).length ?
-									list(Object.keys(result[key]), function (step) {
-										return td({ class: 'statistics-table-number' },
-											result[key][step] == null ? _("N/A") : result[key][step]);
-									}) : td({
+								list(Object.keys(result[key]), function (step) {
+									return td({ class: 'statistics-table-number' },
+										result[key][step] == null ? _("N/A") : result[key][step]);
+								}) : td({
 								class: 'statistics-table-info',
 								colspan: Object.keys(processingSteps).length
 							}, _("Nothing to report for this period"))
 						);
-					})));
+					}));
+				initTableSortingOnClient(tableElement);
+				return div({ class: 'overflow-x table-responsive-container' },
+					tableElement);
 		}));
-
-	initTableSortingOnClient('.submitted-user-data-table');
 };

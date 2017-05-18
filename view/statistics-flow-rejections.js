@@ -82,43 +82,43 @@ exports['statistics-main'] = function () {
 			br(),
 			data.map(function (result) {
 				var defaultOpts = { class: "submitted-user-data-table-date-time" };
+				var tableElement = table({ class: 'submitted-user-data-table' },
+					thead(
+						tr(
+							th(defaultOpts, _("Rejection reason")),
+							th(defaultOpts),
+							th(defaultOpts),
+							th(defaultOpts, _("Operator")),
+							th(defaultOpts, _("Role")),
+							th(defaultOpts, _("Date")),
+							th({ class: "submitted-user-data-table-name" }, _("Entity")),
+							th({ class: "submitted-user-data-table-link" })
+						)
+					),
+					tbody(result.length ? result.map(function (dataRow) {
+						return tr(dataRow.map(function (cellContent, index) {
+							if (index === 0) {
+								return td(defaultOpts, cellContent.map(function (cellItem) {
+									return p(cellItem);
+								}));
+							}
+							if (index === 1 && cellContent === '*') {
+								return td(defaultOpts, span({ class: "fa fa-star" }));
+							}
+							if (index === 6) {
+								return td({ class: "submitted-user-data-table-name" }, cellContent);
+							}
+							if (index === 7) {
+								return td({ class: "submitted-user-data-table-link" }, a({ class: 'actions-edit',
+										href: url(cellContent) },
+									span({ class: 'fa fa-search' }, _("Go to"))));
+							}
+							return td(defaultOpts, cellContent);
+						}));
+					}) : tr({ class: 'empty' }, td({ colspan: 8 },
+						_("No data for this criteria")))));
+				initTableSortingOnClient(tableElement);
 				return section({ class: 'table-responsive-container' },
-					table({ class: 'submitted-user-data-table' },
-						thead(
-							tr(
-								th(defaultOpts, _("Rejection reason")),
-								th(defaultOpts),
-								th(defaultOpts),
-								th(defaultOpts, _("Operator")),
-								th(defaultOpts, _("Role")),
-								th(defaultOpts, _("Date")),
-								th({ class: "submitted-user-data-table-name" }, _("Entity")),
-								th({ class: "submitted-user-data-table-link" })
-							)
-						),
-						tbody(result.length ? result.map(function (dataRow) {
-							return tr(dataRow.map(function (cellContent, index) {
-								if (index === 0) {
-									return td(defaultOpts, cellContent.map(function (cellItem) {
-										return p(cellItem);
-									}));
-								}
-								if (index === 1 && cellContent === '*') {
-									return td(defaultOpts, span({ class: "fa fa-star" }));
-								}
-								if (index === 6) {
-									return td({ class: "submitted-user-data-table-name" }, cellContent);
-								}
-								if (index === 7) {
-									return td({ class: "submitted-user-data-table-link" }, a({ class: 'actions-edit',
-											href: url(cellContent) },
-										span({ class: 'fa fa-search' }, _("Go to"))));
-								}
-								return td(defaultOpts, cellContent);
-							}));
-						}) : tr({ class: 'empty' }, td({ colspan: 8 },
-							_("No data for this criteria"))))));
+					tableElement);
 			})));
-
-	initTableSortingOnClient('.submitted-user-data-table');
 };

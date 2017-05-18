@@ -143,8 +143,7 @@ exports['statistics-main'] = function () {
 		br(),
 			data.map(function (result) {
 			var mode = modes.get(location.query.mode || 'daily');
-			return div({ class: 'table-responsive-container overflow-x' },
-					table({ class: 'statistics-table submitted-user-data-table' },
+				var certificatesTable = table({ class: 'statistics-table submitted-user-data-table' },
 					thead(
 						tr(
 							th({ class: 'statistics-table-number' }, mode.labelNoun),
@@ -166,7 +165,9 @@ exports['statistics-main'] = function () {
 								return td({ class: 'statistics-table-number' }, result[key][status]);
 							})
 						);
-					})));
+					}));
+				initTableSortingOnClient(certificatesTable);
+				return div({ class: 'table-responsive-container overflow-x' },
+					certificatesTable);
 		})));
-	initTableSortingOnClient('.statistics-table');
 };

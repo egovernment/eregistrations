@@ -1,21 +1,23 @@
 'use strict';
 
-module.exports = function (jQuerySelector) {
+module.exports = function (domElement) {
 	var previous;
+	var previousNumberOfRows;
+
 	setInterval(function () {
-		//prevent initalizing tablesorter if the element had the tablesorter and listeners on
-		//elements may not equal if user leaves the page and then comes back
-		if (previous && previous[0] === window.jQuery(jQuerySelector)[0]) {
-			return;
+		var element = window.jQuery(domElement);
+
+		if (!previous || previous !== element) {
+			previous = element;
+			previousNumberOfRows = element.find('tr').length;
+			element.tablesorter();
+			return
 		}
 
-		var element = window.jQuery(jQuerySelector);
-		previous = element;
-		if (element.length) {
-			element.tablesorter();
-		}
-		element.bind("DOMSubtreeModified", function () {
+		if (previousNumberOfRows !== element.find('tr').length) {
+			previousNumberOfRows = element.find('tr').length;
 			element.trigger('update');
-		});
+		}
+
 	}, 500);
 };

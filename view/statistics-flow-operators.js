@@ -125,33 +125,36 @@ exports['statistics-main'] = function () {
 				var step = location.query.step || Object.keys(processingSteps)[0];
 				var mode = modes.get(location.query.mode || 'daily');
 
+				var operatorTable = table({ class: 'statistics-table' },
+					thead(
+						tr(
+							th({ class: 'statistics-table-number' }, mode.labelNoun),
+							th({ class: 'statistics-table-number' }, _("Operator")),
+							th({ class: 'statistics-table-number' }, _("Files Processed")),
+							th({ class: 'statistics-table-number' }, _("Validated")),
+							th({ class: 'statistics-table-number' }, _("Sent Back for corrections")),
+							th({ class: 'statistics-table-number' }, _("Rejected"))
+						)
+					),
+					tbody(Object.keys(result).length ?
+						oToArray(result, function (dateResult, date) {
+							return oToArray(dateResult, function (processorResult, processorId) {
+								return tr(
+									td({ class: 'statistics-table-number' }, date),
+									td({ class: 'statistics-table-number' },
+										db.User.getById(processorId) || _('Unknown user')),
+									oToArray(processorResult, function (data, key) {
+										return td({ class: 'statistics-table-number' }, data);
+									})
+								);
+							});
+						}) : tr(td({ class: 'empty statistics-table-info', colspan: 6 },
+							_("No data for this criteria")))));
+
+				initTableSortingOnClient(operatorTable);
+
 				return section({ class: "section-primary" },
 					h3(getStepLabelByShortPath(step)),
-					table({ class: 'statistics-table' },
-						thead(
-							tr(
-								th({ class: 'statistics-table-number' }, mode.labelNoun),
-								th({ class: 'statistics-table-number' }, _("Operator")),
-								th({ class: 'statistics-table-number' }, _("Files Processed")),
-								th({ class: 'statistics-table-number' }, _("Validated")),
-								th({ class: 'statistics-table-number' }, _("Sent Back for corrections")),
-								th({ class: 'statistics-table-number' }, _("Rejected"))
-							)
-						),
-						tbody(Object.keys(result).length ?
-								oToArray(result, function (dateResult, date) {
-									return oToArray(dateResult, function (processorResult, processorId) {
-										return tr(
-											td({ class: 'statistics-table-number' }, date),
-											td({ class: 'statistics-table-number' },
-												db.User.getById(processorId) || _('Unknown user')),
-											oToArray(processorResult, function (data, key) {
-												return td({ class: 'statistics-table-number' }, data);
-											})
-										);
-									});
-								}) : tr(td({ class: 'empty statistics-table-info', colspan: 6 },
-								_("No data for this criteria"))))));
+					operatorTable);
 			})));
-	initTableSortingOnClient('.statistics-table');
 };
