@@ -130,12 +130,13 @@ exports['statistics-main'] = function () {
 					table({ class: 'statistics-table' },
 						thead(
 							tr(
-							th({ class: 'statistics-table-number' }, mode.labelNoun),
-							th({ class: 'statistics-table-number' }, _("Operator")),
-							th({ class: 'statistics-table-number' }, _("Files Processed")),
-							th({ class: 'statistics-table-number' }, _("Validated")),
-							th({ class: 'statistics-table-number' }, _("Sent Back for corrections")),
-							th({ class: 'statistics-table-number' }, _("Rejected")))
+								th({ class: 'statistics-table-number' }, mode.labelNoun),
+								th({ class: 'statistics-table-number' }, _("Operator")),
+								th({ class: 'statistics-table-number' }, _("Files Processed")),
+								th({ class: 'statistics-table-number' }, _("Validated")),
+								th({ class: 'statistics-table-number' }, _("Sent Back for corrections")),
+								th({ class: 'statistics-table-number' }, _("Rejected"))
+							)
 						),
 						tbody(Object.keys(result).length ?
 								oToArray(result, function (dateResult, date) {
@@ -152,5 +153,5 @@ exports['statistics-main'] = function () {
 								}) : tr(td({ class: 'empty statistics-table-info', colspan: 6 },
 								_("No data for this criteria"))))));
 			})));
-	initTableSortingOnClient('.statistics-table')
+	initTableSortingOnClient('.statistics-table');
 };

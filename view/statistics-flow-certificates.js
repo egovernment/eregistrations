@@ -147,13 +147,14 @@ exports['statistics-main'] = function () {
 					table({ class: 'statistics-table submitted-user-data-table' },
 					thead(
 						tr(
-						th({ class: 'statistics-table-number' }, mode.labelNoun),
-						th({ class: 'statistics-table-number' }, _("Submitted")),
-						th({ class: 'statistics-table-number' }, _("Pending")),
-						th({ class: 'statistics-table-number' }, _("Ready for withdraw")),
-						th({ class: 'statistics-table-number' }, _("Withdrawn by user")),
-						th({ class: 'statistics-table-number' }, _("Rejected")),
-						th({ class: 'statistics-table-number' }, _("Sent back for correction")))
+							th({ class: 'statistics-table-number' }, mode.labelNoun),
+							th({ class: 'statistics-table-number' }, _("Submitted")),
+							th({ class: 'statistics-table-number' }, _("Pending")),
+							th({ class: 'statistics-table-number' }, _("Ready for withdraw")),
+							th({ class: 'statistics-table-number' }, _("Withdrawn by user")),
+							th({ class: 'statistics-table-number' }, _("Rejected")),
+							th({ class: 'statistics-table-number' }, _("Sent back for correction"))
+						)
 					),
 					tbody({
 						onEmpty: tr(td({ class: 'empty', colspan: 7 },
@@ -167,5 +168,5 @@ exports['statistics-main'] = function () {
 						);
 					})));
 		})));
-	initTableSortingOnClient('.statistics-table')
+	initTableSortingOnClient('.statistics-table');
 };

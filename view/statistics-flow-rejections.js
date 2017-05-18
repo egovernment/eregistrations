@@ -119,5 +119,5 @@ exports['statistics-main'] = function () {
 							_("No data for this criteria"))))));
 			})));
 
-	initTableSortingOnClient('.submitted-user-data-table')
+	initTableSortingOnClient('.submitted-user-data-table');
 };

@@ -180,11 +180,12 @@ exports['statistics-main'] = function () {
 					table({ class: 'submitted-user-data-table statistics-table' },
 					thead(
 						tr(
-						th({ class: 'statistics-table-number' }, mode.labelNoun),
-						list(Object.keys(processingSteps), function (shortStepPath) {
-							return th({ class: 'statistics-table-number' },
-								getStepLabelByShortPath(shortStepPath));
-						}))
+							th({ class: 'statistics-table-number' }, mode.labelNoun),
+							list(Object.keys(processingSteps), function (shortStepPath) {
+								return th({ class: 'statistics-table-number' },
+									getStepLabelByShortPath(shortStepPath));
+							})
+						)
 					),
 					tbody({
 						onEmpty: tr(td({ class: 'empty', colspan: Object.keys(processingSteps).length },
@@ -204,5 +205,5 @@ exports['statistics-main'] = function () {
 					})));
 		}));
 
-	initTableSortingOnClient('.submitted-user-data-table')
+	initTableSortingOnClient('.submitted-user-data-table');
 };
