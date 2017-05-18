@@ -15,7 +15,7 @@ module.exports = function (jQuerySelector) {
 			element.tablesorter();
 		}
 		element.bind("DOMSubtreeModified", function () {
-			element.tablesorter();
+			element.trigger('update');
 		});
 	}, 500);
 };
