@@ -14,12 +14,7 @@ module.exports = function (domElement) {
 			return
 		}
 
-		debugger
-		console.log('previousNumberOfRows', previousNumberOfRows, element.find('tr').length)
-		if (previousNumberOfRows !== element.find('tr').length) {
-			previousNumberOfRows = element.find('tr').length;
 			element.trigger('update');
-		}
 
 	}, 500);
 };
