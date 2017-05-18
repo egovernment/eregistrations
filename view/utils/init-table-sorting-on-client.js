@@ -8,5 +8,9 @@ module.exports = function (jQuerySelector) {
 			if (element.length) {
 				element.tablesorter();
 			}
+			clearInterval(checkExist);
+			element.bind("DOMSubtreeModified",function(){
+				element.tablesorter();
+			});
 		}, 1000);
 };
