@@ -12,6 +12,7 @@ var uncapitalize         = require('es5-ext/string/#/uncapitalize')
   , getDurationDaysHours = require('./utils/get-duration-days-hours-fine-grain')
   , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
   , getDynamicUrl        = require('./utils/get-dynamic-url')
+  , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , initializeRowOnClick = require('./utils/statistics-time-row-onclick')
   , processingStepsMetaWithoutFrontDesk
 	= require('./../utils/processing-steps-meta-without-front-desk');
@@ -29,6 +30,7 @@ var queryServer = memoize(function (query) {
 });
 
 exports['statistics-main'] = function () {
+	initTableSortingOnClient('.statistics-table');
 	var stepsMeta = processingStepsMetaWithoutFrontDesk(),
 		mainData, queryHandler, params, queryResult;
 	mainData = new ObservableArray();

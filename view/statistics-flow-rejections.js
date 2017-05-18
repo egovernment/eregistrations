@@ -12,6 +12,7 @@ var _                            = require('mano').i18n.bind('View: Statistics')
   , selectRejectionReason = require('./components/filter-bar/select-rejection-reason')
   , queryServer       = require('./utils/statistics-rejections-query-server')
   , dateFromToBlock    = require('./components/filter-bar/select-date-range-safe-fallback')
+  , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , getDynamicUrl      = require('./utils/get-dynamic-url');
 
 exports._parent        = require('./statistics-flow');
@@ -84,6 +85,7 @@ exports['statistics-main'] = function () {
 				return section({ class: 'table-responsive-container' },
 					table({ class: 'submitted-user-data-table' },
 						thead(
+							tr(
 							th(defaultOpts, _("Rejection reason")),
 							th(defaultOpts),
 							th(defaultOpts),
@@ -91,7 +93,7 @@ exports['statistics-main'] = function () {
 							th(defaultOpts, _("Role")),
 							th(defaultOpts, _("Date")),
 							th({ class: "submitted-user-data-table-name" }, _("Entity")),
-							th({ class: "submitted-user-data-table-link" })
+							th({ class: "submitted-user-data-table-link" }))
 						),
 						tbody(result.length ? result.map(function (dataRow) {
 							return tr(dataRow.map(function (cellContent, index) {
@@ -116,4 +118,6 @@ exports['statistics-main'] = function () {
 						}) : tr({ class: 'empty' }, td({ colspan: 8 },
 							_("No data for this criteria"))))));
 			})));
+
+	initTableSortingOnClient('.submitted-user-data-table')
 };

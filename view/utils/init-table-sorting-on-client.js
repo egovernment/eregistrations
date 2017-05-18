@@ -7,5 +7,5 @@ module.exports = function (jQuerySelector) {
 			element.tablesorter();
 			clearInterval(checkExist);
 		}
-	}, 500);
+	}, 1000);
 };

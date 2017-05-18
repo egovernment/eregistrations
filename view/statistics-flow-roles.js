@@ -29,6 +29,7 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , calculateDurationByMode = require('../utils/calculate-duration-by-mode')
   , dateFromToBlock         = require('./components/filter-bar/select-date-range-safe-fallback')
   , reduceResult            = require('../utils/statistics-flow-reduce-processing-step')
+  , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , filterData              = require('../utils/statistics-flow-roles-filter-result');
 
 exports._parent        = require('./statistics-flow');
@@ -178,11 +179,12 @@ exports['statistics-main'] = function () {
 			return div({ class: 'overflow-x table-responsive-container' },
 					table({ class: 'submitted-user-data-table statistics-table' },
 					thead(
+						tr(
 						th({ class: 'statistics-table-number' }, mode.labelNoun),
 						list(Object.keys(processingSteps), function (shortStepPath) {
 							return th({ class: 'statistics-table-number' },
 								getStepLabelByShortPath(shortStepPath));
-						})
+						}))
 					),
 					tbody({
 						onEmpty: tr(td({ class: 'empty', colspan: Object.keys(processingSteps).length },
@@ -201,4 +203,6 @@ exports['statistics-main'] = function () {
 						);
 					})));
 		}));
+
+	initTableSortingOnClient('.submitted-user-data-table')
 };

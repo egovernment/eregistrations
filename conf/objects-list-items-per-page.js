@@ -3,4 +3,4 @@
 
 'use strict';
 
-module.exports = 50;
+module.exports = 1000000;
