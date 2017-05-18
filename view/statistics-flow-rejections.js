@@ -86,14 +86,15 @@ exports['statistics-main'] = function () {
 					table({ class: 'submitted-user-data-table' },
 						thead(
 							tr(
-							th(defaultOpts, _("Rejection reason")),
-							th(defaultOpts),
-							th(defaultOpts),
-							th(defaultOpts, _("Operator")),
-							th(defaultOpts, _("Role")),
-							th(defaultOpts, _("Date")),
-							th({ class: "submitted-user-data-table-name" }, _("Entity")),
-							th({ class: "submitted-user-data-table-link" }))
+								th(defaultOpts, _("Rejection reason")),
+								th(defaultOpts),
+								th(defaultOpts),
+								th(defaultOpts, _("Operator")),
+								th(defaultOpts, _("Role")),
+								th(defaultOpts, _("Date")),
+								th({ class: "submitted-user-data-table-name" }, _("Entity")),
+								th({ class: "submitted-user-data-table-link" })
+							)
 						),
 						tbody(result.length ? result.map(function (dataRow) {
 							return tr(dataRow.map(function (cellContent, index) {
