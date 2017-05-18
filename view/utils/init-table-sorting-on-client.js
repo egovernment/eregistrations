@@ -7,7 +7,6 @@ module.exports = function (jQuerySelector) {
 			var element = window.jQuery(jQuerySelector);
 			if (element.length) {
 				element.tablesorter();
-				clearInterval(checkExist);
 			}
-		}, 800);
+		}, 1000);
 };
