@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 
-SOURCE_PATH=$(readlink -f "$1")
+if [[ "$OSTYPE" = darwin* ]]; then
+    if command -v greadlink >/dev/null 2>&1; then
+        SOURCE_PATH=$(greadlink -f "$1")
+    else
+        echo "Please install coreutils: brew install coreutils"
+        exit 1
+    fi
+else
+    SOURCE_PATH=$(readlink -f "$1")
+fi
 
 if [[ $SOURCE_PATH =~ 'eregistrations' ]]
 then
