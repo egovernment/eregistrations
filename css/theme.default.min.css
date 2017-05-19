@@ -8,13 +8,19 @@
 	visibility: visible;
 }
 
-.headerSortUp::after,
-.tablesorter-headerAsc::after,
-.tablesorter-headerSortUp::after {
+.statistics-table thead tr th:after {
+	content: " ";
+	padding-left: 13px;
+}
+
+.tablesorter-default thead .headerSortUp::after,
+.tablesorter-default thead .tablesorter-headerAsc::after,
+.tablesorter-default thead .tablesorter-headerSortUp::after {
 	content: "\f0dd";
 	font: normal normal normal 14px/1 FontAwesome;
 	vertical-align: text-bottom;
 	line-height: 21px;
+	padding-left: 5px;
 }
 
 .tablesorter-default thead .headerSortDown::after,
@@ -24,9 +30,9 @@
 	font: normal normal normal 14px/1 FontAwesome;
 	vertical-align: text-bottom;
 	line-height: 10px;
+	padding-left: 5px;
 }
 
 .tablesorter-header-inner {
 	display: inline;
-	margin-right: 7px;
 }
