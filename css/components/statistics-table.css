@@ -13,7 +13,7 @@
 	text-align: left;
 }
 
-.statistics-table tbody tr td.no-padding {
+.statistics-table tbody tr .no-padding {
 	padding: 0;
 }
 
