@@ -14,7 +14,7 @@ var uncapitalize         = require('es5-ext/string/#/uncapitalize')
   , getDynamicUrl        = require('./utils/get-dynamic-url')
   , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , initializeRowOnClick = require('./utils/statistics-time-row-onclick')
-  , timeRangeComparator = require('tablesorter-time-range-comarator')
+  , timeRangeComparator = require('./utils/tablesorter-time-range-comarator')
   , processingStepsMetaWithoutFrontDesk
 	= require('./../utils/processing-steps-meta-without-front-desk');
 

@@ -15,7 +15,7 @@ var copy                 = require('es5-ext/object/copy')
   , getDynamicUrl        = require('./utils/get-dynamic-url')
   , initializeRowOnClick = require('./utils/statistics-time-row-onclick')
   , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
-  , timeRangeComparator = require('tablesorter-time-range-comarator')
+  , timeRangeComparator = require('./utils/tablesorter-time-range-comarator')
   , processingStepsMetaWithoutFrontDesk
 	= require('./../utils/processing-steps-meta-without-front-desk');
 
