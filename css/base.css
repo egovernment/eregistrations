@@ -274,9 +274,3 @@ script { display: none !important; }
 .overflow-x{
 	overflow-x: auto;
 }
-
-/*csslint important: false*/
-.no-padding{
-	padding: 0 !important;
-}
-/*csslint important: true*/
