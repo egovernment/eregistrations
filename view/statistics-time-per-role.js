@@ -132,8 +132,7 @@ exports['statistics-main'] = function () {
 			))),
 		br(),
 		div({ class: 'overflow-x table-responsive-container' },
-			(tableElement
-			)));
+			tableElement));
 	initTableSortingOnClient(tableElement, {
 		textSorter: {
 			2: timeRangeComparator,

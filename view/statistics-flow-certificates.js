@@ -143,31 +143,31 @@ exports['statistics-main'] = function () {
 		br(),
 			data.map(function (result) {
 			var mode = modes.get(location.query.mode || 'daily');
-				var certificatesTable = table({ class: 'statistics-table submitted-user-data-table' },
-					thead(
-						tr(
-							th({ class: 'statistics-table-number' }, mode.labelNoun),
-							th({ class: 'statistics-table-number' }, _("Submitted")),
-							th({ class: 'statistics-table-number' }, _("Pending")),
-							th({ class: 'statistics-table-number' }, _("Ready for withdraw")),
-							th({ class: 'statistics-table-number' }, _("Withdrawn by user")),
-							th({ class: 'statistics-table-number' }, _("Rejected")),
-							th({ class: 'statistics-table-number' }, _("Sent back for correction"))
-						)
-					),
-					tbody({
-						onEmpty: tr(td({ class: 'empty', colspan: 7 },
-							_("No data for this criteria")))
-					}, Object.keys(result), function (key) {
-						return tr(
-							td(key),
-							list(Object.keys(result[key]), function (status) {
-								return td({ class: 'statistics-table-number' }, result[key][status]);
-							})
-						);
-					}));
-				initTableSortingOnClient(certificatesTable);
-				return div({ class: 'table-responsive-container overflow-x' },
-					certificatesTable);
+			var certificatesTable = table({ class: 'statistics-table submitted-user-data-table' },
+				thead(
+					tr(
+						th({ class: 'statistics-table-number' }, mode.labelNoun),
+						th({ class: 'statistics-table-number' }, _("Submitted")),
+						th({ class: 'statistics-table-number' }, _("Pending")),
+						th({ class: 'statistics-table-number' }, _("Ready for withdraw")),
+						th({ class: 'statistics-table-number' }, _("Withdrawn by user")),
+						th({ class: 'statistics-table-number' }, _("Rejected")),
+						th({ class: 'statistics-table-number' }, _("Sent back for correction"))
+					)
+				),
+				tbody({
+					onEmpty: tr(td({ class: 'empty', colspan: 7 },
+						_("No data for this criteria")))
+				}, Object.keys(result), function (key) {
+					return tr(
+						td(key),
+						list(Object.keys(result[key]), function (status) {
+							return td({ class: 'statistics-table-number' }, result[key][status]);
+						})
+					);
+				}));
+			initTableSortingOnClient(certificatesTable);
+			return div({ class: 'table-responsive-container overflow-x' },
+				certificatesTable);
 		})));
 };

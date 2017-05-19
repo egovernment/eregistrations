@@ -149,10 +149,10 @@ exports['statistics-main'] = function () {
 							td({ class: 'statistics-table-number' }, rowData.avgTime),
 							td({ class: 'statistics-table-number' }, rowData.minTime),
 							td({ class: 'statistics-table-number' }, rowData.maxTime)
-						);
+							);
 					})
-				);
-				initTableSortingOnClient(tableElement,{
+					);
+				initTableSortingOnClient(tableElement, {
 					textSorter: {
 						2: timeRangeComparator,
 						3: timeRangeComparator,

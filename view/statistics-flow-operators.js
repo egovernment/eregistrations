@@ -137,18 +137,18 @@ exports['statistics-main'] = function () {
 						)
 					),
 					tbody(Object.keys(result).length ?
-						oToArray(result, function (dateResult, date) {
-							return oToArray(dateResult, function (processorResult, processorId) {
-								return tr(
-									td({ class: 'statistics-table-number' }, date),
-									td({ class: 'statistics-table-number' },
-										db.User.getById(processorId) || _('Unknown user')),
-									oToArray(processorResult, function (data, key) {
-										return td({ class: 'statistics-table-number' }, data);
-									})
-								);
-							});
-						}) : tr(td({ class: 'empty statistics-table-info', colspan: 6 },
+							oToArray(result, function (dateResult, date) {
+								return oToArray(dateResult, function (processorResult, processorId) {
+									return tr(
+										td({ class: 'statistics-table-number' }, date),
+										td({ class: 'statistics-table-number' },
+											db.User.getById(processorId) || _('Unknown user')),
+										oToArray(processorResult, function (data, key) {
+											return td({ class: 'statistics-table-number' }, data);
+										})
+									);
+								});
+							}) : tr(td({ class: 'empty statistics-table-info', colspan: 6 },
 							_("No data for this criteria")))));
 
 				initTableSortingOnClient(operatorTable);

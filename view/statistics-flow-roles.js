@@ -176,34 +176,34 @@ exports['statistics-main'] = function () {
 		br(),
 			data.map(function (result) {
 			var mode = modes.get(location.query.mode || 'daily');
-				var tableElement = table({ class: 'submitted-user-data-table statistics-table' },
-					thead(
-						tr(
-							th({ class: 'statistics-table-number' }, mode.labelNoun),
-							list(Object.keys(processingSteps), function (shortStepPath) {
-								return th({ class: 'statistics-table-number' },
-									getStepLabelByShortPath(shortStepPath));
-							})
-						)
-					),
-					tbody({
-						onEmpty: tr(td({ class: 'empty', colspan: Object.keys(processingSteps).length },
-							_("No data for this criteria")))
-					}, Object.keys(result), function (key) {
-						return tr(
-							td(key),
-							Object.keys(result[key]).length ?
+			var tableElement = table({ class: 'submitted-user-data-table statistics-table' },
+				thead(
+					tr(
+						th({ class: 'statistics-table-number' }, mode.labelNoun),
+						list(Object.keys(processingSteps), function (shortStepPath) {
+							return th({ class: 'statistics-table-number' },
+								getStepLabelByShortPath(shortStepPath));
+						})
+					)
+				),
+				tbody({
+					onEmpty: tr(td({ class: 'empty', colspan: Object.keys(processingSteps).length },
+						_("No data for this criteria")))
+				}, Object.keys(result), function (key) {
+					return tr(
+						td(key),
+						Object.keys(result[key]).length ?
 								list(Object.keys(result[key]), function (step) {
 									return td({ class: 'statistics-table-number' },
 										result[key][step] == null ? _("N/A") : result[key][step]);
 								}) : td({
-								class: 'statistics-table-info',
-								colspan: Object.keys(processingSteps).length
-							}, _("Nothing to report for this period"))
-						);
-					}));
-				initTableSortingOnClient(tableElement);
-				return div({ class: 'overflow-x table-responsive-container' },
+							class: 'statistics-table-info',
+							colspan: Object.keys(processingSteps).length
+						}, _("Nothing to report for this period"))
+					);
+				}));
+			initTableSortingOnClient(tableElement);
+			return div({ class: 'overflow-x table-responsive-container' },
 					tableElement);
 		}));
 };
