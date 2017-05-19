@@ -38,7 +38,7 @@ statisticsTimeRowOnClick = function (currentRow, periodsOfRow, showUserName) {
 		detailRow = jQuery(tr({
 			class: 'detail',
 			style: 'display:none'
-		}, td({ colspan: 5 }, table(rows))));
+		}, td({ colspan: 5, class: 'no-padding' }, table(rows))));
 
 		detailRow.insertAfter(currentRow);
 	}
