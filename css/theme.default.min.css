@@ -8,14 +8,14 @@
 	visibility: visible;
 }
 
-.tablesorter-header:after{
+.statistics-table thead tr th:after {
 	content: " ";
 	padding-left: 13px;
 }
 
-.headerSortUp::after,
-.tablesorter-headerAsc::after,
-.tablesorter-headerSortUp::after {
+.tablesorter-default thead .headerSortUp::after,
+.tablesorter-default thead .tablesorter-headerAsc::after,
+.tablesorter-default thead .tablesorter-headerSortUp::after {
 	content: "\f0dd";
 	font: normal normal normal 14px/1 FontAwesome;
 	vertical-align: text-bottom;
