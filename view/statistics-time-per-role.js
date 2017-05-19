@@ -12,7 +12,9 @@ var uncapitalize         = require('es5-ext/string/#/uncapitalize')
   , getDurationDaysHours = require('./utils/get-duration-days-hours-fine-grain')
   , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
   , getDynamicUrl        = require('./utils/get-dynamic-url')
+  , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , initializeRowOnClick = require('./utils/statistics-time-row-onclick')
+  , timeRangeComparator = require('./utils/tablesorter-time-range-comarator')
   , processingStepsMetaWithoutFrontDesk
 	= require('./../utils/processing-steps-meta-without-front-desk');
 
@@ -55,6 +57,36 @@ exports['statistics-main'] = function () {
 		}).done();
 	});
 
+	var tableElement = table({ class: 'statistics-table submitted-user-data-table' },
+		thead(
+			tr(
+				th(),
+				th({ class: 'statistics-table-number' }, _("Processing periods")),
+				th({ class: 'statistics-table-number' }, _("Average time")),
+				th({ class: 'statistics-table-number' }, _("Min time")),
+				th({ class: 'statistics-table-number' }, _("Max time"))
+			)
+		),
+		tbody({
+			onEmpty: tr(td({ class: 'empty', colspan: 5 },
+				_("There is no data to display")))
+		}, mainData, function (row) {
+			var props = {}, rowResult;
+			rowResult = row.processing || row;
+			if (row.processingPeriods && row.processingPeriods.length) {
+				initializeRowOnClick(row, props, true);
+			}
+
+			return tr(props,
+				td(row.label),
+				td({ class: 'statistics-table-number' }, rowResult.timedCount),
+				td({ class: 'statistics-table-number' },
+					rowResult.timedCount ? getDurationDaysHours(rowResult.avgTime) : "-"),
+				td({ class: 'statistics-table-number' },
+					rowResult.timedCount ? getDurationDaysHours(rowResult.minTime) : "-"),
+				td({ class: 'statistics-table-number' },
+					rowResult.timedCount ? getDurationDaysHours(rowResult.maxTime) : "-"));
+		}));
 	div({ class: 'block-pull-up' }, form({ action: '/time/', autoSubmit: true },
 		section({ class: 'date-period-selector-positioned-on-submenu' },
 			dateFromToBlock()),
@@ -100,35 +132,12 @@ exports['statistics-main'] = function () {
 			))),
 		br(),
 		div({ class: 'overflow-x table-responsive-container' },
-			(table({ class: 'statistics-table submitted-user-data-table' },
-				thead(
-					tr(
-						th(),
-						th({ class: 'statistics-table-number' }, _("Processing periods")),
-						th({ class: 'statistics-table-number' }, _("Average time")),
-						th({ class: 'statistics-table-number' }, _("Min time")),
-						th({ class: 'statistics-table-number' }, _("Max time"))
-					)
-				),
-				tbody({
-					onEmpty: tr(td({ class: 'empty', colspan: 5 },
-							_("There is no data to display")))
-				}, mainData, function (row) {
-					var props = {}, rowResult;
-					rowResult = row.processing || row;
-					if (row.processingPeriods && row.processingPeriods.length) {
-						initializeRowOnClick(row, props, true);
-					}
-
-					return tr(props,
-						td(row.label),
-						td({ class: 'statistics-table-number' }, rowResult.timedCount),
-						td({ class: 'statistics-table-number' },
-							rowResult.timedCount ? getDurationDaysHours(rowResult.avgTime) : "-"),
-						td({ class: 'statistics-table-number' },
-							rowResult.timedCount ? getDurationDaysHours(rowResult.minTime) : "-"),
-						td({ class: 'statistics-table-number' },
-							rowResult.timedCount ? getDurationDaysHours(rowResult.maxTime) : "-"));
-				}))
-			)));
+			tableElement));
+	initTableSortingOnClient(tableElement, {
+		textSorter: {
+			2: timeRangeComparator,
+			3: timeRangeComparator,
+			4: timeRangeComparator
+		}
+	});
 };
