@@ -14,6 +14,8 @@ var copy                 = require('es5-ext/object/copy')
   , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
   , getDynamicUrl        = require('./utils/get-dynamic-url')
   , initializeRowOnClick = require('./utils/statistics-time-row-onclick')
+  , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
+  , timeRangeComparator = require('./utils/tablesorter-time-range-comarator')
   , processingStepsMetaWithoutFrontDesk
 	= require('./../utils/processing-steps-meta-without-front-desk');
 
@@ -39,6 +41,7 @@ var getRowResult = function (rowData) {
 };
 
 exports['statistics-main'] = function () {
+
 	var stepsMeta = processingStepsMetaWithoutFrontDesk(),
 		stepsMap = {}, queryHandler, params, queryResult;
 	Object.keys(stepsMeta).forEach(function (stepShortPath) {
@@ -120,37 +123,45 @@ exports['statistics-main'] = function () {
 		insert(list(Object.keys(stepsMap), function (shortStepPath) {
 			return stepsMap[shortStepPath].map(function (data) {
 				if (!data) return;
+				var tableElement = table({ class: 'statistics-table' },
+					thead(
+						tr(
+							th(),
+							th({ class: 'statistics-table-number' }, _("Processing periods")),
+							th({ class: 'statistics-table-number' }, _("Average time")),
+							th({ class: 'statistics-table-number' }, _("Min time")),
+							th({ class: 'statistics-table-number' }, _("Max time"))
+						)
+					),
+					tbody({
+						onEmpty: tr(td({ class: 'empty statistics-table-number', colspan: 5 },
+							_("There are no files processed at this step")))
+					}, data, function (rowData) {
+						var props = {};
+
+						if (rowData && rowData.processor && rowData.processingPeriods) {
+							initializeRowOnClick(rowData, props, false);
+						}
+
+						return tr(props,
+							td(rowData.processor),
+							td({ class: 'statistics-table-number' }, rowData.timedCount),
+							td({ class: 'statistics-table-number' }, rowData.avgTime),
+							td({ class: 'statistics-table-number' }, rowData.minTime),
+							td({ class: 'statistics-table-number' }, rowData.maxTime)
+							);
+					})
+					);
+				initTableSortingOnClient(tableElement, {
+					textSorter: {
+						2: timeRangeComparator,
+						3: timeRangeComparator,
+						4: timeRangeComparator
+					}
+				});
 				return [section({ class: "section-primary" },
 					h3(queryResult[shortStepPath].label),
-					table({ class: 'statistics-table' },
-						thead(
-							tr(
-								th(),
-								th({ class: 'statistics-table-number' }, _("Processing periods")),
-								th({ class: 'statistics-table-number' }, _("Average time")),
-								th({ class: 'statistics-table-number' }, _("Min time")),
-								th({ class: 'statistics-table-number' }, _("Max time"))
-							)
-						),
-						tbody({
-							onEmpty: tr(td({ class: 'empty statistics-table-number', colspan: 5 },
-								_("There are no files processed at this step")))
-						}, data, function (rowData) {
-							var props = {};
-
-							if (rowData && rowData.processor && rowData.processingPeriods) {
-								initializeRowOnClick(rowData, props, false);
-							}
-
-							return tr(props,
-								td(rowData.processor),
-								td({ class: 'statistics-table-number' }, rowData.timedCount),
-								td({ class: 'statistics-table-number' }, rowData.avgTime),
-								td({ class: 'statistics-table-number' }, rowData.minTime),
-								td({ class: 'statistics-table-number' }, rowData.maxTime)
-								);
-						})
-						)), br()];
+					tableElement), br()];
 			});
 		})));
 

@@ -116,7 +116,7 @@ exports['statistics-main'] = function () {
 
 	insert(getTimeBreakdownTable.call(this));
 
-	table({ class: 'statistics-table statistics-table-registrations' },
+	var filesTable = table({ class: 'statistics-table statistics-table-registrations' },
 		thead(tr(
 			th(_("Certificate")),
 			th(),
@@ -150,5 +150,5 @@ exports['statistics-main'] = function () {
 			})
 		));
 
-	initTableSortingOnClient('.statistics-table-registrations');
+	initTableSortingOnClient(filesTable);
 };
