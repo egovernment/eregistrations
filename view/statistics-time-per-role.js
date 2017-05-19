@@ -14,6 +14,7 @@ var uncapitalize         = require('es5-ext/string/#/uncapitalize')
   , getDynamicUrl        = require('./utils/get-dynamic-url')
   , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , initializeRowOnClick = require('./utils/statistics-time-row-onclick')
+  , timeRangeComparator = require('tablesorter-time-range-comarator')
   , processingStepsMetaWithoutFrontDesk
 	= require('./../utils/processing-steps-meta-without-front-desk');
 
@@ -133,5 +134,11 @@ exports['statistics-main'] = function () {
 		div({ class: 'overflow-x table-responsive-container' },
 			(tableElement
 			)));
-	initTableSortingOnClient('.statistics-table');
+	initTableSortingOnClient(tableElement, {
+		textSorter: {
+			2: timeRangeComparator,
+			3: timeRangeComparator,
+			4: timeRangeComparator
+		}
+	});
 };

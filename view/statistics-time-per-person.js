@@ -15,6 +15,7 @@ var copy                 = require('es5-ext/object/copy')
   , getDynamicUrl        = require('./utils/get-dynamic-url')
   , initializeRowOnClick = require('./utils/statistics-time-row-onclick')
   , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
+  , timeRangeComparator = require('tablesorter-time-range-comarator')
   , processingStepsMetaWithoutFrontDesk
 	= require('./../utils/processing-steps-meta-without-front-desk');
 
@@ -151,7 +152,13 @@ exports['statistics-main'] = function () {
 						);
 					})
 				);
-				initTableSortingOnClient(tableElement);
+				initTableSortingOnClient(tableElement,{
+					textSorter: {
+						2: timeRangeComparator,
+						3: timeRangeComparator,
+						4: timeRangeComparator
+					}
+				});
 				return [section({ class: "section-primary" },
 					h3(queryResult[shortStepPath].label),
 					tableElement), br()];
