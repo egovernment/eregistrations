@@ -176,7 +176,7 @@ exports['statistics-main'] = function () {
 		br(),
 			data.map(function (result) {
 			var mode = modes.get(location.query.mode || 'daily');
-			var tableElement = table({ class: 'submitted-user-data-table statistics-table' },
+			var tableElement = table({ class: 'submitted-user-data-table statistics-table statistics-flow-roles-table' },
 				thead(
 					tr(
 						th({ class: 'statistics-table-number' }, mode.labelNoun),
