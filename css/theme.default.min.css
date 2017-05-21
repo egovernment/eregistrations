@@ -8,7 +8,7 @@
 	visibility: visible;
 }
 
-.statistics-table thead tr th:after {
+.tablesorter thead tr th:after {
 	content: " ";
 	padding-left: 13px;
 }
