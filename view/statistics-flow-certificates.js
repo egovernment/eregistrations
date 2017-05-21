@@ -146,7 +146,7 @@ exports['statistics-main'] = function () {
 			var certificatesTable = table({ class: 'statistics-table submitted-user-data-table' },
 				thead(
 					tr(
-						th({ class: 'statistics-table-number' }, mode.labelNoun),
+						th({ class: 'statistics-table-number fixed-first-cell' }, mode.labelNoun),
 						th({ class: 'statistics-table-number' }, _("Submitted")),
 						th({ class: 'statistics-table-number' }, _("Pending")),
 						th({ class: 'statistics-table-number' }, _("Ready for withdraw")),

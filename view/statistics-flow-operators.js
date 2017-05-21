@@ -128,7 +128,7 @@ exports['statistics-main'] = function () {
 				var operatorTable = table({ class: 'statistics-table' },
 					thead(
 						tr(
-							th({ class: 'statistics-table-number' }, mode.labelNoun),
+							th({ class: 'statistics-table-number fixed-first-cell' }, mode.labelNoun),
 							th({ class: 'statistics-table-number' }, _("Operator")),
 							th({ class: 'statistics-table-number' }, _("Files Processed")),
 							th({ class: 'statistics-table-number' }, _("Validated")),

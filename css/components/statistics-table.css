@@ -29,7 +29,7 @@
 .statistics-table thead th {
 	color: var(--dark-text);
 	padding: 11px 6px 10px;
-	text-align: center;
+	text-align: left;
 	font-weight: 100;
 	font-size: 15px;
 	border:none;
@@ -122,4 +122,8 @@
 
 .statistics-table-sensitive-data {
 	color: var(--error-text);
+}
+
+.fixed-first-cell {
+	width: 200px;
 }
