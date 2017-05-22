@@ -82,10 +82,7 @@ var calculatePerDateStatusEventsSums = function (query) {
 
 	// get total
 	return calculateStatusEventsSums(query.dateFrom, query.dateTo)(function (data) {
-		return {
-			displayKey: _("Total"),
-			data: data
-		};
+		result[_("Total")] = data;
 	}).then(function () {
 		return deferred.map(getDateRangesByMode(query.dateFrom, query.dateTo, query.mode),
 			function (dateRange) {
