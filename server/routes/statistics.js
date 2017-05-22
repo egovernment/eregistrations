@@ -78,12 +78,18 @@ var flowQueryHandlerRolesPrintConf = [
 
 var calculatePerDateStatusEventsSums = function (query) {
 	var result = {}
-	  , mode = modes.get(query.mode);
+	  , mode = modes.get(query.mode)
+	  , total;
 
+	if (query.noTotal) {
+		total = deferred(null);
+	} else {
+		total = calculateStatusEventsSums(query.dateFrom, query.dateTo)(function (data) {
+			result[_("Total")] = data;
+		});
+	}
 	// get total
-	return calculateStatusEventsSums(query.dateFrom, query.dateTo)(function (data) {
-		result[_("Total")] = data;
-	}).then(function () {
+	return total.then(function () {
 		return deferred.map(getDateRangesByMode(query.dateFrom, query.dateTo, query.mode),
 			function (dateRange) {
 				// dateRange: { dateFrom: db.Date, dateTo: db.Date } with dateRange query for result
@@ -263,10 +269,11 @@ module.exports = function (config) {
 			});
 		});
 	};
-
 	var resolveOperatorsDataPrint = function (unresolvedQuery, renderer) {
 		return flowQueryHandlerOperators.resolve(unresolvedQuery)(function (query) {
-			return calculatePerDateStatusEventsSums(query)(function (result) {
+			return calculatePerDateStatusEventsSums(
+				assign({ noTotal: !query.processor }, query)
+			)(function (result) {
 				var finalResult = {};
 
 				result = flowReduceOperators(result, query);
@@ -343,7 +350,9 @@ module.exports = function (config) {
 		}),
 		'get-flow-roles-operators-data': function (unresolvedQuery) {
 			return flowQueryHandlerOperators.resolve(unresolvedQuery)(function (query) {
-				return calculatePerDateStatusEventsSums(query)(function (result) {
+				return calculatePerDateStatusEventsSums(
+					assign({ noTotal: !query.processor }, query)
+				)(function (result) {
 					var finalResult = {}
 					  , page = Number(query.page)
 					  , itemsCnt = 0
