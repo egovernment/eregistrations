@@ -95,7 +95,8 @@ var calculatePerDateStatusEventsSums = function (query) {
 				});
 			})(function (dateRangeResults) {
 			dateRangeResults.forEach(function (dateRangeResult) {
-				result[dateRangeResult.displayKey] = dateRangeResult.data;
+				// ' ' is to ensure numeric key (in the case of year) will not go in front of "Total" 
+				result[dateRangeResult.displayKey + ' '] = dateRangeResult.data;
 			});
 		})(result);
 	});
