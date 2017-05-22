@@ -145,7 +145,7 @@ exports['statistics-main'] = function () {
 			return div({ class: 'table-responsive-container overflow-x' },
 					table({ class: 'statistics-table submitted-user-data-table' },
 					thead(
-						th({ class: 'statistics-table-number' }, mode.labelNoun),
+						th({ class: 'statistics-table-number fixed-first-cell' }, mode.labelNoun),
 						th({ class: 'statistics-table-number' }, _("Submitted")),
 						th({ class: 'statistics-table-number' }, _("Pending")),
 						th({ class: 'statistics-table-number' }, _("Ready for withdraw")),
