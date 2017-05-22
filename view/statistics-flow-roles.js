@@ -176,7 +176,7 @@ exports['statistics-main'] = function () {
 			data.map(function (result) {
 			var mode = modes.get(location.query.mode || 'daily');
 			return div({ class: 'overflow-x table-responsive-container' },
-					table({ class: 'submitted-user-data-table statistics-table' },
+					table({ class: 'submitted-user-data-table statistics-table statistics-flow-roles-table' },
 					thead(
 						th({ class: 'statistics-table-number' }, mode.labelNoun),
 						list(Object.keys(processingSteps), function (shortStepPath) {
