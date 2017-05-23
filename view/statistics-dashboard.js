@@ -20,6 +20,7 @@ var assign              = require('es5-ext/object/assign')
   , observableResult    = new ObservableValue()
   , toArray             = require('es5-ext/object/to-array')
   , toDateInTz          = require('../utils/to-date-in-time-zone')
+  , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , completedFilesPeriods = [
 	{ name: 'inPeriod', label: _("Period") },
 	{ name: 'today', label: 'Today' },
@@ -510,5 +511,7 @@ exports['sub-main'] = {
 			// this will be invoked only in SPA
 			if (document.on) document.on('statistics-chart-update', reloadCharts);
 		}, observableResult);
+
+		initTableSortingOnClient('.statistics-table-registrations');
 	}
 };
