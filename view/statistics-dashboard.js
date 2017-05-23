@@ -19,8 +19,25 @@ var assign              = require('es5-ext/object/assign')
   , dateFromToBlock     = require('./components/filter-bar/select-date-range-safe-fallback')
   , observableResult    = new ObservableValue()
   , toArray             = require('es5-ext/object/to-array')
-  , completedFilesPeriods = ['inPeriod', 'today', 'thisWeek', 'thisMonth', 'thisYear',
-		'sinceLaunch'];
+  , toDateInTz          = require('../utils/to-date-in-time-zone')
+  , completedFilesPeriods = [
+	{ name: 'inPeriod', label: _("Period") },
+	{ name: 'today', label: 'Today' },
+	{ name: 'thisWeek', label: 'This week' },
+	{ name: 'thisMonth', label: 'This month' }
+];
+
+var today = toDateInTz(new Date(), db.timeZone);
+var currentYear = new db.Date(today.getUTCFullYear(), 0, 1);
+var lastYearInRange = new db.Date(today.getUTCFullYear() - 5, 0, 1);
+
+while (currentYear >= lastYearInRange) {
+	completedFilesPeriods.push({
+		name: currentYear.getUTCFullYear(),
+		label: currentYear.getUTCFullYear()
+	});
+	currentYear.setUTCFullYear(currentYear.getUTCFullYear() - 1);
+}
 
 exports._servicesColors  = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
 exports._stepsColors     = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
@@ -54,12 +71,9 @@ var getTimeBreakdownTable = function (bpData) {
 		{ class: 'statistics-table statistics-table-registrations' },
 		thead(tr(
 			th({ class: 'statistics-table-header-waiting' }, _("Service")),
-			th({ class: 'statistics-table-number' }, _("Period")),
-			th({ class: 'statistics-table-number' }, _("Today")),
-			th({ class: 'statistics-table-number' }, _("This week")),
-			th({ class: 'statistics-table-number' }, _("This month")),
-			th({ class: 'statistics-table-number' }, _("This year")),
-			th({ class: 'statistics-table-number' }, _("Since launch"))
+			list(completedFilesPeriods, function (period) {
+				return th({ class: 'statistics-table-number' }, period.label);
+			})
 		)),
 		tbody(
 			mmap(bpData, function (data) {
@@ -69,8 +83,8 @@ var getTimeBreakdownTable = function (bpData) {
 					toArray(data.byService, function (serviceData, serviceName) {
 						return tr(
 							td(db['BusinessProcess' + capitalize.call(serviceName)].prototype.label),
-							list(completedFilesPeriods, function (periodName) {
-								var count = serviceData[periodName];
+							list(completedFilesPeriods, function (period) {
+								var count = serviceData[period.name];
 
 								return td({ class: 'statistics-table-number' }, count);
 							})
@@ -78,9 +92,9 @@ var getTimeBreakdownTable = function (bpData) {
 					}),
 					tr(
 						td(_("Total")),
-						list(completedFilesPeriods, function (periodName) {
+						list(completedFilesPeriods, function (period) {
 							return td({ class: 'statistics-table-number' },
-								data.total[periodName]);
+								data.total[period.name]);
 						})
 					)
 				];

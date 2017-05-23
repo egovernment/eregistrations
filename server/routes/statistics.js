@@ -154,17 +154,9 @@ module.exports = function (config) {
 		  , today = toDateInTz(new Date(), db.timeZone);
 
 		return getData(driver)(function (data) {
-			return {
-				sinceLaunch: reduceBusinessProcesses(filterBusinessProcesses(
-					data.businessProcesses,
-					approvedQuery
-				)),
-				thisYear: reduceBusinessProcesses(filterBusinessProcesses(
-					data.businessProcesses,
-					assign({
-						dateFrom: new db.Date(today.getUTCFullYear(), 0, 1)
-					}, approvedQuery)
-				)),
+			var periods, currentYear = new db.Date(today.getUTCFullYear(), 0, 1),
+				lastYearInRange = new db.Date(today.getUTCFullYear() - 5, 0, 1);
+			periods = {
 				thisMonth: reduceBusinessProcesses(filterBusinessProcesses(
 					data.businessProcesses,
 					assign({
@@ -187,6 +179,20 @@ module.exports = function (config) {
 					assign({}, approvedQuery, query)
 				))
 			};
+			while (currentYear >= lastYearInRange) {
+				periods[currentYear.getUTCFullYear()] = reduceBusinessProcesses(
+					filterBusinessProcesses(
+						data.businessProcesses,
+						assign({}, approvedQuery,
+							{
+								dateFrom: new db.Date(currentYear.getUTCFullYear(), 0, 1),
+								dateTo:  new db.Date(currentYear.getUTCFullYear(), 11, 31)
+							})
+					)
+				);
+				currentYear.setUTCFullYear(currentYear.getUTCFullYear() - 1);
+			}
+			return periods;
 		})(function (data) {
 			// Apply formatting to match view table format
 			var result = {
