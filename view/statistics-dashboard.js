@@ -17,7 +17,10 @@ var assign              = require('es5-ext/object/assign')
   , getQueryHandlerConf = require('../apps/statistics/get-query-conf')
   , frontDeskNames      = require('./utils/front-desk-names')
   , dateFromToBlock     = require('./components/filter-bar/select-date-range-safe-fallback')
-  , observableResult = new ObservableValue();
+  , observableResult    = new ObservableValue()
+  , toArray             = require('es5-ext/object/to-array')
+  , completedFilesPeriods = ['inPeriod', 'today', 'thisWeek', 'thisMonth', 'thisYear',
+		'sinceLaunch'];
 
 exports._servicesColors  = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
 exports._stepsColors     = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
@@ -44,6 +47,46 @@ exports._commonOptions = {
 		minValue: 0
 	},
 	width: "100%"
+};
+
+var getTimeBreakdownTable = function (bpData) {
+	return table(
+		{ class: 'statistics-table statistics-table-registrations' },
+		thead(tr(
+			th({ class: 'statistics-table-header-waiting' }, _("Service")),
+			th({ class: 'statistics-table-number' }, _("Period")),
+			th({ class: 'statistics-table-number' }, _("Today")),
+			th({ class: 'statistics-table-number' }, _("This week")),
+			th({ class: 'statistics-table-number' }, _("This month")),
+			th({ class: 'statistics-table-number' }, _("This year")),
+			th({ class: 'statistics-table-number' }, _("Since launch"))
+		)),
+		tbody(
+			mmap(bpData, function (data) {
+				if (!data) return;
+
+				return [
+					toArray(data.byService, function (serviceData, serviceName) {
+						return tr(
+							td(db['BusinessProcess' + capitalize.call(serviceName)].prototype.label),
+							list(completedFilesPeriods, function (periodName) {
+								var count = serviceData[periodName];
+
+								return td({ class: 'statistics-table-number' }, count);
+							})
+						);
+					}),
+					tr(
+						td(_("Total")),
+						list(completedFilesPeriods, function (periodName) {
+							return td({ class: 'statistics-table-number' },
+								data.total[periodName]);
+						})
+					)
+				];
+			})
+		)
+	);
 };
 
 var queryServer = memoize(function (query) {
@@ -355,7 +398,7 @@ exports['dashboard-nav'] = { class: { 'submitted-menu-item-active': true } };
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
-		var queryHandler;
+		var queryHandler, filesCompletedData = new ObservableValue();
 		getStepLabelByShortPath = getStepLabelByShortPath(this.processingStepsMeta);
 
 		queryHandler = setupQueryHandler(getQueryHandlerConf({
@@ -372,6 +415,7 @@ exports['sub-main'] = {
 			}
 			queryServer(serverQuery).done(function (data) {
 				updateChartsData(data.chartsResult, query);
+				filesCompletedData.value = data.filesCompleted;
 			});
 		});
 
@@ -379,6 +423,8 @@ exports['sub-main'] = {
 			form({ action: '/', autoSubmit: true },
 				dateFromToBlock(),
 				p({ class: 'submit' }, input({ type: 'submit' }))));
+
+		getTimeBreakdownTable(filesCompletedData);
 
 		section({ class: "section-primary" },
 			h3(_("Files completed per time range")),

@@ -153,42 +153,40 @@ module.exports = function (config) {
 		var approvedQuery = { flowStatus: 'approved' }
 		  , today = toDateInTz(new Date(), db.timeZone);
 
-		return queryHandler.resolve(query)(function (query) {
-			return getData(driver)(function (data) {
-				return {
-					sinceLaunch: reduceBusinessProcesses(filterBusinessProcesses(
-						data.businessProcesses,
-						approvedQuery
-					)),
-					thisYear: reduceBusinessProcesses(filterBusinessProcesses(
-						data.businessProcesses,
-						assign({
-							dateFrom: new db.Date(today.getUTCFullYear(), 0, 1)
-						}, approvedQuery)
-					)),
-					thisMonth: reduceBusinessProcesses(filterBusinessProcesses(
-						data.businessProcesses,
-						assign({
-							dateFrom: new db.Date(today.getUTCFullYear(), today.getUTCMonth(), 1)
-						}, approvedQuery)
-					)),
-					thisWeek: reduceBusinessProcesses(filterBusinessProcesses(
-						data.businessProcesses,
-						assign({
-							dateFrom: new db.Date(today.getUTCFullYear(), today.getUTCMonth(),
-									today.getUTCDate() - ((6 + today.getUTCDay()) % 7))
-						}, approvedQuery)
-					)),
-					today: reduceBusinessProcesses(filterBusinessProcesses(
-						data.businessProcesses,
-						assign({ dateFrom: today }, approvedQuery)
-					)),
-					inPeriod: reduceBusinessProcesses(filterBusinessProcesses(
-						data.businessProcesses,
-						assign({}, approvedQuery, query)
-					))
-				};
-			});
+		return getData(driver)(function (data) {
+			return {
+				sinceLaunch: reduceBusinessProcesses(filterBusinessProcesses(
+					data.businessProcesses,
+					approvedQuery
+				)),
+				thisYear: reduceBusinessProcesses(filterBusinessProcesses(
+					data.businessProcesses,
+					assign({
+						dateFrom: new db.Date(today.getUTCFullYear(), 0, 1)
+					}, approvedQuery)
+				)),
+				thisMonth: reduceBusinessProcesses(filterBusinessProcesses(
+					data.businessProcesses,
+					assign({
+						dateFrom: new db.Date(today.getUTCFullYear(), today.getUTCMonth(), 1)
+					}, approvedQuery)
+				)),
+				thisWeek: reduceBusinessProcesses(filterBusinessProcesses(
+					data.businessProcesses,
+					assign({
+						dateFrom: new db.Date(today.getUTCFullYear(), today.getUTCMonth(),
+								today.getUTCDate() - ((6 + today.getUTCDay()) % 7))
+					}, approvedQuery)
+				)),
+				today: reduceBusinessProcesses(filterBusinessProcesses(
+					data.businessProcesses,
+					assign({ dateFrom: today }, approvedQuery)
+				)),
+				inPeriod: reduceBusinessProcesses(filterBusinessProcesses(
+					data.businessProcesses,
+					assign({}, approvedQuery, query)
+				))
+			};
 		})(function (data) {
 			// Apply formatting to match view table format
 			var result = {
@@ -525,7 +523,6 @@ module.exports = function (config) {
 				return timePerPersonPrint(data, rendererConfig);
 			});
 		}),
-		'get-files-completed': getFilesCompleted,
 		'get-dashboard-data': function (query) {
 			return queryHandler.resolve(query)(function (query) {
 				return getData(driver)(function (data) {
@@ -558,8 +555,11 @@ module.exports = function (config) {
 						lastDateData: reduceSteps(filterSteps(data, lastDateQuery), { mode: 'full' }).byStep
 					};
 					if (customChartsController) customChartsController(query, chartsResult, lastDateQuery);
-					result.chartsResult = chartsResult;
-					return result;
+					result.chartsResult   = chartsResult;
+					return getFilesCompleted(query).then(function (res) {
+						result.filesCompleted = res;
+						return result;
+					});
 				});
 			});
 		},
