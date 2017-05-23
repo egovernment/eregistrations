@@ -23,9 +23,9 @@ var assign              = require('es5-ext/object/assign')
   , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , completedFilesPeriods = [
 	{ name: 'inPeriod', label: _("Period") },
-	{ name: 'today', label: 'Today' },
-	{ name: 'thisWeek', label: 'This week' },
-	{ name: 'thisMonth', label: 'This month' }
+	{ name: 'today', label: _("Today") },
+	{ name: 'thisWeek', label: _("This week") },
+	{ name: 'thisMonth', label: _("This month") }
 ];
 
 var today = toDateInTz(new Date(), db.timeZone);
