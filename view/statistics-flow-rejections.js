@@ -12,13 +12,22 @@ var _                            = require('mano').i18n.bind('View: Statistics')
   , selectRejectionReason = require('./components/filter-bar/select-rejection-reason')
   , queryServer       = require('./utils/statistics-rejections-query-server')
   , dateFromToBlock    = require('./components/filter-bar/select-date-range-safe-fallback')
-  , getDynamicUrl      = require('./utils/get-dynamic-url');
+  , getDynamicUrl      = require('./utils/get-dynamic-url')
+  , tableServerSortingUtil   = require('./utils/table-server-sorting-util');
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
 
 exports['flow-nav']            = { class: { 'submitted-menu-item-active': true } };
 exports['flow-rejections-nav'] = { class: { 'pills-nav-active': true } };
+
+function buildOps(col) {
+	var opts = { class: "submitted-user-data-table-date-time" };
+	if (col) {
+		opts.col = col;
+	}
+	return opts;
+}
 
 exports['statistics-main'] = function () {
 	var queryHandler, data = new ObservableValue([])
@@ -37,6 +46,7 @@ exports['statistics-main'] = function () {
 
 		dateFrom = query.dateFrom;
 		dateTo   = query.dateTo || new db.Date();
+		tableServerSortingUtil('rejections-table', { col: query.col, asc: query.asc });
 
 		serverQuery.dateFrom = dateFrom.toJSON();
 		serverQuery.dateTo = dateTo.toJSON();
@@ -80,17 +90,17 @@ exports['statistics-main'] = function () {
 			section({ class: 'pad-if-pagination' }, pagination),
 			br(),
 			data.map(function (result) {
-				var defaultOpts = { class: "submitted-user-data-table-date-time" };
+				var defaultOpts = buildOps();
 				return section({ class: 'table-responsive-container' },
-					table({ class: 'submitted-user-data-table' },
+					table({ id: 'rejections-table', class: 'submitted-user-data-table' },
 						thead(
-							th(defaultOpts, _("Rejection reason")),
+							th(buildOps('reason'), _("Rejection reason")),
 							th(defaultOpts),
 							th(defaultOpts),
-							th(defaultOpts, _("Operator")),
-							th(defaultOpts, _("Role")),
-							th(defaultOpts, _("Date")),
-							th({ class: "submitted-user-data-table-name" }, _("Entity")),
+							th(buildOps('operator'), _("Operator")),
+							th(buildOps('role'), _("Role")),
+							th(buildOps('date'), _("Date")),
+							th({ col: 'entity', class: "submitted-user-data-table-name" }, _("Entity")),
 							th({ class: "submitted-user-data-table-link" })
 						),
 						tbody(result.length ? result.map(function (dataRow) {
