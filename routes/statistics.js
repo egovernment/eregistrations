@@ -21,14 +21,25 @@ module.exports = function () {
 			},
 			view: require('../view/statistics-dashboard')
 		},
-		files: require('../view/statistics-files-completed'),
+		files: {
+			decorateContext: function () {
+				this.processingStepsMeta = processingStepsMeta;
+			},
+			view: require('../view/statistics-files-certificates')
+		},
+		'files/by-role': {
+			view: require('../view/statistics-files-roles')
+		},
+		'files/by-operator': {
+			view: require('../view/statistics-files-operators')
+		},
 		'files/pending': {
 			decorateContext: function () {
 				this.processingStepsMeta = processingStepsMeta;
 			},
 			view: require('../view/statistics-files-pending')
 		},
-		'files/accounts': require('../view/statistics-files-accounts'),
+		'files/details': require('../view/statistics-files-details'),
 		time: {
 			decorateContext: function () {
 				this.processingStepsMeta = processingStepsMeta;
@@ -41,21 +52,8 @@ module.exports = function () {
 			},
 			view: require('../view/statistics-time-per-person')
 		},
-		flow: {
-			decorateContext: function () {
-				this.processingStepsMeta = processingStepsMeta;
-			},
-			view: require('../view/statistics-flow-certificates')
-		},
-		'flow/by-role': {
-			view: require('../view/statistics-flow-roles')
-		},
-		'flow/by-operator': {
-			view: require('../view/statistics-flow-operators')
-		},
-		'flow/rejections': {
-			view: require('../view/statistics-flow-rejections')
-		},
+		rejections: require('../view/statistics-rejections'),
+		accounts: require('../view/statistics-accounts'),
 
 		// Business process views
 

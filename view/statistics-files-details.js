@@ -10,7 +10,7 @@ var db                    = require('../db')
 exports._parent = require('./statistics-files');
 
 exports['files-nav']           = { class: { 'submitted-menu-item-active': true } };
-exports['completed-files-nav'] = { class: { 'pills-nav-active': true } };
+exports['files-details-nav'] = { class: { 'pills-nav-active': true } };
 
 exports['statistics-main'] = function () {
 	var certificates = {};
