@@ -136,88 +136,6 @@ module.exports = function (config) {
 	var flowQueryHandlerOperators = new QueryHandler(flowQueryOperatorsHandlerConf);
 	var rejectionsQueryHandler = new QueryHandler(rejectionsQueryHandlerConf);
 
-	var getFilesCompleted = function (query) {
-		// Spec of data needed:
-		// # Files completed since system launch
-		//   businessProcesses | filter(approved) | reduce()[all, byService]
-		// # Files completed this year
-		//   businessProcesses | filter(approvedThisYear) | reduce()[all, byService]
-		// # Files completed this month
-		//   businessProcesses | filter(approvedThisMonth) | reduce()[all, byService]
-		// # Files completed this week
-		//   businessProcesses | filter(approvedThisWeek) | reduce()[all, byService]
-		// # Files completed today
-		//   businessProcesses | filter(approvedToday) | reduce()[all, byService]
-		// # Files completed in given period
-		//   businessProcesses | filter(approvedAtQueryDateRange) | reduce()[all, byService]
-		var approvedQuery = { flowStatus: 'approved' }
-		  , today = toDateInTz(new Date(), db.timeZone);
-
-		return getData(driver)(function (data) {
-			var periods, currentYear = new db.Date(today.getUTCFullYear(), 0, 1),
-				lastYearInRange = new db.Date(today.getUTCFullYear() - 5, 0, 1);
-			periods = {
-				thisMonth: reduceBusinessProcesses(filterBusinessProcesses(
-					data.businessProcesses,
-					assign({
-						dateFrom: new db.Date(today.getUTCFullYear(), today.getUTCMonth(), 1)
-					}, approvedQuery)
-				)),
-				thisWeek: reduceBusinessProcesses(filterBusinessProcesses(
-					data.businessProcesses,
-					assign({
-						dateFrom: new db.Date(today.getUTCFullYear(), today.getUTCMonth(),
-								today.getUTCDate() - ((6 + today.getUTCDay()) % 7))
-					}, approvedQuery)
-				)),
-				today: reduceBusinessProcesses(filterBusinessProcesses(
-					data.businessProcesses,
-					assign({ dateFrom: today }, approvedQuery)
-				)),
-				inPeriod: reduceBusinessProcesses(filterBusinessProcesses(
-					data.businessProcesses,
-					assign({}, approvedQuery, query)
-				))
-			};
-			while (currentYear >= lastYearInRange) {
-				periods[currentYear.getUTCFullYear()] = reduceBusinessProcesses(
-					filterBusinessProcesses(
-						data.businessProcesses,
-						assign({}, approvedQuery,
-							{
-								dateFrom: new db.Date(currentYear.getUTCFullYear(), 0, 1),
-								dateTo:  new db.Date(currentYear.getUTCFullYear(), 11, 31)
-							})
-					)
-				);
-				currentYear.setUTCFullYear(currentYear.getUTCFullYear() - 1);
-			}
-			return periods;
-		})(function (data) {
-			// Apply formatting to match view table format
-			var result = {
-				byService: {},
-				total: {}
-			};
-
-			oForEach(data, function (periodData, periodName) {
-				result.total[periodName] = periodData.all.startedCount;
-
-				oForEach(periodData.byService, function (serviceData, serviceName) {
-					var resultServiceData = result.byService[serviceName];
-
-					if (!resultServiceData) {
-						resultServiceData = result.byService[serviceName] = {};
-					}
-
-					resultServiceData[periodName] = serviceData.startedCount;
-				});
-			});
-
-			return result;
-		});
-	};
-
 	var resolveTimePerRole = function (query) {
 		var stepsResult = {};
 		Object.keys(processingStepsMetaWithoutFrontDesk).forEach(function (stepShortPath) {
@@ -529,6 +447,83 @@ module.exports = function (config) {
 				return timePerPersonPrint(data, rendererConfig);
 			});
 		}),
+		'get-files-completed': function (query) {
+			// Spec of data needed:
+			// # Files completed since system launch
+			//   businessProcesses | filter(approved) | reduce()[all, byService]
+			// # Files completed this year
+			//   businessProcesses | filter(approvedThisYear) | reduce()[all, byService]
+			// # Files completed this month
+			//   businessProcesses | filter(approvedThisMonth) | reduce()[all, byService]
+			// # Files completed this week
+			//   businessProcesses | filter(approvedThisWeek) | reduce()[all, byService]
+			// # Files completed today
+			//   businessProcesses | filter(approvedToday) | reduce()[all, byService]
+			// # Files completed in given period
+			//   businessProcesses | filter(approvedAtQueryDateRange) | reduce()[all, byService]
+			var approvedQuery = { flowStatus: 'approved' }
+			  , today = toDateInTz(new Date(), db.timeZone);
+
+			return queryHandler.resolve(query)(function (query) {
+				return getData(driver)(function (data) {
+					return {
+						sinceLaunch: reduceBusinessProcesses(filterBusinessProcesses(
+							data.businessProcesses,
+							approvedQuery
+						)),
+						thisYear: reduceBusinessProcesses(filterBusinessProcesses(
+							data.businessProcesses,
+							assign({
+								dateFrom: new db.Date(today.getUTCFullYear(), 0, 1)
+							}, approvedQuery)
+						)),
+						thisMonth: reduceBusinessProcesses(filterBusinessProcesses(
+							data.businessProcesses,
+							assign({
+								dateFrom: new db.Date(today.getUTCFullYear(), today.getUTCMonth(), 1)
+							}, approvedQuery)
+						)),
+						thisWeek: reduceBusinessProcesses(filterBusinessProcesses(
+							data.businessProcesses,
+							assign({
+								dateFrom: new db.Date(today.getUTCFullYear(), today.getUTCMonth(),
+									today.getUTCDate() - ((6 + today.getUTCDay()) % 7))
+							}, approvedQuery)
+						)),
+						today: reduceBusinessProcesses(filterBusinessProcesses(
+							data.businessProcesses,
+							assign({ dateFrom: today }, approvedQuery)
+						)),
+						inPeriod: reduceBusinessProcesses(filterBusinessProcesses(
+							data.businessProcesses,
+							assign({}, approvedQuery, query)
+						))
+					};
+				});
+			})(function (data) {
+				// Apply formatting to match view table format
+				var result = {
+					byService: {},
+					total: {}
+				};
+
+				oForEach(data, function (periodData, periodName) {
+					result.total[periodName] = periodData.all.startedCount;
+
+					oForEach(periodData.byService, function (serviceData, serviceName) {
+						var resultServiceData = result.byService[serviceName];
+
+						if (!resultServiceData) {
+							resultServiceData = result.byService[serviceName] = {};
+						}
+
+						resultServiceData[periodName] = serviceData.startedCount;
+					});
+				});
+
+				return result;
+			});
+		},
 		'get-dashboard-data': function (query) {
 			return queryHandler.resolve(query)(function (query) {
 				return getData(driver)(function (data) {
@@ -536,7 +531,7 @@ module.exports = function (config) {
 						dateFrom: null,
 						dateTo: null,
 						pendingAt: query.dateTo || toDateInTz(new Date(), db.timeZone)
-					}), result = {};
+					});
 					// Spec of data we need for each chart:
 					// # Files completed per time range
 					//   businessProcesses | filter(query) | reduce().byDateAndService
@@ -550,7 +545,7 @@ module.exports = function (config) {
 					//   businessProcesses | filter(query) | reduce().byService
 					// # Withdrawal time in days
 					//   steps | filter(query) | reduce().byStepAndService
-					var chartsResult = {
+					var result = {
 						dateRangeData: {
 							steps: reduceSteps(filterSteps(data, query), { mode: 'full' }).byStepAndService,
 							businessProcesses: reduceBusinessProcesses(
@@ -560,12 +555,8 @@ module.exports = function (config) {
 						},
 						lastDateData: reduceSteps(filterSteps(data, lastDateQuery), { mode: 'full' }).byStep
 					};
-					if (customChartsController) customChartsController(query, chartsResult, lastDateQuery);
-					result.chartsResult   = chartsResult;
-					return getFilesCompleted(query).then(function (res) {
-						result.filesCompleted = res;
-						return result;
-					});
+					if (customChartsController) customChartsController(query, result, lastDateQuery);
+					return result;
 				});
 			});
 		},
