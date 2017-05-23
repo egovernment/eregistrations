@@ -31,10 +31,10 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , reduceResult            = require('../utils/statistics-flow-reduce-processing-step')
   , filterData              = require('../utils/statistics-flow-roles-filter-result');
 
-exports._parent        = require('./statistics-flow');
+exports._parent        = require('./statistics-files');
 exports._customFilters = Function.prototype;
 
-exports['flow-nav']                = { class: { 'submitted-menu-item-active': true } };
+exports['files-nav']                = { class: { 'submitted-menu-item-active': true } };
 exports['flow-by-role-nav'] = { class: { 'pills-nav-active': true } };
 
 var serviceToCertLegacyMatch = { '': [] };
@@ -66,12 +66,12 @@ var stepStatuses = {};
 
 exports['statistics-main'] = function () {
 	var queryHandler, data = new ObservableValue({})
-	  , pagination = new Pagination('/flow/by-role/'), handlerConf, params;
+	  , pagination = new Pagination('/files/by-role/'), handlerConf, params;
 
 	handlerConf = queryHandlerConf.slice(0);
 	handlerConf.push(pageQuery, serviceQuery, certificateQuery, stepStatusQuery);
 	queryHandler = setupQueryHandler(handlerConf,
-		location, '/flow/by-role/');
+		location, '/files/by-role/');
 
 	params = queryHandler._handlers.map(function (handler) {
 		return handler.name;
@@ -128,7 +128,7 @@ exports['statistics-main'] = function () {
 	});
 
 	div({ class: 'block-pull-up' },
-		form({ action: '/flow/by-role/', autoSubmit: true },
+		form({ action: '/files/by-role/', autoSubmit: true },
 			section({ class: 'date-period-selector-positioned-on-submenu' }, dateFromToBlock()),
 			section({ class: 'section-primary users-table-filter-bar display-flex flex-wrap' },
 				div(
