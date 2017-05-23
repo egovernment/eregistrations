@@ -371,7 +371,7 @@ exports['sub-main'] = {
 				serverQuery.dateTo = serverQuery.dateTo.toJSON();
 			}
 			queryServer(serverQuery).done(function (data) {
-				updateChartsData(data, query);
+				updateChartsData(data.chartsResult, query);
 			});
 		});
 
