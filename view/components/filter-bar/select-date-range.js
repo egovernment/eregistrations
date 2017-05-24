@@ -125,21 +125,19 @@ module.exports = function (/* opts */) {
 
 		location._pathname.on('change', function (ev) {
 			if (path !== ev.newValue) return;
-			location.query.get('dateFrom').map(function (dateFrom) {
-				location.query.get('dateTo').map(function (dateTo) {
-					var now = new db.Date(), defaultDateFrom, defaultDateTo;
-					if (dateFrom || dateTo) return;
-					defaultDateFrom = new db.Date(now.getUTCFullYear(), 0, 1);
-					defaultDateTo = new db.Date(now.getUTCFullYear(), now.getUTCMonth(),
-						now.getUTCDate());
-					if (elem) {
-						elem.daterangepicker("setRange", {
-							start: stringToDate(defaultDateFrom.toISOString().slice(0, 10)),
-							end: stringToDate(defaultDateTo.toISOString().slice(0, 10))
-						});
-					}
+			var dateFrom = location.query.get('dateFrom').value;
+			var dateTo = location.query.get('dateTo').value;
+			var now = new db.Date();
+			if (dateFrom || dateTo) return;
+			dateFrom = new db.Date(now.getUTCFullYear(), 0, 1);
+			dateTo = new db.Date(now.getUTCFullYear(), now.getUTCMonth(),
+				now.getUTCDate());
+			if (elem) {
+				elem.daterangepicker("setRange", {
+					start: stringToDate(dateFrom.toISOString().slice(0, 10)),
+					end: stringToDate(dateTo.toISOString().slice(0, 10))
 				});
-			});
+			}
 		});
 	});
 
