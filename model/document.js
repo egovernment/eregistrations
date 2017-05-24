@@ -197,7 +197,30 @@ module.exports = memoize(function (db) {
 			if (statusLog.length) data.statusLog = statusLog;
 
 			return data;
-		} }
+		} },
+		toWSSchema: {
+			value: function (ignore) {
+				var schema = {
+					type: "array",
+					items: {
+						type: "object",
+						properties: {
+							code: {
+								type: "enum",
+								ref: "documents"
+							},
+							data: {}
+						}
+					}
+				};
+				schema.items.properties.files = this.files.toWSSchema();
+				schema.items.properties.owner = { type: "string" };
+				if (this.dataForm.constructor !== this.database.FormSectionBase) {
+					schema.items.properties.data = this.dataForm.toWSSchema();
+				}
+				return schema;
+			}
+		}
 	}, {
 		// Document label
 		label: { type: StringLine },
