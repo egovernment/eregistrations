@@ -57,7 +57,8 @@ var assign = require('es5-ext/object/assign')
   , accumulateProcessingTimeItems = require('./utils/accumulate-processing-time-items')
   , resolveTimePerPerson = require('./utils/resolve-time-per-person')
   , processingStepsMetaWithoutFrontDesk =
-		require('../../utils/processing-steps-meta-without-front-desk')();
+		require('../../utils/processing-steps-meta-without-front-desk')()
+  , uncapitalize = require('es5-ext/string/#/uncapitalize');
 
 var flowQueryHandlerCertificatesPrintConf = [
 	require('../../apps-common/query-conf/date-from'),
@@ -120,6 +121,20 @@ var businessProcessQueryHandler = new QueryHandler([{
 	}
 }]);
 
+var getPeriods = function () {
+	var periods = ['inPeriod', 'thisMonth', 'thisWeek', 'today']
+	  , today = toDateInTz(new Date(), db.timeZone)
+	  , currentYear = new db.Date(today.getUTCFullYear(), 0, 1)
+	  , lastYearInRange = new db.Date(today.getUTCFullYear() - 5, 0, 1);
+
+	while (currentYear >= lastYearInRange) {
+		periods.push(currentYear.getUTCFullYear());
+		currentYear.setUTCFullYear(currentYear.getUTCFullYear() - 1);
+	}
+
+	return periods;
+};
+
 module.exports = function (config) {
 	var driver = ensureDriver(ensureObject(config).driver)
 	  , customChartsController;
@@ -151,47 +166,56 @@ module.exports = function (config) {
 		// # Files completed in given period
 		//   businessProcesses | filter(approvedAtQueryDateRange) | reduce()[all, byService]
 		var approvedQuery = { flowStatus: 'approved' }
-		  , today = toDateInTz(new Date(), db.timeZone);
+		  , today = toDateInTz(new Date(), db.timeZone)
+		  , periods = {};
 
 		return getData(driver)(function (data) {
-			var periods, currentYear = new db.Date(today.getUTCFullYear(), 0, 1),
-				lastYearInRange = new db.Date(today.getUTCFullYear() - 5, 0, 1);
-			periods = {
-				thisMonth: reduceBusinessProcesses(filterBusinessProcesses(
-					data.businessProcesses,
-					assign({
-						dateFrom: new db.Date(today.getUTCFullYear(), today.getUTCMonth(), 1)
-					}, approvedQuery)
-				)),
-				thisWeek: reduceBusinessProcesses(filterBusinessProcesses(
-					data.businessProcesses,
-					assign({
-						dateFrom: new db.Date(today.getUTCFullYear(), today.getUTCMonth(),
-								today.getUTCDate() - ((6 + today.getUTCDay()) % 7))
-					}, approvedQuery)
-				)),
-				today: reduceBusinessProcesses(filterBusinessProcesses(
-					data.businessProcesses,
-					assign({ dateFrom: today }, approvedQuery)
-				)),
-				inPeriod: reduceBusinessProcesses(filterBusinessProcesses(
-					data.businessProcesses,
-					assign({}, approvedQuery, query)
-				))
-			};
-			while (currentYear >= lastYearInRange) {
-				periods[currentYear.getUTCFullYear()] = reduceBusinessProcesses(
-					filterBusinessProcesses(
+			getPeriods().forEach(function (key) {
+				switch (key) {
+				case 'thisMonth':
+					periods[key] = reduceBusinessProcesses(filterBusinessProcesses(
 						data.businessProcesses,
-						assign({}, approvedQuery,
-							{
-								dateFrom: new db.Date(currentYear.getUTCFullYear(), 0, 1),
-								dateTo:  new db.Date(currentYear.getUTCFullYear(), 11, 31)
-							})
-					)
-				);
-				currentYear.setUTCFullYear(currentYear.getUTCFullYear() - 1);
-			}
+						assign({
+							dateFrom: new db.Date(today.getUTCFullYear(), today.getUTCMonth(), 1)
+						}, approvedQuery)
+					));
+					break;
+				case 'thisWeek':
+					periods[key] = reduceBusinessProcesses(filterBusinessProcesses(
+						data.businessProcesses,
+						assign({
+							dateFrom: new db.Date(today.getUTCFullYear(), today.getUTCMonth(),
+								today.getUTCDate() - ((6 + today.getUTCDay()) % 7))
+						}, approvedQuery)
+					));
+					break;
+				case 'today':
+					periods[key] = reduceBusinessProcesses(filterBusinessProcesses(
+						data.businessProcesses,
+						assign({ dateFrom: today }, approvedQuery)
+					));
+					break;
+				case 'inPeriod':
+					periods[key] = reduceBusinessProcesses(filterBusinessProcesses(
+						data.businessProcesses,
+						assign({}, approvedQuery, query)
+					));
+					break;
+				default:
+					var currentYear = new db.Date(key, 0, 1);
+					periods[currentYear.getUTCFullYear()] = reduceBusinessProcesses(
+						filterBusinessProcesses(
+							data.businessProcesses,
+							assign({}, approvedQuery,
+								{
+									dateFrom: new db.Date(currentYear.getUTCFullYear(), 0, 1),
+									dateTo: new db.Date(currentYear.getUTCFullYear(), 11, 31)
+								})
+						)
+					);
+					break;
+				}
+			});
 			return periods;
 		})(function (data) {
 			// Apply formatting to match view table format
@@ -536,7 +560,7 @@ module.exports = function (config) {
 						dateFrom: null,
 						dateTo: null,
 						pendingAt: query.dateTo || toDateInTz(new Date(), db.timeZone)
-					}), result = {};
+					}), result = {}, periods = {};
 					// Spec of data we need for each chart:
 					// # Files completed per time range
 					//   businessProcesses | filter(query) | reduce().byDateAndService
@@ -564,6 +588,66 @@ module.exports = function (config) {
 					result.chartsResult   = chartsResult;
 					return getFilesCompleted(query).then(function (res) {
 						result.filesCompleted = res;
+					}).then(function () {
+						var today = toDateInTz(new Date(), db.timeZone);
+						return deferred.map(getPeriods(), function (key) {
+							periods[key] = null;
+							if (key === 'thisMonth') {
+								return calculateStatusEventsSums(new db.Date(today.getUTCFullYear(),
+									today.getUTCMonth(), 1), query.dateTo).then(function (res) {
+									periods[key] = res;
+								});
+							}
+							if (key === 'thisWeek') {
+								return calculateStatusEventsSums(new db.Date(today.getUTCFullYear(),
+									today.getUTCMonth(),
+									today.getUTCDate() - ((6 + today.getUTCDay()) % 7)),
+									query.dateTo).then(function (res) {
+									periods[key] = res;
+								});
+							}
+							if (key === 'today') {
+								return calculateStatusEventsSums(today, today).then(function (res) {
+									periods[key] = res;
+								});
+							}
+							if (key === 'inPeriod') {
+								return calculateStatusEventsSums(query.dateFrom,
+									query.dateTo).then(function (res) {
+									periods[key] = res;
+								});
+							}
+							var currentYear = new db.Date(key, 0, 1);
+							return calculateStatusEventsSums(
+								new db.Date(currentYear.getUTCFullYear(), 0, 1),
+								new db.Date(currentYear.getUTCFullYear(), 11, 31)
+							).then(function (res) {
+								periods[currentYear.getUTCFullYear()] = res;
+							});
+						});
+					}).then(function () {
+						var approvedCertsResult = [];
+						db.BusinessProcess.extensions.forEach(function (BpType) {
+							var serviceName =
+								uncapitalize.call(BpType.__id__.replace('BusinessProcess', ''));
+							BpType.prototype.certificates.map.forEach(function (cert) {
+								var approvedCertsResultItem = [BpType.prototype.label, cert.abbr];
+								Object.keys(periods).forEach(function (key) {
+									if (!periods[key][serviceName] ||
+											!periods[key][serviceName].certificate ||
+											!periods[key][serviceName].certificate[cert.key] ||
+											!periods[key][serviceName].certificate[cert.key].approved) {
+										approvedCertsResultItem.push(0);
+										return;
+									}
+									approvedCertsResultItem.push(
+										periods[key][serviceName].certificate[cert.key].approved
+									);
+								});
+								approvedCertsResult.push(approvedCertsResultItem);
+							});
+						});
+						result.approvedCertsResult = approvedCertsResult;
 						return result;
 					});
 				});
