@@ -11,11 +11,19 @@ exports._match = 'businessProcess';
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
+		var target = this.processingStep || this.businessProcess;
+
+		var hasDocuments = or(
+			target.requirementUploads.applicable._size,
+			target.paymentReceiptUploads.applicable._size,
+			target.certificates.applicable._size
+		);
+
 		renderMainInfo(this, { urlPrefix: '/' + this.businessProcess.__id__ + '/' });
 		insert(exports._prependContent.call(this));
 		section({ class: 'section-tab-nav' },
 			exports._processingTabLink.call(this),
-			exports._documentsTabLink.call(this),
+			_if(hasDocuments, exports._documentsTabLink.call(this)),
 			exports._dataTabLink.call(this),
 			div({ id: 'tab-content', class: 'business-process-official-content' }));
 	}

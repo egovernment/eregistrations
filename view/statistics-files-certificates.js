@@ -21,17 +21,16 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , copyDbDate        = require('../utils/copy-db-date')
   , queryServer       = require('./utils/statistics-flow-query-server')
   , filterData        = require('../utils/statistics-flow-certificates-filter-result')
-  , selectDateFrom    = require('./components/filter-bar/select-date-from')
-  , selectDateTo      = require('./components/filter-bar/select-date-to')
   , incrementDateByTimeUnit = require('../utils/increment-date-by-time-unit')
   , floorToTimeUnit         = require('../utils/floor-to-time-unit')
   , calculateDurationByMode = require('../utils/calculate-duration-by-mode')
+  , dateFromToBlock         = require('./components/filter-bar/select-date-range-safe-fallback')
   , getDynamicUrl           = require('./utils/get-dynamic-url');
 
-exports._parent        = require('./statistics-flow');
+exports._parent        = require('./statistics-files');
 exports._customFilters = Function.prototype;
 
-exports['flow-nav']                = { class: { 'submitted-menu-item-active': true } };
+exports['files-nav']                = { class: { 'submitted-menu-item-active': true } };
 exports['flow-by-certificate-nav'] = { class: { 'pills-nav-active': true } };
 
 var serviceToCertLegacyMatch = { '': [] };
@@ -54,12 +53,12 @@ db.BusinessProcess.extensions.forEach(function (ServiceType) {
 
 exports['statistics-main'] = function () {
 	var queryHandler, data = new ObservableValue({})
-	  , pagination = new Pagination('/flow/'), handlerConf, params;
+	  , pagination = new Pagination('/files/'), handlerConf, params;
 
 	handlerConf = queryHandlerConf.slice(0);
 	handlerConf.push(pageQuery, serviceQuery, certificateQuery);
 	queryHandler = setupQueryHandler(handlerConf,
-		location, '/flow/');
+		location, '/files/');
 
 	params = queryHandler._handlers.map(function (handler) {
 		return handler.name;
@@ -114,58 +113,56 @@ exports['statistics-main'] = function () {
 		});
 	});
 
-	section({ class: 'section-primary users-table-filter-bar' },
-		form({ action: '/flow/', autoSubmit: true },
-			div({ class: 'users-table-filter-bar-status' },
-				selectService({ label: _("All services") })),
-			div({ class: 'users-table-filter-bar-status' },
+	div({ class: 'block-pull-up' }, form({ action: '/files/', autoSubmit: true },
+		section({ class: 'date-period-selector-positioned-on-submenu' }, dateFromToBlock()),
+		section({ class: 'section-primary users-table-filter-bar display-flex flex-wrap' },
+			div(
+				div({ class: 'users-table-filter-bar-status' },
+					selectService({ label: _("All services") })),
+				div({ class: 'users-table-filter-bar-status' },
 					selectCertificate(),
-					legacy('selectMatch', 'service-select', serviceToCertLegacyMatch)),
-			div(
-				{ class: 'users-table-filter-bar-status' },
-				label({ for: 'date-from-input' }, _("Date from"), ":"),
-				selectDateFrom()
+					legacy('selectMatch', 'service-select', serviceToCertLegacyMatch))
 			),
-			div(
-				{ class: 'users-table-filter-bar-status' },
-				label({ for: 'date-to-input' }, _("Date to"), ":"),
-				selectDateTo()
-			),
+			br(),
 			selectPeriodMode(),
 			div(
-				a({ class: 'users-table-filter-bar-print', href:
-					getDynamicUrl('/flow-certificates-data.pdf', { only: params }),
-					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
-			),
-			div(
-				a({ class: 'users-table-filter-bar-print',
+				div(a({
+					class: 'users-table-filter-bar-print',
+					href: getDynamicUrl('/flow-certificates-data.pdf', { only: params }),
+					target: '_blank'
+				}, span({ class: 'fa fa-print' }), " ", _("Print pdf"))),
+				div(a({
+					class: 'users-table-filter-bar-print',
 					href: getDynamicUrl('/flow-certificates-data.csv', { only: params }),
-					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print csv"))
+					target: '_blank'
+				}, span({ class: 'fa fa-print' }), " ", _("Print csv")))
 			),
-			p({ class: 'submit' }, input({ type: 'submit' }))));
-
-	section(pagination);
-	section({ class: "section-primary" },
-		data.map(function (result) {
+			p({ class: 'submit' }, input({ type: 'submit' }))),
+		section({ class: 'pad-if-pagination' }, pagination),
+		br(),
+			data.map(function (result) {
 			var mode = modes.get(location.query.mode || 'daily');
-			return table({ class: 'statistics-table' },
-				thead(
-					th({ class: 'statistics-table-number' }, mode.labelNoun),
-					th({ class: 'statistics-table-number' }, _("Submitted")),
-					th({ class: 'statistics-table-number' }, _("Pending")),
-					th({ class: 'statistics-table-number' }, _("Ready for withdraw")),
-					th({ class: 'statistics-table-number' }, _("Withdrawn by user")),
-					th({ class: 'statistics-table-number' }, _("Rejected")),
-					th({ class: 'statistics-table-number' }, _("Sent back for correction"))
-				),
-				tbody({ onEmpty: tr(td({ class: 'empty', colspan: 7 },
-					_("No data for this criteria"))) }, Object.keys(result), function (key) {
-					return tr(
-						td(key),
-						list(Object.keys(result[key]), function (status) {
-							return td({ class: 'statistics-table-number' }, result[key][status]);
-						})
-					);
-				}));
-		}));
+			return div({ class: 'table-responsive-container overflow-x' },
+					table({ class: 'statistics-table submitted-user-data-table' },
+					thead(
+						th({ class: 'statistics-table-number fixed-first-cell' }, mode.labelNoun),
+						th({ class: 'statistics-table-number' }, _("Submitted")),
+						th({ class: 'statistics-table-number' }, _("Pending")),
+						th({ class: 'statistics-table-number' }, _("Ready for withdraw")),
+						th({ class: 'statistics-table-number' }, _("Withdrawn by user")),
+						th({ class: 'statistics-table-number' }, _("Rejected")),
+						th({ class: 'statistics-table-number' }, _("Sent back for correction"))
+					),
+					tbody({
+						onEmpty: tr(td({ class: 'empty', colspan: 7 },
+							_("No data for this criteria")))
+					}, Object.keys(result), function (key) {
+						return tr(
+							td(key),
+							list(Object.keys(result[key]), function (status) {
+								return td({ class: 'statistics-table-number' }, result[key][status]);
+							})
+						);
+					})));
+		})));
 };

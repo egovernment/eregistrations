@@ -13,11 +13,21 @@ module.exports = function (/* opts */) {
 	id           = opts.id || "mode-selection";
 	modeQuery    = location.query.get(name);
 
+	var modeMap = {};
+
+	modeQuery.on('change', function (ev) {
+		var val = ev.newValue || 'daily';
+		Object.keys(modeMap).forEach(function (key) {
+			modeMap[key].checked = (val === key ? 'checked' : null);
+			$.dispatchEvent(modeMap[key], 'change');
+		});
+	});
+
 	return div({ class: "input", id: id },
 		div({ class: "inline-button-radio" },
 			list(modes, function (mode, key) {
 				label(
-					input({
+					modeMap[key] = input({
 						type: "radio",
 						name: "mode",
 						value: key,

@@ -2,9 +2,12 @@
 
 'use strict';
 
-var hyphenToCamel    = require('es5-ext/string/#/hyphen-to-camel')
-  , matchUpload      = require('./utils/user-match-upload')
-  , matchCertificate = require('./utils/user-match-certificate');
+var hyphenToCamel                  = require('es5-ext/string/#/hyphen-to-camel')
+  , matchUpload                    = require('./utils/user-match-upload')
+  , matchFirstRequirementUpload    = require('./utils/user-match-first-requirement-upload')
+  , matchFirstPaymentReceiptUpload = require('./utils/user-match-first-payment-receipt-upload')
+  , matchFirstCertificate          = require('./utils/user-match-first-certificate')
+  , matchCertificate               = require('./utils/user-match-certificate');
 
 module.exports = {
 	// User routes
@@ -19,10 +22,27 @@ module.exports = {
 	// App routes
 	'/': {
 		decorateContext: function () {
-			var firstUpload = this.businessProcess.requirementUploads.dataSnapshot.resolved[0];
-			if (firstUpload) matchUpload.call(this, 'requirementUpload', firstUpload.uniqueKey);
+			if (matchFirstRequirementUpload.call(this)) return true;
+			if (matchFirstPaymentReceiptUpload.call(this)) return true;
+			if (matchFirstCertificate.call(this)) return true;
+
+			// Fallback to data
+			this.dataSnapshot = this.businessProcess.dataForms.dataSnapshot.resolved;
 		},
-		view: require('../view/business-process-submitted-document')
+		resolveView: function () {
+			if (this.documentUniqueKey) {
+				if (this.documentKind === 'requirementUpload') {
+					return require('../view/business-process-submitted-document');
+				}
+
+				if (this.documentKind === 'paymentReceiptUpload') {
+					return require('../view/business-process-submitted-payment');
+				}
+
+				return require('../view/business-process-submitted-certificate');
+			}
+			return require('../view/business-process-submitted-data');
+		}
 	},
 	'documents/[a-z][a-z0-9-]*': {
 		match: function (uniqueKey) {

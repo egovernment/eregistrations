@@ -106,7 +106,7 @@ module.exports = function (Target, typeName, currencies) {
 			}
 		},
 		staticConstraints: {
-			step: 1,
+			step: 0.01,
 			min: 0
 		}
 	});

@@ -1,0 +1,38 @@
+.tablesorter-default .header, .tablesorter-default .tablesorter-header {
+	cursor: pointer;
+}
+
+.tablesorter-default .header:focus,
+.tablesorter-default .tablesorter-header:focus {
+	outline: none;
+	visibility: visible;
+}
+
+.tablesorter thead tr th:after {
+	content: " ";
+	padding-left: 13px;
+}
+
+.tablesorter-default thead .headerSortUp::after,
+.tablesorter-default thead .tablesorter-headerAsc::after,
+.tablesorter-default thead .tablesorter-headerSortUp::after {
+	content: "\f0dd";
+	font: normal normal normal 14px/1 FontAwesome;
+	vertical-align: text-bottom;
+	line-height: 21px;
+	padding-left: 5px;
+}
+
+.tablesorter-default thead .headerSortDown::after,
+.tablesorter-default thead .tablesorter-headerDesc::after,
+.tablesorter-default thead .tablesorter-headerSortDown::after {
+	content: "\f0de";
+	font: normal normal normal 14px/1 FontAwesome;
+	vertical-align: text-bottom;
+	line-height: 10px;
+	padding-left: 5px;
+}
+
+.tablesorter-header-inner {
+	display: inline;
+}

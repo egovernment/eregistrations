@@ -1,10 +1,19 @@
 #!/usr/bin/env bash
 
-SOURCE_PATH=$(readlink -f "$1")
+if [[ "$OSTYPE" = darwin* ]]; then
+    if command -v greadlink >/dev/null 2>&1; then
+        SOURCE_PATH=$(greadlink -f "$1")
+    else
+        echo "Please install coreutils: brew install coreutils"
+        exit 1
+    fi
+else
+    SOURCE_PATH=$(readlink -f "$1")
+fi
 
 if [[ $SOURCE_PATH =~ 'eregistrations' ]]
 then
-	rsync -aAXv --delete --exclude={".git*",".lintcache","npm-debug.log","node_modules","log","tmp","env.json","env.js","view/prototype/index.generated.html","prototype/view/index.generated.html","i18n-scan-map.generated.json","common/client/env.json","prototype/public/prototype.css","prototype/public/prototype-legacy.css","prototype/public/prototype-print.css","prototype/public/prototype.js","prototype/public/prototype.legacy.js",".idea"} "$@"
+	rsync -aAXv --delete --filter={'+ .gitignore/','- .git*','- .lintcache','- npm-debug.log','- node_modules','- log','- tmp','- env.json','+ server/env.js','- env.js','- view/prototype/index.generated.html','- prototype/view/index.generated.html','- i18n-scan-map.generated.json','- common/client/env.json','- prototype/public/prototype.css','- prototype/public/prototype-legacy.css','- prototype/public/prototype-print.css','- prototype/public/prototype.js','- prototype/public/prototype.legacy.js','- .idea'} "$@"
 else
-	rsync -aAXv --exclude={".git*",".lintcache","npm-debug.log","node_modules"} "$@"
+	rsync -aAXv --exclude={'.git*','.lintcache','npm-debug.log','node_modules'} "$@"
 fi

@@ -8,6 +8,8 @@ var location             = require('mano/lib/client/location')
   , getQueryHandlerConf  = require('../../apps/statistics/get-query-conf')
   , getDurationDaysHours = require('../utils/get-duration-days-hours-fine-grain')
   , getDynamicUrl        = require('../utils/get-dynamic-url')
+  , dateFromToBlock      =
+	require('eregistrations/view/components/filter-bar/select-date-range-safe-fallback')
   , memoize              = require('memoizee');
 
 var queryServer = memoize(function (query) {
@@ -24,8 +26,9 @@ var mapDurationValue = function (value) {
 };
 
 module.exports = function (context) {
-	var data = {}, queryHandler, formAction;
+	var data = {}, queryHandler, formAction, user;
 	queryHandler = setupQueryHandler(getQueryHandlerConf(), location, '/');
+	user = context.user;
 
 	renderedProps.forEach(function (prop) {
 		data[prop] = new ObservableValue();
@@ -43,31 +46,26 @@ module.exports = function (context) {
 			renderedProps.forEach(function (prop) {
 				data[prop].value = null;
 			});
-			if (!result || !result.stepTotal) return;
+			if (!result || !result.rows.totalProcessing || !result.rows.totalProcessing.avgTime) return;
 			renderedProps.forEach(function (prop) {
-				if (result.processor && result.processor[prop]) {
-					data[prop].value = result.processor[prop];
+				if (result.rows[user.__id__] && result.rows[user.__id__].processing[prop]) {
+					data[prop].value = result.rows[user.__id__].processing[prop];
 				}
 				if (prop === 'totalAvgTime') {
-					data.totalAvgTime.value = result.stepTotal.avgTime;
+					data.totalAvgTime.value = result.rows.totalProcessing.avgTime;
 				}
 			});
 		}).done();
 	}, this);
-	return [section({ class: 'section-primary users-table-filter-bar' },
+	return [section({ class: 'first-out-of-section-element ' +
+		'date-period-selector-out-of-section-block' },
 		form({ action: formAction, autoSubmit: true },
-			div({ class: 'users-table-filter-bar-status' },
-				label({ for: 'date-from-input' }, _("Statistics date from"), ":"),
-				input({ id: 'date-from-input', type: 'date',
-					name: 'dateFrom', value: location.query.get('dateFrom') }),
-				label({ for: 'date-to-input' }, _("Statistics date to"), ":"),
-				input({ id: 'date-to-input', type: 'date',
-					name: 'dateTo', value: location.query.get('dateTo') })))),
+			dateFromToBlock())),
 		section({ class: 'table-responsive-container' },
 			table({ class: 'statistics-table statistics-table-officials' },
 				thead(
 					tr(
-						th(_("Files processed")),
+						th(_("Processing periods")),
 						th(_("Min time")),
 						th(_("Max time")),
 						th(_("Average time")),
@@ -75,8 +73,9 @@ module.exports = function (context) {
 					)
 				),
 				tbody(
-					tr(td({ colspan: 5 }, _("As processing time is properly recorded since 25th of October." +
-						" Below table only exposes data for files submitted after that day."))),
+					tr(td({ colspan: 5 },
+						_("As processing time is properly recorded since 1st of February 2017. " +
+							"Below table only exposes data for files submitted after that day."))),
 					tr(
 						td(data.timedCount.map(function (value) {
 							if (!value) return '-';

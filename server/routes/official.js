@@ -36,12 +36,10 @@ var aFrom                          = require('es5-ext/array/from')
   , getIndexMap                    = require('../utils/get-db-sort-index-map')
   , businessProcessStoragesPromise = require('../utils/business-process-storages')
   , idToStorage                    = require('../utils/business-process-id-to-storage')
-  , getData                        = require('../business-process-query/get-data')
-  , filterSteps                    = require('../business-process-query/steps/filter')
-  , reduceSteps                    = require('../business-process-query/steps/reduce-time')
   , statusLogPrintPdfRenderer      = require('../pdf-renderers/business-process-status-log-print')
   , getBaseRoutes                  = require('./authenticated')
   , processingStepsMeta            = require('../../processing-steps-meta')
+  , resolveTimePerPerson           = require('./utils/resolve-time-per-person')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps = function (a, b) { return a.stamp - b.stamp; }
@@ -49,8 +47,6 @@ var aFrom                          = require('es5-ext/array/from')
   , ceil = Math.ceil, create = Object.create
   , defineProperty = Object.defineProperty, stringify = JSON.stringify
   , businessProcessStorages, businessProcessStorageNames;
-
-var getReductionTemplate = require('../business-process-query/utils/get-time-reduction-template');
 
 businessProcessStoragesPromise.done(function (storages) {
 	businessProcessStorages = storages;
@@ -313,14 +309,8 @@ var initializeHandler = function (conf) {
 	};
 };
 
-var getStatsOverviewData = memoize(function (query, userId) {
-	return getData(mano.dbDriver)(function (data) {
-		data = reduceSteps(filterSteps(data, query), { mode: 'full' });
-		return {
-			processor: (data.byStepAndProcessor[query.step][userId] || getReductionTemplate()).processing,
-			stepTotal: data.byStep[query.step].processing
-		};
-	});
+var getStatsOverviewData = memoize(function (query) {
+	return resolveTimePerPerson(query);
 }, {
 	normalizer: function (args) {
 		return args[0].step + args[1]
@@ -416,12 +406,11 @@ module.exports = exports = function (mainConf/*, options */) {
 		'get-processing-time-data': function (query) {
 			if (!statsOverviewQueryHandler) return null;
 			return resolveHandler(this.req)(function (handler) {
-				var userId = this.req.$user;
 				if (!handler.roleName) return;
 				query.step = handler.roleName;
 
 				return statsOverviewQueryHandler.resolve(query)(function (query) {
-					return getStatsOverviewData(query, userId);
+					return getStatsOverviewData(query);
 				});
 			}.bind(this));
 		},

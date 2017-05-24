@@ -263,7 +263,57 @@ module.exports = memoize(function (db) {
 			}, this);
 			if (fields.length) result.fields = fields;
 			return result;
-		} }
+		} },
+		toWebServiceJSON: { type: db.Function, value: function (options) {
+			var fields = {}, opts = Object(options), db, excludeFiles;
+			db = this.database;
+			excludeFiles = opts && opts.excludeFiles;
+			this.filledPropertyNames.forEach(function (name) {
+				var data = this.master.resolveSKeyPath(name), descriptor = data.ownDescriptor
+				  , value, splitByPath, currentFieldScope, owner;
+				if (!data) return;
+				if (excludeFiles && db.File && db.NestedMap) {
+					owner = data.object;
+					while (owner) {
+						if (owner.constructor === db.NestedMap &&
+								owner.getItemType() === db.File) {
+							return;
+						}
+						owner = owner.owner;
+					}
+				}
+				splitByPath = name.split('/');
+				currentFieldScope = fields;
+				if (splitByPath.length > 1) {
+					splitByPath.forEach(function (segment, index) {
+						if (index === (splitByPath.length - 1)) return;
+						if (currentFieldScope[segment] == null) {
+							currentFieldScope[segment] = {};
+						}
+						currentFieldScope = currentFieldScope[segment];
+					});
+				}
+				if (!descriptor.isValueEmpty()) {
+					value = descriptor.fieldToWebServiceJSON();
+					currentFieldScope[value.name] = value.value;
+				}
+			}, this);
+
+			return fields;
+		} },
+		toMetaDataJSON: {
+			value: function (ignore) {
+				var result = [];
+				this.propertyNamesDeep.forEach(function (prop) {
+					var resolved = this.propertyMaster.resolveSKeyPath(prop);
+					if (resolved) {
+						result.push(resolved.ownDescriptor.fieldToMetaJSON());
+					}
+				}, this);
+
+				return result;
+			}
+		}
 	});
 	db.FormSection.prototype.inputOptions._descriptorPrototype_.nested = true;
 	db.FormSection.prototype.inputOptions._descriptorPrototype_.type   = db.Object;

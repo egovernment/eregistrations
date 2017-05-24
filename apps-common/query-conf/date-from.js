@@ -13,11 +13,10 @@ module.exports = {
 		}
 		if (!value) {
 			if (dateTo) {
-				return new db.Date(dateTo.getUTCFullYear(), dateTo.getUTCMonth(),
-						dateTo.getUTCDate() - 6);
+				return new db.Date(dateTo.getUTCFullYear(), 0);
 			}
-			// last week by default
-			return new db.Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - 6);
+			// current year by default
+			return new db.Date(now.getUTCFullYear(), 0);
 		}
 		dateFrom = dateStringtoDbDate(db, value);
 		if (dateFrom > now) {

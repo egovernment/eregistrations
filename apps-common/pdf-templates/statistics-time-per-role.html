@@ -16,7 +16,7 @@
 	<table>
 		<thead>
 		<th></th>
-		<th class="centered">${ e(_("Files processed")) }</th>
+		<th class="centered">${ e(_("Processing periods")) }</th>
 		<th class="centered">${ e(_("Average time")) }</th>
 		<th class="centered">${ e(_("Min time")) }</th>
 		<th class="centered">${ e(_("Max time")) }</th>
@@ -25,7 +25,7 @@
 		${
 			data.map(function (item) {
 				return '<tr><td>' + item.label + '</td><td class="centered">'
-				+ item.count + '</td><td class="centered">'
+				+ item.timedCount + '</td><td class="centered">'
 				+ item.avgTime + '</td><td class="centered">'
 				+ item.minTime + '</td><td class="centered">'
 				+ item.maxTime + '</td></tr>';

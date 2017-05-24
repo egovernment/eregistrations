@@ -2,7 +2,8 @@
 
 var aFrom                  = require('es5-ext/array/from')
   , Database               = require('dbjs')
-  , defineConstrainedValue = require('../../model/constrained-value');
+  , defineConstrainedValue = require('../../model/constrained-value')
+  , defineBase             = require('../../model/base');
 
 module.exports = function (t, a) {
 	var db = new Database()
@@ -13,6 +14,9 @@ module.exports = function (t, a) {
 	  , MasterType  = db.Object.extend('MasterType')
 
 	  , masterObject, nestedObject, section;
+
+	// needed for jsonification tests
+	defineBase(db);
 
 	// ------------------ Setup ------------------
 
@@ -396,4 +400,59 @@ module.exports = function (t, a) {
 		'readOnlyPropertyName',
 		'constrainedProperty',
 		'resolventProperty']);
+
+	// section unresoved
+	a.deep(section.toWebServiceJSON(), { resolventProperty: false });
+	masterObject.resolventProperty = true;
+	a.deep(section.toWebServiceJSON(),
+		{
+			resolventProperty: true,
+			notRequiredProperty: 1,
+			property: 1,
+			secondProperty: 1,
+			propertyWithDefaultValue: 'test value',
+			constrainedProperty: '1,500'
+		});
+
+	nestedObject.notRequiredProperty = 5;
+	a.deep(section.toWebServiceJSON(),
+		{
+			resolventProperty: true,
+			notRequiredProperty: 1,
+			property: 1,
+			secondProperty: 1,
+			propertyWithDefaultValue: 'test value',
+			constrainedProperty: '1,500',
+			nestedObject: {
+				notRequiredProperty: 5
+			}
+		});
+
+	nestedObject.define('otherNested', {
+		type: db.Object,
+		nested: true
+	});
+
+	nestedObject.otherNested.define('reallyNestedProp', {
+		type: db.Number
+	});
+
+	nestedObject.otherNested.reallyNestedProp = 8;
+	section.propertyNames.add('nestedObject/otherNested/reallyNestedProp');
+
+	a.deep(section.toWebServiceJSON(),
+		{
+			resolventProperty: true,
+			notRequiredProperty: 1,
+			property: 1,
+			secondProperty: 1,
+			propertyWithDefaultValue: 'test value',
+			constrainedProperty: '1,500',
+			nestedObject: {
+				notRequiredProperty: 5,
+				otherNested: {
+					reallyNestedProp: 8
+				}
+			}
+		});
 };

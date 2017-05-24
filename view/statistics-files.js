@@ -8,12 +8,16 @@ exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
 		ul({ id: 'statistics-sub-menu', class: 'pills-nav' }, [
-			li({ id: 'completed-files-nav' },
-				a({ href: '/files/', class: 'pills-nav-pill' }, _("Completed files"))),
-			li({ id: 'pending-files-nav' },
-				a({ href: '/files/pending/', class: 'pills-nav-pill' }, _("Pending files"))),
-			li({ id: 'accounts-nav' },
-				a({ href: '/files/accounts/', class: 'pills-nav-pill' }, _("Accounts")))
+			li({ class: 'bring-to-front', id: 'flow-by-certificate-nav' },
+				a({ href: '/files/', class: 'pills-nav-pill' }, _("Certificates"))),
+			li({ class: 'bring-to-front', id: 'flow-by-role-nav' },
+				a({ href: '/files/by-role/', class: 'pills-nav-pill' }, _("Roles"))),
+			li({ class: 'bring-to-front', id: 'flow-by-operator-nav' },
+				a({ href: '/files/by-operator/', class: 'pills-nav-pill' }, _("Roles / operators"))),
+			li({ class: 'bring-to-front', id: 'pending-files-nav' },
+				a({ href: '/files/pending/', class: 'pills-nav-pill' }, _("Pending"))),
+			li({ class: 'bring-to-front', id: 'files-details-nav' },
+				a({ href: '/files/details/', class: 'pills-nav-pill' }, _("Details")))
 		]);
 		div({ class: 'statistics-main blocks-container', id: 'statistics-main' });
 	}

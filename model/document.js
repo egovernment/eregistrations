@@ -15,7 +15,8 @@ var Map                     = require('es6-map')
   , defineNestedMap         = require('./lib/nested-map')
   , definePerson            = require('./person')
   , defineGetTranslations   = require('./lib/define-get-translations')
-  , defineStatusHistoryItem = require('./lib/status-history-item');
+  , defineStatusHistoryItem = require('./lib/status-history-item')
+  , defineToWSJSONPrettyData = require('./lib/define-to-ws-json-pretty-data');
 
 module.exports = memoize(function (db) {
 	var StringLine       = defineStringLine(db)
@@ -129,6 +130,40 @@ module.exports = memoize(function (db) {
 		isReleased: { type: db.Boolean, value: function () {
 			return this.status === 'approved';
 		} },
+		toWebServiceJSON: {
+			value: function (ignore) {
+				var data = {
+					code: this.key,
+					files: [],
+					data: null
+				}, owner, db;
+				db = this.database;
+				if (this.dataForm.constructor !== this.database.FormSectionBase) {
+					data.data = this.toWebServiceJSONPrettyData(
+						this.dataForm.toWebServiceJSON({ excludeFiles: true })
+					);
+				}
+				this.files.ordered.forEach(function (file) {
+					data.files.push({
+						url: file.url
+					});
+				});
+
+				if (db.MultipleProcess) {
+					owner = this.owner;
+					while (owner) {
+						if (owner instanceof db.MultipleProcess) {
+							data.owner = owner.owner.__id__;
+							owner = null;
+						} else {
+							owner = owner.owner;
+						}
+					}
+				}
+
+				return data;
+			}
+		},
 		// Used for preservation in data snapshots
 		toJSON: { value: function (ignore) {
 			var data = {
@@ -172,6 +207,7 @@ module.exports = memoize(function (db) {
 		abbr: { type: StringLine }
 	});
 
+	defineToWSJSONPrettyData(Document.prototype);
 	defineNestedMap(db);
 	// Map of uploaded files
 	// Document.prototype.files.map property should be used *only* to generate form controls

@@ -34,6 +34,10 @@ exports._disableCondition = function () {
 	return not(eq(this.businessProcess._guideProgress, 1));
 };
 
-exports._nextSectionUrl = function () { return '/documents/'; };
+exports._nextSectionUrl = function () {
+	return _if(eq(this.businessProcess.requirementUploads.applicable._size, 0),
+		_if(eq(this.businessProcess.costs._paymentWeight, 0), '/submission/', '/pay/'),
+		'/documents/');
+};
 
 exports._match = 'section';

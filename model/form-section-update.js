@@ -141,7 +141,26 @@ module.exports = memoize(function (db) {
 				result.sections = [this.sourceSection.toJSON()];
 			}
 			return result;
-		} }
+		} },
+		toWebServiceJSON: { value: function (ignore) {
+			var fields = [], resolventDescriptor;
+			if (this.resolventProperty) {
+				resolventDescriptor = this.master.resolveSKeyPath(this.resolventProperty).ownDescriptor;
+				if (!resolventDescriptor.isValueEmpty()) {
+					fields.push(resolventDescriptor.fieldToWebServiceJSON());
+				}
+			}
+			if (!this.isUnresolved && this.sourceSection.hasFilledPropertyNamesDeep) {
+				fields = fields.concat(this.toWebServiceJSON());
+			}
+
+			return fields;
+		} },
+		toMetaDataJSON: {
+			value: function (ignore) {
+				return this.sourceSection.toMetaDataJSON();
+			}
+		}
 	}, {
 		updateSectionPostfix: {
 			type: StringLine,

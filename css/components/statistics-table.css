@@ -13,19 +13,23 @@
 	text-align: left;
 }
 
+.statistics-table tbody tr .no-padding {
+	padding: 0;
+}
+
 .statistics-table thead tr .statistics-table-info,
 .statistics-table tbody tr .statistics-table-info {
 	text-align: center;
 }
 .statistics-table thead tr .statistics-table-number,
 .statistics-table tbody tr .statistics-table-number {
-	text-align: right;
+	text-align: left;
 }
 
 .statistics-table thead th {
 	color: var(--dark-text);
 	padding: 11px 6px 10px;
-	text-align: center;
+	text-align: left;
 	font-weight: 100;
 	font-size: 15px;
 	border:none;
@@ -71,7 +75,7 @@
 	margin-right: 0;
 }
 
-.statistics-table tbody tr td {
+.statistics-table>tbody>tr>td {
 	border-bottom: 1px solid var(--light-inner-border);
 	background: var(--white-background);
 }
@@ -118,4 +122,20 @@
 
 .statistics-table-sensitive-data {
 	color: var(--error-text);
+}
+
+.fixed-first-cell {
+	width: 200px;
+}
+
+.fixed-first-cell {
+	width: 200px;
+}
+
+.statistics-flow-roles-table{
+	width: 1500px;
+}
+
+.statistics-flow-roles-table .statistics-table-number:first-child{
+	width: 200px;
 }

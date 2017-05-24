@@ -256,6 +256,12 @@ exports.stepMetaMap = {
 };
 
 exports.businessProcessMetaMap = {
+	businessName: {
+		type: 'computed',
+		validate: function (record) { return (record.value[0] === '3'); },
+		set: function (data, record) { data.businessName = record.value.slice(1); },
+		delete: function (data) { delete data.businessName; }
+	},
 	correctionTime: {
 		validate: function (record) { return (record.value[0] === '2'); },
 		set: function (data, record) { data.correctionTime = unserializeValue(record.value); },
@@ -270,6 +276,17 @@ exports.businessProcessMetaMap = {
 		delete: function (data) {
 			delete data.approvedDateTime;
 			delete data.approvedDate;
+		}
+	},
+	isRejected: {
+		validate: function (record) { return (record.value === '11'); },
+		set: function (data, record) {
+			data.rejectedDateTime = new Date(record.stamp / 1000);
+			data.rejectedDate = toDateInTz(data.rejectedDateTime, timeZone);
+		},
+		delete: function (data) {
+			delete data.rejectedDateTime;
+			delete data.rejectedDate;
 		}
 	},
 	isDemo: {

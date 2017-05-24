@@ -37,31 +37,31 @@ module.exports = exports = function (config) {
 	getData(driver).done();
 
 	return assign({
-		'get-data': function (query) {
-			return queryHandler.resolve(query)(function (query) {
-				return getData(driver);
-			})(function (data) {
-				var fullSize;
+		'get-data': function (unresolvedQuery) {
+			return queryHandler.resolve(unresolvedQuery)(function (query) {
+				return getData(driver)(function (data) {
+					var fullSize;
 
-				data = sortData(
-					filterBusinessProcesses(data.businessProcesses, query),
-					function (bpA, bpB) {
-						return bpA.createdDateTime.getTime() - bpB.createdDateTime.getTime();
+					data = sortData(
+						filterBusinessProcesses(data.businessProcesses, query),
+						function (bpA, bpB) {
+							return bpA.createdDateTime - bpB.createdDateTime;
+						}
+					);
+
+					if (!data.length) {
+						return { size: 0, view: [] };
 					}
-				);
 
-				if (!data.length) {
-					return { size: 0, view: [] };
-				}
+					fullSize = data.length;
 
-				fullSize = data.length;
+					data = getPage(data, query.page);
 
-				data = getPage(data, query.page);
+					return getViewRecords(data, listProperties, listComputedProperties)(function (result) {
+						result.size = fullSize;
 
-				return getViewRecords(data, listProperties, listComputedProperties)(function (result) {
-					result.size = fullSize;
-
-					return result;
+						return result;
+					});
 				});
 			});
 		},

@@ -122,6 +122,39 @@ module.exports = memoize(function (db) {
 			}
 			return result;
 		} },
+		toWebServiceJSON: { value: function (ignore) {
+			var fields = {}, resolventDescriptor, wsValue, sectionFields;
+			if (this.resolventProperty) {
+				resolventDescriptor = this.master.resolveSKeyPath(this.resolventProperty).ownDescriptor;
+				if (!resolventDescriptor.isValueEmpty()) {
+					wsValue = resolventDescriptor.fieldToWebServiceJSON();
+					fields[wsValue.name] = wsValue.value;
+				}
+			}
+			if (!this.isUnresolved) {
+				this.internallyApplicableSections.forEach(function (section) {
+					if (section.hasFilledPropertyNamesDeep) {
+						sectionFields = section.toWebServiceJSON();
+						Object.keys(sectionFields).forEach(function (fieldName) {
+							fields[fieldName] = sectionFields[fieldName];
+						});
+					}
+				});
+			}
+
+			return fields;
+		} },
+
+		toMetaDataJSON: {
+			value: function (ignore) {
+				var result = [];
+				this.sections.forEach(function (section) {
+					result = result.concat(section.toMetaDataJSON());
+				}, this);
+
+				return result;
+			}
+		},
 		hasSplitForms: {
 			type: db.Boolean,
 			value: false
