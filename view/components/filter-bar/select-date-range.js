@@ -12,6 +12,7 @@
 	'ipt data-spa crossorigin defer src="/js/jquery.comiseo.daterangepicker.js"></sc' + 'ript>');
 	*/
 var _ = require('mano').i18n.bind('Daterange')
+  , db = require('../../../db')
   , dateFrom = require('./select-date-from')
   , dateTo = require('./select-date-to')
   , location = require('mano/lib/client/location')
@@ -121,16 +122,24 @@ module.exports = function (/* opts */) {
 		});
 
 		var path = location.pathname;
-		location.on('change', function () {
-			if (location.pathname !== path) {
-				path = location.pathname;
-				if (elem) {
-					elem.daterangepicker("setRange", {
-						start: stringToDate(jQuery('#startId').val()),
-						end: stringToDate(jQuery('#endId').val())
-					});
-				}
-			}
+
+		location._pathname.on('change', function (ev) {
+			if (path !== ev.newValue) return;
+			location.query.get('dateFrom').map(function (dateFrom) {
+				location.query.get('dateTo').map(function (dateTo) {
+					var now = new db.Date(), defaultDateFrom, defaultDateTo;
+					if (dateFrom || dateTo) return;
+					defaultDateFrom = new db.Date(now.getUTCFullYear(), 0, 1);
+					defaultDateTo = new db.Date(now.getUTCFullYear(), now.getUTCMonth(),
+						now.getUTCDate());
+					if (elem) {
+						elem.daterangepicker("setRange", {
+							start: stringToDate(defaultDateFrom.toISOString().slice(0, 10)),
+							end: stringToDate(defaultDateTo.toISOString().slice(0, 10))
+						});
+					}
+				});
+			});
 		});
 	});
 
