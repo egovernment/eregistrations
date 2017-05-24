@@ -54,6 +54,22 @@ module.exports = memoize(function (db) {
 					}
 				};
 			}
+		},
+		toWSSchema: {
+			value: function (ignore) {
+				return {
+					type: "object",
+					properties: {
+						code: {
+							type: "enum",
+							ref: "costs"
+						},
+						amount: {
+							type: "number"
+						}
+					}
+				};
+			}
 		}
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
