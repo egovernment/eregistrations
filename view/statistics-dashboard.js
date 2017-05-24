@@ -431,7 +431,6 @@ exports['sub-main'] = {
 			queryServer(serverQuery).done(function (data) {
 				updateChartsData(data.chartsResult, query);
 				filesCompletedData.value = data.filesCompleted;
-				console.log('MY DATA', data.approvedCertsResult);
 			});
 		});
 
