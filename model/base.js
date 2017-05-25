@@ -65,7 +65,8 @@ module.exports = memoize(function (db) {
 		isEmpty: { type: db.Function },
 		toJSON: { type: db.Function },
 		toWebServiceJSON: { type: db.Function },
-		toWebServiceJSONPrettyData: { type: db.Function }
+		toWebServiceJSONPrettyData: { type: db.Function },
+		toWSSchema: { type: db.Function }
 	});
 
 	db.Base.defineProperties({
