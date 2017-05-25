@@ -168,6 +168,15 @@ module.exports = memoize(function (db) {
 					return section instanceof db.FormEntitiesTable;
 				});
 			}
+		},
+		toWSSchema: {
+			value: function (ignore) {
+				var schema = {};
+				this.sections.forEach(function (section) {
+					schema[section.label] = section.toWSSchema();
+				}, this);
+				return schema;
+			}
 		}
 	});
 	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSectionBase;
