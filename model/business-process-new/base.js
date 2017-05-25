@@ -169,6 +169,47 @@ module.exports = memoize(function (db/*, options*/) {
 
 				return fields;
 			}
+		},
+		toWSSchema: {
+			value: function (ignore) {
+				var schema, db;
+				db = this.database;
+				schema = {
+					typeName: this.__id__,
+					properties: {
+						id: {type: "string"},
+						service: {type: "enum", ref: "services"},
+						submittedTimestamp: {type: "timestamp"},
+						processingSteps: { type: "object", properties: {}},
+						request: {
+							type: "object",
+							properties: {
+								registrations: {},
+								documentUploads: {},
+								costs: {},
+								payments: {},
+								certificates: {},
+								data: {}
+							}
+						}
+					}
+				};
+
+
+				this.processingSteps.map.forEach(function self(processingStep) {
+					if (db.ProcessingStepGroup && processingStep instanceof db.ProcessingStepGroup) {
+						processingStep.steps.applicable.forEach(self);
+						return;
+					}
+					schema.processingSteps.properties[processingStep.key] = processingStep.toWebServiceJSON();
+				});
+
+				schema.properties.request.properties.registrations = this.registrations.map.first.toWSSchema();
+				schema.properties.request.properties.costs = this.costs.map.first.toWSSchema();
+
+				//todo other properties
+				return schema;
+			}
 		}
 	}, {
 		draftLimit: { type: UInteger, value: 20 }
