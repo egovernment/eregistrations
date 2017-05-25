@@ -626,7 +626,7 @@ module.exports = function (config) {
 							});
 						});
 					}).then(function () {
-						var approvedCertsResult = [];
+						var approvedCertsResult = [], total = [_("Total")];
 						db.BusinessProcess.extensions.forEach(function (BpType) {
 							var serviceName =
 								uncapitalize.call(BpType.__id__.replace('BusinessProcess', ''));
@@ -638,16 +638,22 @@ module.exports = function (config) {
 											!periods[key][serviceName].certificate[cert.key] ||
 											!periods[key][serviceName].certificate[cert.key].approved) {
 										approvedCertsResultItem.push(0);
-										return;
+									} else {
+										approvedCertsResultItem.push(
+											periods[key][serviceName].certificate[cert.key].approved
+										);
 									}
-									approvedCertsResultItem.push(
-										periods[key][serviceName].certificate[cert.key].approved
-									);
+									if (!total[approvedCertsResultItem.length - 2]) {
+										total[approvedCertsResultItem.length - 2] = 0;
+									}
+									total[approvedCertsResultItem.length - 2] +=
+										Number(approvedCertsResultItem.slice(-1));
 								});
 								approvedCertsResult.push(approvedCertsResultItem);
 							});
 						});
-						result.approvedCertsResult = approvedCertsResult;
+						result.approvedCertsData = approvedCertsResult;
+						result.approvedCertsData.push(total);
 						return result;
 					});
 				});
