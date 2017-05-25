@@ -86,6 +86,22 @@ module.exports = memoize(function (db/*, options*/) {
 					return _observe(certificate._isElectronic);
 				});
 			}
+		},
+		toWSSchema: {
+			value: function (ignore) {
+				return {
+					type: "array",
+					items: {
+						type: "object",
+						properties: {
+							code: {
+								type: "enum",
+								ref: "registrations"
+							}
+						}
+					}
+				};
+			}
 		}
 	});
 

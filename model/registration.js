@@ -49,22 +49,6 @@ module.exports = memoize(function (db) {
 		costs: {
 			type: StringLine,
 			multiple: true
-		},
-		toWSSchema: {
-			value: function (ignore) {
-				return {
-					type: "array",
-					items: {
-						type: "object",
-						properties: {
-							code: {
-								type: "enum",
-								ref: "registrations"
-							}
-						}
-					}
-				};
-			}
 		}
 	}, {
 		Document: { type: db.Base }, // It should be a type: Type, but can't be defined like that now
