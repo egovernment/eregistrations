@@ -179,6 +179,28 @@ module.exports = memoize(function (db) {
 
 				return data;
 			}
+		},
+		toWSSchema: {
+			value: function (ignore) {
+				var schema = {
+					type: "object",
+					label: this.label,
+					properties: {
+						status: {
+							type: "enum",
+							ref: "ProcessingStepStatus"
+						},
+						statusTimestamp: {
+							type: "timestamp"
+						},
+						data: {}
+					}
+				};
+				if (this.dataForm.constructor !== this.database.FormSectionBase) {
+					schema.properties.data = this.dataForm.toWSSchema();
+				}
+				return schema;
+			}
 		}
 	});
 
