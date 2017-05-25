@@ -595,7 +595,7 @@ module.exports = function (config) {
 							if (key === 'thisMonth') {
 								return calculateStatusEventsSums(new db.Date(today.getUTCFullYear(),
 									today.getUTCMonth(), 1), query.dateTo).then(function (res) {
-									periods[key] = res;
+									periods.thisMonth = res;
 								});
 							}
 							if (key === 'thisWeek') {
@@ -603,26 +603,26 @@ module.exports = function (config) {
 									today.getUTCMonth(),
 									today.getUTCDate() - ((6 + today.getUTCDay()) % 7)),
 									query.dateTo).then(function (res) {
-									periods[key] = res;
+									periods.thisWeek = res;
 								});
 							}
 							if (key === 'today') {
 								return calculateStatusEventsSums(today, today).then(function (res) {
-									periods[key] = res;
+									periods.today = res;
 								});
 							}
 							if (key === 'inPeriod') {
 								return calculateStatusEventsSums(query.dateFrom,
 									query.dateTo).then(function (res) {
-									periods[key] = res;
+									periods.inPeriod = res;
 								});
 							}
 							var currentYear = new db.Date(key, 0, 1);
 							return calculateStatusEventsSums(
-								new db.Date(currentYear.getUTCFullYear(), 0, 1),
+								currentYear,
 								new db.Date(currentYear.getUTCFullYear(), 11, 31)
 							).then(function (res) {
-								periods[currentYear.getUTCFullYear()] = res;
+								periods[key] = res;
 							});
 						});
 					}).then(function () {
@@ -632,7 +632,7 @@ module.exports = function (config) {
 								uncapitalize.call(BpType.__id__.replace('BusinessProcess', ''));
 							BpType.prototype.certificates.map.forEach(function (cert) {
 								var approvedCertsResultItem = [BpType.prototype.label, cert.abbr];
-								Object.keys(periods).forEach(function (key) {
+								getPeriods().forEach(function (key) {
 									if (!periods[key][serviceName] ||
 											!periods[key][serviceName].certificate ||
 											!periods[key][serviceName].certificate[cert.key] ||
