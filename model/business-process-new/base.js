@@ -195,7 +195,6 @@ module.exports = memoize(function (db/*, options*/) {
 					}
 				};
 
-
 				this.processingSteps.map.forEach(function self(processingStep) {
 					if (db.ProcessingStepGroup && processingStep instanceof db.ProcessingStepGroup) {
 						processingStep.steps.applicable.forEach(self);
