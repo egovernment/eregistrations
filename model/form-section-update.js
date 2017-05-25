@@ -163,8 +163,8 @@ module.exports = memoize(function (db) {
 		},
 		toWSSchema: {
 			value: function (ignore) {
-				// method is not for instance-only logic as is this class.
-				throw new Error("toWSSchema not implemented for " + this.__id__);
+				// method is not for instance-only logic as is this class. Use fallback.
+				return this.sourceSection.toWSSchema();
 			}
 		}
 	}, {
