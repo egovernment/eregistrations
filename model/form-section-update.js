@@ -160,6 +160,13 @@ module.exports = memoize(function (db) {
 			value: function (ignore) {
 				return this.sourceSection.toMetaDataJSON();
 			}
+		},
+		toWSSchema: {
+			value: function (ignore) {
+				// method is not for instance-only logic as is this class.
+				throw new Error("toWSSchema not implemented for " + this.__id__);
+
+			}
 		}
 	}, {
 		updateSectionPostfix: {

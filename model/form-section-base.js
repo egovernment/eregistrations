@@ -299,6 +299,11 @@ module.exports = memoize(function (db) {
 			value: function (opts) {
 				return [];
 			}
+		},
+		toWSSchema: {
+			value: function (ignore) {
+				throw new Error("toWSSchema not implemented for " + this.__id__);
+			}
 		}
 	});
 
