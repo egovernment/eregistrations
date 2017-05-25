@@ -177,10 +177,10 @@ module.exports = memoize(function (db/*, options*/) {
 				schema = {
 					typeName: this.__id__,
 					properties: {
-						id: {type: "string"},
-						service: {type: "enum", ref: "services"},
-						submittedTimestamp: {type: "timestamp"},
-						processingSteps: { type: "object", properties: {}},
+						id: { type: "string" },
+						service: { type: "enum", ref: "services" },
+						submittedTimestamp: { type: "timestamp" },
+						processingSteps: { type: "object", properties: {} },
 						request: {
 							type: "object",
 							properties: {
