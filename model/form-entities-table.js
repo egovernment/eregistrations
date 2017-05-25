@@ -275,6 +275,11 @@ module.exports = memoize(function (db) {
 
 				return result;
 			}
+		},
+		toWSSchema: {
+			value: function (ignore) {
+				return {};//TODO
+			}
 		}
 	});
 
