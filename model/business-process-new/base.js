@@ -201,11 +201,14 @@ module.exports = memoize(function (db/*, options*/) {
 						processingStep.steps.applicable.forEach(self);
 						return;
 					}
-					schema.processingSteps.properties[processingStep.key] = processingStep.toWebServiceJSON();
+					schema.processingSteps.properties[processingStep.key] =
+						processingStep.toWebServiceJSON();
 				});
 
-				schema.properties.request.properties.registrations = this.registrations.map.first.toWSSchema();
-				schema.properties.request.properties.costs = this.costs.map.first.toWSSchema();
+				schema.properties.request.properties.registrations =
+					this.registrations.map.first.toWSSchema();
+				schema.properties.request.properties.costs =
+					this.costs.map.first.toWSSchema();
 
 				//todo other properties
 				return schema;
