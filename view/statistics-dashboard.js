@@ -21,6 +21,7 @@ var assign              = require('es5-ext/object/assign')
   , toArray             = require('es5-ext/object/to-array')
   , toDateInTz          = require('../utils/to-date-in-time-zone')
   , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
+  , approvedCertsPeriods = []
   , completedFilesPeriods = [
 	{ name: 'inPeriod', label: _("Period") },
 	{ name: 'today', label: _("Today") },
@@ -39,6 +40,8 @@ while (currentYear >= lastYearInRange) {
 	});
 	currentYear.setUTCFullYear(currentYear.getUTCFullYear() - 1);
 }
+approvedCertsPeriods = completedFilesPeriods.slice(0);
+approvedCertsPeriods.splice(0, 0, { name: 'certificate', label: _("Certificate") });
 
 exports._servicesColors  = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
 exports._stepsColors     = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
@@ -69,7 +72,7 @@ exports._commonOptions = {
 
 var getTimeBreakdownTable = function (bpData) {
 	return table(
-		{ class: 'statistics-table statistics-table-registrations' },
+		{ id: 'files-completed', class: 'statistics-table statistics-table-registrations' },
 		thead(tr(
 			th({ class: 'statistics-table-header-waiting' }, _("Service")),
 			list(completedFilesPeriods, function (period) {
@@ -99,6 +102,36 @@ var getTimeBreakdownTable = function (bpData) {
 						})
 					)
 				];
+			})
+		)
+	);
+};
+
+var getApprovedCertificatesTable = function (certData) {
+	return table(
+		{ id: 'approved-certificates', class: 'statistics-table statistics-table-registrations' },
+		thead(tr(
+			th({ class: 'statistics-table-header-waiting' }, _("Service")),
+			list(approvedCertsPeriods, function (period) {
+				return th({ class: 'statistics-table-number' }, period.label);
+			})
+		)),
+		tbody(
+			mmap(certData, function (rows) {
+				if (!rows) return;
+
+				return list(rows, function (row, index) {
+					return tr(list(row, function (cell, innerIndex) {
+						// if total
+						if (index === (rows.length - 1)) {
+							if (innerIndex === 0) {
+								return td({ class: 'statistics-table-number', colspan: 2 }, cell);
+							}
+						}
+						return td({ class: 'statistics-table-number' }, cell);
+					}
+						));
+				});
 			})
 		)
 	);
@@ -413,7 +446,8 @@ exports['dashboard-nav'] = { class: { 'submitted-menu-item-active': true } };
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
-		var queryHandler, filesCompletedData = new ObservableValue();
+		var queryHandler, filesCompletedData = new ObservableValue()
+		  , approvedCertsData = new ObservableValue();
 		getStepLabelByShortPath = getStepLabelByShortPath(this.processingStepsMeta);
 
 		queryHandler = setupQueryHandler(getQueryHandlerConf({
@@ -431,6 +465,7 @@ exports['sub-main'] = {
 			queryServer(serverQuery).done(function (data) {
 				updateChartsData(data.chartsResult, query);
 				filesCompletedData.value = data.filesCompleted;
+				approvedCertsData.value  = data.approvedCertsData;
 			});
 		});
 
@@ -440,6 +475,7 @@ exports['sub-main'] = {
 				p({ class: 'submit' }, input({ type: 'submit' }))));
 
 		getTimeBreakdownTable(filesCompletedData);
+		getApprovedCertificatesTable(approvedCertsData);
 
 		section({ class: "section-primary" },
 			h3(_("Files completed per time range")),
@@ -512,6 +548,7 @@ exports['sub-main'] = {
 			if (document.on) document.on('statistics-chart-update', reloadCharts);
 		}, observableResult);
 
-		initTableSortingOnClient('.statistics-table-registrations');
+		initTableSortingOnClient('#files-completed');
+		initTableSortingOnClient('#approved-certificates');
 	}
 };
