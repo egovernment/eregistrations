@@ -72,7 +72,7 @@ exports._commonOptions = {
 
 var getTimeBreakdownTable = function (bpData) {
 	return table(
-		{ class: 'statistics-table statistics-table-registrations' },
+		{ id: 'files-completed', class: 'statistics-table statistics-table-registrations' },
 		thead(tr(
 			th({ class: 'statistics-table-header-waiting' }, _("Service")),
 			list(completedFilesPeriods, function (period) {
@@ -109,7 +109,7 @@ var getTimeBreakdownTable = function (bpData) {
 
 var getApprovedCertificatesTable = function (certData) {
 	return table(
-		{ class: 'statistics-table statistics-table-registrations' },
+		{ id: 'approved-certificates', class: 'statistics-table statistics-table-registrations' },
 		thead(tr(
 			th({ class: 'statistics-table-header-waiting' }, _("Service")),
 			list(approvedCertsPeriods, function (period) {
@@ -548,6 +548,7 @@ exports['sub-main'] = {
 			if (document.on) document.on('statistics-chart-update', reloadCharts);
 		}, observableResult);
 
-		initTableSortingOnClient('.statistics-table-registrations');
+		initTableSortingOnClient('#files-completed');
+		initTableSortingOnClient('#approved-certificates');
 	}
 };
