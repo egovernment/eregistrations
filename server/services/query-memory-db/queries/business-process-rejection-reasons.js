@@ -38,7 +38,7 @@ module.exports = exports = function (db) {
 				path: null,
 				label: null
 			},
-			occurrencesCount: 0,
+			occurrencesCount: 1,
 			date: {
 				ts: null,
 				date: null
