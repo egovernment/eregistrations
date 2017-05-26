@@ -122,7 +122,7 @@ var businessProcessQueryHandler = new QueryHandler([{
 }]);
 
 var getPeriods = function () {
-	var periods = ['inPeriod', 'thisMonth', 'thisWeek', 'today']
+	var periods = ['inPeriod', 'today', 'thisWeek', 'thisMonth']
 	  , today = toDateInTz(new Date(), db.timeZone)
 	  , currentYear = new db.Date(today.getUTCFullYear(), 0, 1)
 	  , lastYearInRange = new db.Date(today.getUTCFullYear() - 5, 0, 1);
@@ -595,7 +595,7 @@ module.exports = function (config) {
 							if (key === 'thisMonth') {
 								return calculateStatusEventsSums(new db.Date(today.getUTCFullYear(),
 									today.getUTCMonth(), 1), query.dateTo).then(function (res) {
-									periods.thisMonth = res;
+									periods[key] = res;
 								});
 							}
 							if (key === 'thisWeek') {
@@ -603,18 +603,18 @@ module.exports = function (config) {
 									today.getUTCMonth(),
 									today.getUTCDate() - ((6 + today.getUTCDay()) % 7)),
 									query.dateTo).then(function (res) {
-									periods.thisWeek = res;
+									periods[key] = res;
 								});
 							}
 							if (key === 'today') {
 								return calculateStatusEventsSums(today, today).then(function (res) {
-									periods.today = res;
+									periods[key] = res;
 								});
 							}
 							if (key === 'inPeriod') {
 								return calculateStatusEventsSums(query.dateFrom,
 									query.dateTo).then(function (res) {
-									periods.inPeriod = res;
+									periods[key] = res;
 								});
 							}
 							var currentYear = new db.Date(key, 0, 1);
