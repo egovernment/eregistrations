@@ -44,7 +44,7 @@ Date map layout:
 		withdrawn: sum,
 		// 2.6 On business process - At rejected
 		rejected: sum,
-		// Notice: Not on business process, but on actual certificate approved
+		// 2.7 Notice: Not on business process, but on actual certificate approved
 		approved: sum
 	},
 	// Processing step stauses: pending, paused, sentBack, rejected, approved, redelegated
@@ -225,6 +225,7 @@ var getDateMap = function (data, statusHistoryData) {
 				var logStauts = statusHistoryLog.status
 				  , logDate   = statusHistoryLog.date;
 
+				// 2.7 [date][serviceName].certificate[certificateName].approved
 				if (logStauts === 'approved') {
 					getCertificateDataset(logDate)[logStauts]++;
 				}
