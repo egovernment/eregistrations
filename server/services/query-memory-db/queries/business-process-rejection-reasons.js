@@ -78,6 +78,11 @@ module.exports = exports = function (db) {
 				result.rejectionReasons.push(
 					rejectionReason('processingStep', ['other'], otherValue, '')
 				);
+			} else if (processStep.customRejectionReasons.size) {
+				result.rejectionReasons.push(
+					rejectionReason('processingStep', ['other'],
+						processStep.customRejectionReasons.toArray().join(', '), '')
+				);
 			}
 			return true;
 		});
