@@ -43,7 +43,9 @@ Date map layout:
 		// 2.5 On business process - At withdrawn or closed
 		withdrawn: sum,
 		// 2.6 On business process - At rejected
-		rejected: sum
+		rejected: sum,
+		// 2.7 Notice: Not on business process, but on actual certificate approved
+		approved: sum
 	},
 	// Processing step stauses: pending, paused, sentBack, rejected, approved, redelegated
 	processingStep[stepName]: {
@@ -103,7 +105,7 @@ var getDateMap = function (data, statusHistoryData) {
 
 		if (!dataset.certificate[certificateName]) {
 			dataset.certificate[certificateName] = { pending: { at: [], start: [], end: [] },
-				pickup: [], sentBack: [], submitted: 0, withdrawn: 0, rejected: 0 };
+				pickup: [], sentBack: [], submitted: 0, withdrawn: 0, rejected: 0, approved: 0 };
 		}
 
 		return dataset.certificate[certificateName];
@@ -222,6 +224,11 @@ var getDateMap = function (data, statusHistoryData) {
 			certificateStatusHistoryLogs.forEach(function (statusHistoryLog) {
 				var logStauts = statusHistoryLog.status
 				  , logDate   = statusHistoryLog.date;
+
+				// 2.7 [date][serviceName].certificate[certificateName].approved
+				if (logStauts === 'approved') {
+					getCertificateDataset(logDate)[logStauts]++;
+				}
 
 				if (logStauts === 'pending') {
 					if (!pendingStartDate) pendingStartDate = logDate;

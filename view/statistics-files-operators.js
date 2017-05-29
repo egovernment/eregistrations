@@ -22,10 +22,10 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , getDynamicUrl           = require('./utils/get-dynamic-url');
 
-exports._parent        = require('./statistics-flow');
+exports._parent        = require('./statistics-files');
 exports._customFilters = Function.prototype;
 
-exports['flow-nav']             = { class: { 'submitted-menu-item-active': true } };
+exports['files-nav']             = { class: { 'submitted-menu-item-active': true } };
 exports['flow-by-operator-nav'] = { class: { 'pills-nav-active': true } };
 
 var serviceToCertLegacyMatch = { '': [] };
@@ -48,10 +48,10 @@ db.BusinessProcess.extensions.forEach(function (ServiceType) {
 
 exports['statistics-main'] = function () {
 	var queryHandler, data = new ObservableValue({})
-	  , pagination = new Pagination('/flow/by-operator/'), params;
+	  , pagination = new Pagination('/files/by-operator/'), params;
 
 	queryHandler = setupQueryHandler(queryHandlerConf,
-		location, '/flow/by-operator/');
+		location, '/files/by-operator/');
 
 	params = queryHandler._handlers.map(function (handler) {
 		return handler.name;
@@ -76,7 +76,7 @@ exports['statistics-main'] = function () {
 	});
 
 	div({ class: 'block-pull-up' },
-		form({ action: '/flow/by-operator/', autoSubmit: true },
+		form({ action: '/files/by-operator/', autoSubmit: true },
 			section({ class: 'date-period-selector-positioned-on-submenu' }, dateFromToBlock()),
 			section({ class: 'section-primary users-table-filter-bar display-flex flex-wrap' },
 				div(

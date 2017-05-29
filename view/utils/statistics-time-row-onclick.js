@@ -8,6 +8,7 @@ statisticsTimeRowOnClick = function (currentRow, periodsOfRow, showUserName) {
 	var jQuery = window.jQuery,
 		detailRow = currentRow.next('.detail');
 
+	if (!jQuery) return;
 	if (detailRow.length === 0) {
 		var rows = periodsOfRow.map(function (bp, index) {
 

@@ -12,6 +12,7 @@
 	'ipt data-spa crossorigin defer src="/js/jquery.comiseo.daterangepicker.js"></sc' + 'ript>');
 	*/
 var _ = require('mano').i18n.bind('Daterange')
+  , db = require('../../../db')
   , dateFrom = require('./select-date-from')
   , dateTo = require('./select-date-to')
   , location = require('mano/lib/client/location')
@@ -40,6 +41,7 @@ module.exports = function (/* opts */) {
 			console.error('Probably you will have to integrate JQuery and all ' +
 				'rangepicker dependencies into into index.html.tpl file. ' +
 				'Check select-date-range.js for instructions.');
+			return;
 		}
 		var elem = jQuery('[rangepicker]');
 		elem.daterangepicker({
@@ -120,15 +122,21 @@ module.exports = function (/* opts */) {
 		});
 
 		var path = location.pathname;
-		location.on('change', function () {
-			if (location.pathname !== path) {
-				path = location.pathname;
-				if (elem) {
-					elem.daterangepicker("setRange", {
-						start: stringToDate(jQuery('#startId').val()),
-						end: stringToDate(jQuery('#endId').val())
-					});
-				}
+
+		location._pathname.on('change', function (ev) {
+			if (path !== ev.newValue) return;
+			var dateFrom = location.query.get('dateFrom').value;
+			var dateTo = location.query.get('dateTo').value;
+			var now = new db.Date();
+			if (dateFrom || dateTo) return;
+			dateFrom = new db.Date(now.getUTCFullYear(), 0, 1);
+			dateTo = new db.Date(now.getUTCFullYear(), now.getUTCMonth(),
+				now.getUTCDate());
+			if (elem) {
+				elem.daterangepicker("setRange", {
+					start: stringToDate(dateFrom.toISOString().slice(0, 10)),
+					end: stringToDate(dateTo.toISOString().slice(0, 10))
+				});
 			}
 		});
 	});

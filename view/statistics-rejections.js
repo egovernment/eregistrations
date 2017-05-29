@@ -15,51 +15,49 @@ var _                            = require('mano').i18n.bind('View: Statistics')
   , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , getDynamicUrl      = require('./utils/get-dynamic-url');
 
-exports._parent        = require('./statistics-flow');
+exports._parent        = require('./user-base');
 exports._customFilters = Function.prototype;
 
-exports['flow-nav']            = { class: { 'submitted-menu-item-active': true } };
-exports['flow-rejections-nav'] = { class: { 'pills-nav-active': true } };
+exports['rejections-nav'] = { class: { 'submitted-menu-item-active': true } };
 
 exports['statistics-main'] = function () {
 	var queryHandler, data = new ObservableValue([])
 	  , pagination = new Pagination('/flow/rejections/')
 	  , params;
 
-	queryHandler = setupQueryHandler(rejectionsHandlerConf,
-		location, '/flow/rejections/');
+		queryHandler = setupQueryHandler(rejectionsHandlerConf,
+			location, '/rejections/');
 
-	params = queryHandler._handlers.map(function (handler) {
-		return handler.name;
-	});
-
-	queryHandler.on('query', function (query) {
-		var serverQuery = copy(query), dateFrom, dateTo;
-
-		dateFrom = query.dateFrom;
-		dateTo   = query.dateTo || new db.Date();
-
-		serverQuery.dateFrom = dateFrom.toJSON();
-		serverQuery.dateTo = dateTo.toJSON();
-		// hard code for tests
-
-		queryServer(serverQuery).done(function (responseData) {
-			data.value = responseData.rows || [];
-
-			pagination.current.value = Number(serverQuery.page);
-			pagination.count.value   = responseData.pageCount;
+		params = queryHandler._handlers.map(function (handler) {
+			return handler.name;
 		});
-	});
 
-	div({ class: 'block-pull-up' },
-		form({ action: '/flow/rejections/', autoSubmit: true },
-			section({ class: 'date-period-selector-positioned-on-submenu' }, dateFromToBlock()),
+		queryHandler.on('query', function (query) {
+			var serverQuery = copy(query), dateFrom, dateTo;
+
+			dateFrom = query.dateFrom;
+			dateTo = query.dateTo || new db.Date();
+
+			serverQuery.dateFrom = dateFrom.toJSON();
+			serverQuery.dateTo = dateTo.toJSON();
+			// hard code for tests
+
+			queryServer(serverQuery).done(function (responseData) {
+				data.value = responseData.rows || [];
+
+				pagination.current.value = Number(serverQuery.page);
+				pagination.count.value = responseData.pageCount;
+			});
+		});
+
+		form({ action: '/rejections/', autoSubmit: true },
 			section({ class: 'section-primary users-table-filter-bar display-flex flex-wrap' },
 				div(
 					div({ class: 'users-table-filter-bar-status' },
 						selectService({ label: _("All services") })),
 					div({ class: 'users-table-filter-bar-status' },
-						selectRejectionReason())
+						selectRejectionReason()),
+					dateFromToBlock()
 				),
 				div(
 					div(

@@ -269,7 +269,7 @@ module.exports = memoize(function (db) {
 				isEntitiesNestedMap = entityObjects.value instanceof this.database.NestedMap;
 				if (!isEntitiesNestedMap) return result;
 				Item = entityObjects.value.getItemType();
-				Item.prototype.getBySKeyPath(this.sectionProperty).forEach(function (section) {
+				Item.prototype.getBySKeyPath(this.sectionProperty).map.forEach(function (section) {
 					result = result.concat(section.toMetaDataJSON());
 				});
 

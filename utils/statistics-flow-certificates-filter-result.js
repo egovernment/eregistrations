@@ -20,24 +20,31 @@
  *
  */
 
-var assign = require('es5-ext/object/assign');
-
 var buildResultRow = function (rowData) {
-	return assign({
+	var result = {
 		submitted: 0,
 		pending: 0,
 		pickup: 0,
 		withdrawn: 0,
 		rejected: 0,
 		sentBack: 0
-	}, rowData || {});
+	};
+	Object.keys(result).forEach(function (key) {
+		if (rowData && rowData[key] != null) {
+			result[key] = rowData[key];
+		}
+	});
+
+	return result;
 };
 
 var accumulateResultRows = function (rows) {
 	var result = buildResultRow(rows[0]);
 	rows.slice(1).forEach(function (row) {
 		Object.keys(row).forEach(function (propertyName) {
-			result[propertyName] += row[propertyName];
+			if (result[propertyName] != null) {
+				result[propertyName] += row[propertyName];
+			}
 		});
 	});
 

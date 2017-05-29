@@ -17,7 +17,31 @@ var assign              = require('es5-ext/object/assign')
   , getQueryHandlerConf = require('../apps/statistics/get-query-conf')
   , frontDeskNames      = require('./utils/front-desk-names')
   , dateFromToBlock     = require('./components/filter-bar/select-date-range-safe-fallback')
-  , observableResult = new ObservableValue();
+  , observableResult    = new ObservableValue()
+  , toArray             = require('es5-ext/object/to-array')
+  , toDateInTz          = require('../utils/to-date-in-time-zone')
+  , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
+  , approvedCertsPeriods = []
+  , completedFilesPeriods = [
+	{ name: 'inPeriod', label: _("Period") },
+	{ name: 'today', label: _("Today") },
+	{ name: 'thisWeek', label: _("This week") },
+	{ name: 'thisMonth', label: _("This month") }
+];
+
+var today = toDateInTz(new Date(), db.timeZone);
+var currentYear = new db.Date(today.getUTCFullYear(), 0, 1);
+var lastYearInRange = new db.Date(today.getUTCFullYear() - 5, 0, 1);
+
+while (currentYear >= lastYearInRange) {
+	completedFilesPeriods.push({
+		name: currentYear.getUTCFullYear(),
+		label: currentYear.getUTCFullYear()
+	});
+	currentYear.setUTCFullYear(currentYear.getUTCFullYear() - 1);
+}
+approvedCertsPeriods = completedFilesPeriods.slice(0);
+approvedCertsPeriods.splice(0, 0, { name: 'certificate', label: _("Certificate") });
 
 exports._servicesColors  = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
 exports._stepsColors     = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
@@ -44,6 +68,73 @@ exports._commonOptions = {
 		minValue: 0
 	},
 	width: "100%"
+};
+
+var getTimeBreakdownTable = function (bpData) {
+	return table(
+		{ id: 'files-completed', class: 'statistics-table statistics-table-registrations' },
+		thead(tr(
+			th({ class: 'statistics-table-header-waiting' }, _("Service")),
+			list(completedFilesPeriods, function (period) {
+				return th({ class: 'statistics-table-number' }, period.label);
+			})
+		)),
+		tbody(
+			mmap(bpData, function (data) {
+				if (!data) return;
+
+				return [
+					toArray(data.byService, function (serviceData, serviceName) {
+						return tr(
+							td(db['BusinessProcess' + capitalize.call(serviceName)].prototype.label),
+							list(completedFilesPeriods, function (period) {
+								var count = serviceData[period.name];
+
+								return td({ class: 'statistics-table-number' }, count);
+							})
+						);
+					}),
+					tr(
+						td(_("Total")),
+						list(completedFilesPeriods, function (period) {
+							return td({ class: 'statistics-table-number' },
+								data.total[period.name]);
+						})
+					)
+				];
+			})
+		)
+	);
+};
+
+var getApprovedCertificatesTable = function (certData) {
+	return table(
+		{ id: 'approved-certificates', class: 'statistics-table statistics-table-registrations' },
+		thead(tr(
+			th({ class: 'statistics-table-header-waiting' }, _("Service")),
+			list(approvedCertsPeriods, function (period) {
+				return th({ class: 'statistics-table-number' }, period.label);
+			})
+		)),
+		tbody(
+			mmap(certData, function (rows) {
+				if (!rows) return;
+
+				return list(rows, function (row, index) {
+					return tr(list(row, function (cell, innerIndex) {
+						// if total
+						if (index === (rows.length - 1)) {
+							if (innerIndex === 0) {
+								return td({ class: 'statistics-table-number', colspan: 2 }, cell);
+							}
+						}
+						return td({ class: 'statistics-table-number' }, cell);
+					}
+						));
+				});
+			})
+		)
+	);
 };
 
 var queryServer = memoize(function (query) {
@@ -355,7 +446,8 @@ exports['dashboard-nav'] = { class: { 'submitted-menu-item-active': true } };
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
-		var queryHandler;
+		var queryHandler, filesCompletedData = new ObservableValue()
+		  , approvedCertsData = new ObservableValue();
 		getStepLabelByShortPath = getStepLabelByShortPath(this.processingStepsMeta);
 
 		queryHandler = setupQueryHandler(getQueryHandlerConf({
@@ -371,7 +463,9 @@ exports['sub-main'] = {
 				serverQuery.dateTo = serverQuery.dateTo.toJSON();
 			}
 			queryServer(serverQuery).done(function (data) {
-				updateChartsData(data, query);
+				updateChartsData(data.chartsResult, query);
+				filesCompletedData.value = data.filesCompleted;
+				approvedCertsData.value  = data.approvedCertsData;
 			});
 		});
 
@@ -379,6 +473,9 @@ exports['sub-main'] = {
 			form({ action: '/', autoSubmit: true },
 				dateFromToBlock(),
 				p({ class: 'submit' }, input({ type: 'submit' }))));
+
+		getTimeBreakdownTable(filesCompletedData);
+		getApprovedCertificatesTable(approvedCertsData);
 
 		section({ class: "section-primary" },
 			h3(_("Files completed per time range")),
@@ -450,5 +547,8 @@ exports['sub-main'] = {
 			// this will be invoked only in SPA
 			if (document.on) document.on('statistics-chart-update', reloadCharts);
 		}, observableResult);
+
+		initTableSortingOnClient('#files-completed');
+		initTableSortingOnClient('#approved-certificates');
 	}
 };
