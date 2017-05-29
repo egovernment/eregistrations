@@ -30,7 +30,7 @@ var buildResultRow = function (rowData) {
 		sentBack: 0
 	};
 	Object.keys(result).forEach(function (key) {
-		if (rowData[key] != null) {
+		if (rowData && rowData[key] != null) {
 			result[key] = rowData[key];
 		}
 	});
