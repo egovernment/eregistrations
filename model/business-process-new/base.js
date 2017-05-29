@@ -197,19 +197,52 @@ module.exports = memoize(function (db/*, options*/) {
 
 				this.processingSteps.map.forEach(function self(processingStep) {
 					if (db.ProcessingStepGroup && processingStep instanceof db.ProcessingStepGroup) {
-						processingStep.steps.applicable.forEach(self);
+						processingStep.steps.map.forEach(self);
 						return;
 					}
-					schema.processingSteps.properties[processingStep.key] =
-						processingStep.toWebServiceJSON();
+					schema.properties.processingSteps.properties[processingStep.key] =
+						processingStep.toWSSchema();
 				});
 
 				schema.properties.request.properties.registrations =
-					this.registrations.map.first.toWSSchema();
+					this.registrations.map._descriptorPrototype_.type.prototype.toWSSchema();
 				schema.properties.request.properties.costs =
-					this.costs.map.first.toWSSchema();
+					this.costs.map._descriptorPrototype_.type.prototype.toWSSchema();
+				schema.properties.request.properties.certificates =
+					this.certificates.map._descriptorPrototype_.type.prototype.toWSSchema();
+				schema.properties.request.properties.documentUploads =
+					this.requirementUploads.map._descriptorPrototype_.type.prototype.toWSSchema();
+				schema.properties.request.properties.payments =
+					this.paymentReceiptUploads.map._descriptorPrototype_.type.prototype.toWSSchema();
 
-				//todo other properties
+				schema.properties.request.properties.data = { type: "object", properties: {} };
+
+				// guide
+				// toWSSchema is not implemented on FormSectionBase
+				if (this.database.FormSectionBase &&
+						this.determinants.constructor !== this.database.FormSectionBase) {
+					Object.assign(schema.properties.request.properties.data.properties,
+						this.determinants.toWSSchema());
+				}
+
+				// dataForms
+				this.dataForms.map.forEach(function (form) {
+					if (this.database.FormSectionBase &&
+							form.constructor !== this.database.FormSectionBase) {
+						Object.assign(schema.properties.request.properties.data.properties,
+							form.toWSSchema());
+					}
+				}.bind(this));
+
+				//submissionForms
+				this.submissionForms.map.forEach(function (form) {
+					if (this.database.FormSectionBase &&
+							form.constructor !== this.database.FormSectionBase) {
+						Object.assign(schema.properties.request.properties.data.properties,
+							form.toWSSchema());
+					}
+				}.bind(this));
+
 				return schema;
 			}
 		}
