@@ -316,30 +316,14 @@ module.exports = memoize(function (db) {
 		},
 		toWSSchema: {
 			value: function (ignore) {
-		//		this.propertyNames.forEach(function (prop) {
-		//			// split props
-		//			var props = prop.split("/");
-		//			var master = this.propertyMaster;
-		//			props.reduce(function (res, p, index) {
-		//				if (!res[p]) res[p] = {};
-		//				var descriptor = master.getDescriptor(p);
-		//				// type -#TODO treat it nicely
-		//				res[p].type = typeMapper.mapType(descriptor.type);
-		//				if (res[p].type === 'enum') res[p].ref = descriptor.type.__id__;
-//
-		//				// label
-		//				res[p].label = descriptor.label;
-		//				// required
-		//				if (descriptor.required) res[p].required = true;
-		//				if (index !== props.length - 1) {
-		//					if (!res[p].properties) res[p].properties = { };
-		//				}
-		//				// go in depth
-		//				master = master[p];
-		//				return res[p].properties;
-		//			}, result);
-		//		})
-				return {}; //todo
+				var schema = {};
+				this.propertyNames.forEach(function (prop) {
+					var data = this.propertyMaster.resolveSKeyPath(prop)
+					  , descriptor = data.ownDescriptor;
+
+					Object.assign(schema, descriptor.fieldToSchemaJSON());
+				}, this);
+				return schema;
 			}
 		}
 	});
