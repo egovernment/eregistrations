@@ -12,12 +12,12 @@ var memoize               = require('memoizee/plain')
   , defineProgressRule      = require('./lib/progress-rule');
 
 module.exports = memoize(function (db) {
-	var StringLine, FormSectionBase, ProgressRule;
+	var StringLine, FormSectionBase, ProgressRule, FormSection;
 	validDb(db);
 	StringLine      = defineStringLine(db);
 	FormSectionBase = defineFormSectionBase(db);
 	ProgressRule    = defineProgressRule(db);
-	FormSectionBase.extend('FormSection', {
+	FormSection     = FormSectionBase.extend('FormSection', {
 		// Only for internal usage
 		resolvedPropertyNames: {
 			type: StringLine,
@@ -313,7 +313,11 @@ module.exports = memoize(function (db) {
 
 				return result;
 			}
-		},
+		}
+	});
+
+	FormSection.prototype.defineProperties({
+
 		toWSSchema: {
 			value: function (ignore) {
 				var schema = {};
@@ -327,15 +331,15 @@ module.exports = memoize(function (db) {
 			}
 		}
 	});
-	db.FormSection.prototype.inputOptions._descriptorPrototype_.nested = true;
-	db.FormSection.prototype.inputOptions._descriptorPrototype_.type   = db.Object;
+	FormSection.prototype.inputOptions._descriptorPrototype_.nested = true;
+	FormSection.prototype.inputOptions._descriptorPrototype_.type   = db.Object;
 
-	db.FormSection.prototype.progressRules.map.define('missingFields', {
+	FormSection.prototype.progressRules.map.define('missingFields', {
 		type: ProgressRule,
 		nested: true
 	});
 
-	db.FormSection.prototype.progressRules.map.missingFields.setProperties({
+	FormSection.prototype.progressRules.map.missingFields.setProperties({
 		progress: function (_observe) {
 			var resolved, section, invalid, total = 0;
 			section = this.owner.owner.owner;
@@ -389,5 +393,5 @@ module.exports = memoize(function (db) {
 		}
 	});
 
-	return db.FormSection;
+	return FormSection;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
