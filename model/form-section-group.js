@@ -173,7 +173,7 @@ module.exports = memoize(function (db) {
 			value: function (ignore) {
 				var schema = {};
 				this.sections.forEach(function (section) {
-					schema[section.label] = section.toWSSchema();
+					Object.assign(schema, section.toWSSchema());
 				}, this);
 				return schema;
 			}
