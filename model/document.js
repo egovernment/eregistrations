@@ -214,7 +214,7 @@ module.exports = memoize(function (db) {
 					}
 				};
 				schema.items.properties.files =
-					this.files.map._descriptorPrototype_.type.prototype.toWSSchema();
+					this.files.getItemType().prototype.toWSSchema();
 				schema.items.properties.owner = { type: "string" };
 				if (this.dataForm.constructor !== this.database.FormSectionBase) {
 					schema.items.properties.data = this.dataForm.toWSSchema();

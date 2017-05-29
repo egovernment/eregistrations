@@ -269,8 +269,6 @@ module.exports = memoize(function (db) {
 				isEntitiesNestedMap = entityObjects.value instanceof this.database.NestedMap;
 				if (!isEntitiesNestedMap) return result;
 				Item = entityObjects.value.getItemType();
-				// FIXME: This is probably broken. foreach loop over dataForms isn't correct.
-				// FIXME: it should be iteration over dataForm.map. Look under toWSSchema method.
 				Item.prototype.getBySKeyPath(this.sectionProperty).forEach(function (section) {
 					result = result.concat(section.toMetaDataJSON());
 				});
