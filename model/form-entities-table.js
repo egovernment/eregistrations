@@ -280,9 +280,8 @@ module.exports = memoize(function (db) {
 		},
 		toWSSchema: {
 			value: function (ignore) {
-				console.log("JJJJ ", this.key);
 				var entityObjects, Item, isEntitiesNestedMap, schema = {};
-				schema[this.key] = {
+				schema[this.propertyName] = {
 					type: "array",
 					items: { type: "object", properties: {} }
 				};
@@ -290,9 +289,8 @@ module.exports = memoize(function (db) {
 				isEntitiesNestedMap = entityObjects.value instanceof this.database.NestedMap;
 				if (!isEntitiesNestedMap) return schema;
 				Item = entityObjects.value.getItemType();
-				console.log("Item.prototype getBySKeyPath on", Item.prototype.getBySKeyPath(this.sectionProperty));
 				Item.prototype.getBySKeyPath(this.sectionProperty).map.forEach(function (section) {
-					Object.assign(schema[this.key].items.properties, section.toWSSchema());
+					Object.assign(schema[this.propertyName].items.properties, section.toWSSchema());
 				}.bind(this));
 				return schema;
 			}
