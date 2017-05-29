@@ -2,7 +2,7 @@
 
 var memoize = require('memoizee');
 
-module.exports = memoize(function () {
+module.exports = memoize(function (db) {
 
 	var schema = [];
 
