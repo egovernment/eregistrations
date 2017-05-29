@@ -175,7 +175,7 @@ module.exports = memoize(function (db/*, options*/) {
 				var schema, db;
 				db = this.database;
 				schema = {
-					typeName: this.__id__,
+					typeName: this.constructor.__id__,
 					properties: {
 						id: { type: "string" },
 						service: { type: "enum", ref: "services" },
