@@ -219,29 +219,29 @@ module.exports = memoize(function (db/*, options*/) {
 
 				// guide
 				// toWSSchema is not implemented on FormSectionBase
-				if (this.database.FormSectionBase &&
-						this.determinants.constructor !== this.database.FormSectionBase) {
+				if (db.FormSectionBase &&
+						this.determinants.constructor !== db.FormSectionBase) {
 					Object.assign(schema.properties.request.properties.data.properties,
 						this.determinants.toWSSchema());
 				}
 
 				// dataForms
 				this.dataForms.map.forEach(function (form) {
-					if (this.database.FormSectionBase &&
-							form.constructor !== this.database.FormSectionBase) {
+					if (db.FormSectionBase &&
+							form.constructor !== db.FormSectionBase) {
 						Object.assign(schema.properties.request.properties.data.properties,
 							form.toWSSchema());
 					}
-				}.bind(this));
+				});
 
 				//submissionForms
 				this.submissionForms.map.forEach(function (form) {
-					if (this.database.FormSectionBase &&
-							form.constructor !== this.database.FormSectionBase) {
+					if (db.FormSectionBase &&
+							form.constructor !== db.FormSectionBase) {
 						Object.assign(schema.properties.request.properties.data.properties,
 							form.toWSSchema());
 					}
-				}.bind(this));
+				});
 
 				return schema;
 			}
