@@ -31,6 +31,10 @@ module.exports = memoize(function (db) {
 			}
 			return this.type.valueToWebServiceJSON(value, this);
 		},
+		typeToSchemaJSON: function (ignore) {
+			var value = this.object.get(this.key);
+			return this.type.typeToSchemaJSON(value, this);
+		},
 		fieldToJSON: function (ignore) {
 			return {
 				label: this.labelToJSON(),
@@ -53,6 +57,14 @@ module.exports = memoize(function (db) {
 				required: this.required,
 				pattern: this.pattern
 			};
+		},
+		fieldToSchemaJSON: function (ignore) {
+			var schema = {};
+			schema[this.key] = {
+				label: this.labelToJSON()
+			};
+			Object.assign(schema[this.key], this.typeToSchemaJSON());
+			return schema;
 		},
 		isValueEmpty: function (ignore) {
 			var value = this.object.get(this.key);
@@ -102,6 +114,23 @@ module.exports = memoize(function (db) {
 				return value.toString(descriptor);
 			}
 			return value;
+		} },
+		typeToSchemaJSON: { type: db.Function, value: function (value, descriptor) {
+			var db = this.database;
+			// enum
+			if (this.meta && this.members) {
+				return { type: "enum",  ref: descriptor.type.__id__};
+			}
+			// file
+			if (this.__id__ === "File" || this.prototype instanceof db.File) return { type: "file" };
+			// primitives
+			if (this.__id__ === "String" || this.prototype instanceof db.String) return { type: "string" };
+			if (this.__id__ === "Number" || this.prototype instanceof db.Number) return { type: "number" };
+			if (this.__id__ === "Date" || this.prototype instanceof db.Date) return { type: "date" };
+			if (this.__id__ === "Boolean" || this.prototype instanceof db.Boolean) return { type: "boolean" };
+
+			// all other =  object
+			return { type: "object" };
 		} }
 	});
 
