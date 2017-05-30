@@ -118,5 +118,5 @@ exports['statistics-main'] = function () {
 				initTableSortingOnClient(tableElement);
 				return section({ class: 'table-responsive-container' },
 					tableElement);
-			})));
+			}));
 };
