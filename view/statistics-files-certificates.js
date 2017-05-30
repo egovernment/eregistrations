@@ -151,7 +151,8 @@ exports['statistics-main'] = function () {
 						th({ class: 'statistics-table-number' }, _("Ready for withdraw")),
 						th({ class: 'statistics-table-number' }, _("Withdrawn by user")),
 						th({ class: 'statistics-table-number' }, _("Rejected")),
-						th({ class: 'statistics-table-number' }, _("Sent back for correction"))
+						th({ class: 'statistics-table-number' }, _("Sent back for correction")),
+						th({ class: 'statistics-table-number' }, _("Approved"))
 					),
 					tbody({
 						onEmpty: tr(td({ class: 'empty', colspan: 7 },

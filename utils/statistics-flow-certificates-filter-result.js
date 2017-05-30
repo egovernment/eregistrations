@@ -15,7 +15,8 @@
  *  pickup: num,
  *  withdrawn: num,
  *  rejected: num,
- *  sentBack: num
+ *  sentBack: num,
+ *  approved: num
  *  }
  *
  */
@@ -27,7 +28,8 @@ var buildResultRow = function (rowData) {
 		pickup: 0,
 		withdrawn: 0,
 		rejected: 0,
-		sentBack: 0
+		sentBack: 0,
+		approved: 0
 	};
 	Object.keys(result).forEach(function (key) {
 		if (rowData && rowData[key] != null) {
