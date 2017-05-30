@@ -25,6 +25,7 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , floorToTimeUnit         = require('../utils/floor-to-time-unit')
   , calculateDurationByMode = require('../utils/calculate-duration-by-mode')
   , dateFromToBlock         = require('./components/filter-bar/select-date-range-safe-fallback')
+  , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , getDynamicUrl           = require('./utils/get-dynamic-url');
 
 exports._parent        = require('./statistics-files');
@@ -142,9 +143,9 @@ exports['statistics-main'] = function () {
 		br(),
 			data.map(function (result) {
 			var mode = modes.get(location.query.mode || 'daily');
-			return div({ class: 'table-responsive-container overflow-x' },
-					table({ class: 'statistics-table submitted-user-data-table' },
-					thead(
+			var certificatesTable = table({ class: 'statistics-table submitted-user-data-table' },
+				thead(
+					tr(
 						th({ class: 'statistics-table-number fixed-first-cell' }, mode.labelNoun),
 						th({ class: 'statistics-table-number' }, _("Submitted")),
 						th({ class: 'statistics-table-number' }, _("Pending")),
@@ -152,17 +153,21 @@ exports['statistics-main'] = function () {
 						th({ class: 'statistics-table-number' }, _("Withdrawn by user")),
 						th({ class: 'statistics-table-number' }, _("Rejected")),
 						th({ class: 'statistics-table-number' }, _("Sent back for correction"))
-					),
-					tbody({
-						onEmpty: tr(td({ class: 'empty', colspan: 7 },
-							_("No data for this criteria")))
-					}, Object.keys(result), function (key) {
-						return tr(
-							td(key),
-							list(Object.keys(result[key]), function (status) {
-								return td({ class: 'statistics-table-number' }, result[key][status]);
-							})
-						);
-					})));
+					)
+				),
+				tbody({
+					onEmpty: tr(td({ class: 'empty', colspan: 7 },
+						_("No data for this criteria")))
+				}, Object.keys(result), function (key) {
+					return tr(
+						td(key),
+						list(Object.keys(result[key]), function (status) {
+							return td({ class: 'statistics-table-number' }, result[key][status]);
+						})
+					);
+				}));
+			initTableSortingOnClient(certificatesTable);
+			return div({ class: 'table-responsive-container overflow-x' },
+				certificatesTable);
 		})));
 };
