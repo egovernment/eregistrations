@@ -25,7 +25,7 @@ module.exports = function (a, b) {
 	timeA = getTime(resA);
 	timeB = getTime(resB);
 
-	if(timeA === timeB){
+	if (timeA === timeB) {
 		return 0;
 	}
 
