@@ -82,6 +82,7 @@ module.exports = memoize(function (db) {
 			return Boolean(this.rejectReasonMemo);
 		} },
 		toJSON: { value: function (ignore) {
+			var data = this.database.RequirementUpload.prototype.toJSON.call(this);
 			data.uniqueKey = this.key;
 			delete data.issuedBy;
 			return data;
