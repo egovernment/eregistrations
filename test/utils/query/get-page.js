@@ -12,8 +12,8 @@ module.exports = function (t, a) {
 	a.throws(function () { t(arr, -1); }, TypeError);
 	a.throws(function () { t(arr, 0); }, TypeError);
 
-	a.deep(t(arr, 1), arr);
-	a.deep(t(arr, 2), []);
-	a.deep(t(arr, 21), []);
+	a.deep(t(arr, 1), arr.slice(0, 50));
+	a.deep(t(arr, 2), arr.slice(50, 100));
+	a.deep(t(arr, 21), arr.slice(1000));
 	a.deep(t(arr, 22), []);
 };

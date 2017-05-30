@@ -21,6 +21,7 @@ module.exports = {
 		mode = resolvedQuery.mode;
 		durationInTimeUnits = calculateDurationByMode(dateFrom, dateTo, mode);
 		resolvedQuery.pageCount = Math.ceil(durationInTimeUnits / itemsPerPage);
+		if (num > resolvedQuery.pageCount) throw new Error("Page value overflow");
 		return num;
 	}
 };
