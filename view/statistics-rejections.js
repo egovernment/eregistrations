@@ -20,10 +20,12 @@ exports._customFilters = Function.prototype;
 
 exports['rejections-nav'] = { class: { 'submitted-menu-item-active': true } };
 
-exports['statistics-main'] = function () {
-	var queryHandler, data = new ObservableValue([])
-	  , pagination = new Pagination('/flow/rejections/')
-	  , params;
+exports['sub-main'] = {
+	class: { content: true },
+	content: function () {
+		var queryHandler, data = new ObservableValue([])
+			, pagination = new Pagination('/rejections/')
+			, params;
 
 		queryHandler = setupQueryHandler(rejectionsHandlerConf,
 			location, '/rejections/');
@@ -118,5 +120,5 @@ exports['statistics-main'] = function () {
 				initTableSortingOnClient(tableElement);
 				return section({ class: 'table-responsive-container' },
 					tableElement);
-			}));
+			}))}
 };
