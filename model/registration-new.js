@@ -86,7 +86,11 @@ module.exports = memoize(function (db/*, options*/) {
 					return _observe(certificate._isElectronic);
 				});
 			}
-		},
+		}
+	});
+
+	Registration.prototype.defineProperties({
+
 		toWSSchema: {
 			value: function (ignore) {
 				return {

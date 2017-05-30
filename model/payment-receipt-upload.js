@@ -82,7 +82,6 @@ module.exports = memoize(function (db) {
 			return Boolean(this.rejectReasonMemo);
 		} },
 		toJSON: { value: function (ignore) {
-			var data = this.database.RequirementUpload.prototype.toJSON.call(this);
 			data.uniqueKey = this.key;
 			delete data.issuedBy;
 			return data;
@@ -98,11 +97,6 @@ module.exports = memoize(function (db) {
 			this.database.RequirementUpload.prototype.finalizeJSON.call(this, data);
 			if (this.receiptNumber) data.receiptNumber = this.receiptNumber;
 			return data;
-		} },
-		toWSSchema: {
-			value: function (ignore) {
-				return this.database.RequirementUpload.prototype.toWSSchema(this);
-			}
-		}
+		} }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

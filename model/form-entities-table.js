@@ -275,7 +275,11 @@ module.exports = memoize(function (db) {
 
 				return result;
 			}
-		},
+		}
+	});
+
+	FormEntitiesTable.prototype.defineProperties({
+
 		toWSSchema: {
 			value: function (ignore) {
 				var entityObjects, Item, isEntitiesNestedMap, schema = {};

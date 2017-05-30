@@ -10,9 +10,8 @@ var memoize           = require('memoizee/plain')
 module.exports = memoize(function (db) {
 	var StringLine  = defineStringLine(db)
 	  , Currency    = defineCurrency(db)
-	  , Institution = defineInstitution(db);
-
-	return db.Object.extend('Cost', {
+	  , Institution = defineInstitution(db)
+	  , Cost        = db.Object.extend('Cost', {
 		// Cost label
 		label: { type: StringLine },
 		// Cost legend
@@ -54,7 +53,11 @@ module.exports = memoize(function (db) {
 					}
 				};
 			}
-		},
+		}
+	});
+
+	Cost.prototype.defineProperties({
+
 		toWSSchema: {
 			value: function (ignore) {
 				return {
@@ -75,4 +78,5 @@ module.exports = memoize(function (db) {
 			}
 		}
 	});
+	return Cost;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

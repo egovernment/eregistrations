@@ -197,7 +197,18 @@ module.exports = memoize(function (db) {
 			if (statusLog.length) data.statusLog = statusLog;
 
 			return data;
-		} },
+		} }
+	}, {
+		// Document label
+		label: { type: StringLine },
+		// Document legend
+		legend: { type: StringLine },
+		// Document abbrevation
+		abbr: { type: StringLine }
+	});
+
+	Document.prototype.defineProperties({
+
 		toWSSchema: {
 			value: function (ignore) {
 				var schema = {
@@ -217,19 +228,12 @@ module.exports = memoize(function (db) {
 					this.files.getItemType().prototype.toWSSchema();
 				schema.items.properties.owner = { type: "string" };
 				if (this.dataForm.constructor !== this.database.FormSectionBase) {
-					schema.items.properties.data = this.dataForm.toWSSchema();
+					schema.items.properties.data = this.dataForm.prototype.toWSSchema();
 					schema.items.dataForms = [ { title: "", properties: [] } ];
 				}
 				return schema;
 			}
 		}
-	}, {
-		// Document label
-		label: { type: StringLine },
-		// Document legend
-		legend: { type: StringLine },
-		// Document abbrevation
-		abbr: { type: StringLine }
 	});
 
 	defineToWSJSONPrettyData(Document.prototype);

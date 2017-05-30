@@ -299,11 +299,6 @@ module.exports = memoize(function (db) {
 			value: function (opts) {
 				return [];
 			}
-		},
-		toWSSchema: {
-			value: function (ignore) {
-				throw new Error("toWSSchema not implemented for " + this.__id__);
-			}
 		}
 	});
 
@@ -337,6 +332,11 @@ module.exports = memoize(function (db) {
 					previousSection = section;
 				}, this);
 				return previousSection;
+			}
+		},
+		toWSSchema: {
+			value: function (ignore) {
+				throw new Error("toWSSchema not implemented for " + this.__id__);
 			}
 		}
 	});

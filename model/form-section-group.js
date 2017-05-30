@@ -168,7 +168,10 @@ module.exports = memoize(function (db) {
 					return section instanceof db.FormEntitiesTable;
 				});
 			}
-		},
+		}
+	});
+
+	FormSectionGroup.prototype.defineProperties({
 		toWSSchema: {
 			value: function (ignore) {
 				var schema = {};
@@ -179,6 +182,7 @@ module.exports = memoize(function (db) {
 			}
 		}
 	});
+
 	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSectionBase;
 
 	FormSectionGroup.prototype.progressRules.map.define('subSections', {

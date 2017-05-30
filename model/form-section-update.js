@@ -160,17 +160,21 @@ module.exports = memoize(function (db) {
 			value: function (ignore) {
 				return this.sourceSection.toMetaDataJSON();
 			}
-		},
-		toWSSchema: {
-			value: function (ignore) {
-				// method is not for instance-only logic as is this class. Use fallback.
-				return this.sourceSection.toWSSchema();
-			}
 		}
 	}, {
 		updateSectionPostfix: {
 			type: StringLine,
 			value: "UpdatePostfix"
+		}
+	});
+
+	FormSectionUpdate.prototype.defineProperties({
+
+		toWSSchema: {
+			value: function (ignore) {
+				// method is not for instance-only logic as is this class. Use fallback.
+				return this.sourceSection.toWSSchema();
+			}
 		}
 	});
 
