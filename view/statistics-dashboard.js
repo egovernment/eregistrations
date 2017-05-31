@@ -474,8 +474,8 @@ exports['sub-main'] = {
 				dateFromToBlock(),
 				p({ class: 'submit' }, input({ type: 'submit' }))));
 
-		getTimeBreakdownTable(filesCompletedData);
-		getApprovedCertificatesTable(approvedCertsData);
+		var filesCompletedTable = getTimeBreakdownTable(filesCompletedData);
+		var approvedCertsTable = getApprovedCertificatesTable(approvedCertsData);
 
 		section({ class: "section-primary" },
 			h3(_("Files completed per time range")),
@@ -548,7 +548,7 @@ exports['sub-main'] = {
 			if (document.on) document.on('statistics-chart-update', reloadCharts);
 		}, observableResult);
 
-		initTableSortingOnClient('#files-completed');
-		initTableSortingOnClient('#approved-certificates');
+		initTableSortingOnClient(filesCompletedTable);
+		initTableSortingOnClient(approvedCertsTable);
 	}
 };
