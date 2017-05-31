@@ -14,10 +14,9 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , selectService     = require('./components/filter-bar/select-service')
   , selectCertificate = require('./components/filter-bar/select-certificate')
   , selectPeriodMode  = require('./components/filter-bar/select-period-mode')
-  , itemsPerPage      = require('../conf/objects-list-items-per-page')
+  , itemsPerPage      = require('../conf/objects-list-unlimited-items-per-page')
   , serviceQuery      = require('../apps-common/query-conf/service')
   , certificateQuery  = require('../apps-common/query-conf/certificate')
-  , pageQuery         = require('../utils/query/date-constrained-page')
   , copyDbDate        = require('../utils/copy-db-date')
   , queryServer       = require('./utils/statistics-flow-query-server')
   , filterData        = require('../utils/statistics-flow-certificates-filter-result')
@@ -25,6 +24,7 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , floorToTimeUnit         = require('../utils/floor-to-time-unit')
   , calculateDurationByMode = require('../utils/calculate-duration-by-mode')
   , dateFromToBlock         = require('./components/filter-bar/select-date-range-safe-fallback')
+  , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , getDynamicUrl           = require('./utils/get-dynamic-url');
 
 exports._parent        = require('./statistics-files');
@@ -56,7 +56,7 @@ exports['statistics-main'] = function () {
 	  , pagination = new Pagination('/files/'), handlerConf, params;
 
 	handlerConf = queryHandlerConf.slice(0);
-	handlerConf.push(pageQuery, serviceQuery, certificateQuery);
+	handlerConf.push(serviceQuery, certificateQuery);
 	queryHandler = setupQueryHandler(handlerConf,
 		location, '/files/');
 
@@ -142,9 +142,9 @@ exports['statistics-main'] = function () {
 		br(),
 			data.map(function (result) {
 			var mode = modes.get(location.query.mode || 'daily');
-			return div({ class: 'table-responsive-container overflow-x' },
-					table({ class: 'statistics-table submitted-user-data-table' },
-					thead(
+			var certificatesTable = table({ class: 'statistics-table submitted-user-data-table' },
+				thead(
+					tr(
 						th({ class: 'statistics-table-number fixed-first-cell' }, mode.labelNoun),
 						th({ class: 'statistics-table-number' }, _("Submitted")),
 						th({ class: 'statistics-table-number' }, _("Pending")),
@@ -153,17 +153,21 @@ exports['statistics-main'] = function () {
 						th({ class: 'statistics-table-number' }, _("Rejected")),
 						th({ class: 'statistics-table-number' }, _("Sent back for correction")),
 						th({ class: 'statistics-table-number' }, _("Approved"))
-					),
-					tbody({
-						onEmpty: tr(td({ class: 'empty', colspan: 7 },
-							_("No data for this criteria")))
-					}, Object.keys(result), function (key) {
-						return tr(
-							td(key),
-							list(Object.keys(result[key]), function (status) {
-								return td({ class: 'statistics-table-number' }, result[key][status]);
-							})
-						);
-					})));
+					)
+				),
+				tbody({
+					onEmpty: tr(td({ class: 'empty', colspan: 7 },
+						_("No data for this criteria")))
+				}, Object.keys(result), function (key) {
+					return tr(
+						td(key),
+						list(Object.keys(result[key]), function (status) {
+							return td({ class: 'statistics-table-number' }, result[key][status]);
+						})
+					);
+				}));
+			initTableSortingOnClient(certificatesTable);
+			return div({ class: 'table-responsive-container overflow-x' },
+				certificatesTable);
 		})));
 };
