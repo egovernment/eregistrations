@@ -2,6 +2,9 @@
 
 var getTime = function (res) {
 	var time = 0; // in seconds
+	if (res.indexOf('-') !== -1) {
+		return -2;
+	}
 	if (res.indexOf('<') !== -1) {
 		return -1;
 	}
@@ -25,9 +28,5 @@ module.exports = function (a, b) {
 	timeA = getTime(resA);
 	timeB = getTime(resB);
 
-	if (timeA === timeB) {
-		return 0;
-	}
-
-	return timeA < timeB ? 1 : -1;
+	return timeA - timeB;
 };
