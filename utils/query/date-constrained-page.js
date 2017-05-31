@@ -2,7 +2,7 @@
 
 var db                      = require('../../db')
   , isNaturalNumber         = require('es5-ext/number/is-natural')
-  , itemsPerPage            = require('../../conf/objects-list-items-per-page')
+  , itemsPerPage            = require('../../conf/objects-list-unlimited-items-per-page')
   , calculateDurationByMode = require('../calculate-duration-by-mode');
 
 module.exports = {
