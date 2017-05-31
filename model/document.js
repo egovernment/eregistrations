@@ -228,7 +228,7 @@ module.exports = memoize(function (db) {
 					this.files.getItemType().prototype.toWSSchema();
 				schema.items.properties.owner = { type: "string" };
 				if (this.dataForm.constructor !== this.database.FormSectionBase) {
-					schema.items.properties.data = this.dataForm.prototype.toWSSchema();
+					schema.items.properties.data = this.dataForm.toWSSchema();
 					schema.items.dataForms = [ { title: "", properties: [] } ];
 				}
 				return schema;
