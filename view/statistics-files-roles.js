@@ -18,7 +18,6 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , serviceQuery      = require('../apps-common/query-conf/service')
   , certificateQuery  = require('../apps-common/query-conf/certificate')
   , stepStatusQuery   = require('../apps-common/query-conf/processing-step-status')
-  , pageQuery         = require('../utils/query/date-constrained-page')
   , copyDbDate        = require('../utils/copy-db-date')
   , queryServer       = require('./utils/statistics-flow-query-server')
   , processingSteps   = require('../processing-steps-meta')
@@ -69,7 +68,7 @@ exports['statistics-main'] = function () {
 	  , pagination = new Pagination('/files/by-role/'), handlerConf, params;
 
 	handlerConf = queryHandlerConf.slice(0);
-	handlerConf.push(pageQuery, serviceQuery, certificateQuery, stepStatusQuery);
+	handlerConf.push(serviceQuery, certificateQuery, stepStatusQuery);
 	queryHandler = setupQueryHandler(handlerConf,
 		location, '/files/by-role/');
 

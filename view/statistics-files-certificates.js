@@ -17,7 +17,6 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , itemsPerPage      = require('../conf/objects-list-unlimited-items-per-page')
   , serviceQuery      = require('../apps-common/query-conf/service')
   , certificateQuery  = require('../apps-common/query-conf/certificate')
-  , pageQuery         = require('../utils/query/date-constrained-page')
   , copyDbDate        = require('../utils/copy-db-date')
   , queryServer       = require('./utils/statistics-flow-query-server')
   , filterData        = require('../utils/statistics-flow-certificates-filter-result')
@@ -57,7 +56,7 @@ exports['statistics-main'] = function () {
 	  , pagination = new Pagination('/files/'), handlerConf, params;
 
 	handlerConf = queryHandlerConf.slice(0);
-	handlerConf.push(pageQuery, serviceQuery, certificateQuery);
+	handlerConf.push(serviceQuery, certificateQuery);
 	queryHandler = setupQueryHandler(handlerConf,
 		location, '/files/');
 

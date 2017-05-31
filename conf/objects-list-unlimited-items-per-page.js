@@ -1,3 +1,3 @@
 'use strict';
 
-module.exports = 100000;
+module.exports = Infinity;
