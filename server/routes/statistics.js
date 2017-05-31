@@ -254,9 +254,8 @@ module.exports = function (config) {
 			stepsResult[stepShortPath].processing = getTimeItemTemplate();
 		});
 		stepsResult.totalCorrections = getTimeItemTemplate();
-		stepsResult.totalCorrections.label =
-			_("Total correction periods");
-		stepsResult.totalCorrectionsByUser = getTimeItemTemplate();
+		stepsResult.totalCorrections.label = _("Corrections by the users");
+		stepsResult.totalCorrections.processingPeriods = [];
 		stepsResult.totalWithoutCorrections = getTimeItemTemplate();
 		stepsResult.totalWithoutCorrections.label =
 			_("Total processing periods without corrections");
@@ -297,6 +296,7 @@ module.exports = function (config) {
 						currentSendBackItem.processor = statusHistoryItem.operator.name;
 						accumulateProcessingTimeItems(stepsResult.totalCorrections, currentSendBackItem);
 						accumulateProcessingTimeItems(stepsResult.totalProcessing, currentSendBackItem);
+						stepsResult.totalCorrections.processingPeriods.push(currentSendBackItem);
 
 						currentSendBackItem = null;
 					}
@@ -345,9 +345,6 @@ module.exports = function (config) {
 					currentItem = null;
 				}
 			});
-
-			stepsResult.totalCorrectionsByUser = assign({}, stepsResult.totalCorrectionsByUser,
-				stepsResult.totalCorrections, { label: _("Corrections by the users") });
 
 			return stepsResult;
 		});
