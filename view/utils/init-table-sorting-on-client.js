@@ -1,9 +1,21 @@
 'use strict';
 
-var normalizeOptions = require('es5-ext/object/normalize-options');
+var normalizeOptions = require('es5-ext/object/normalize-options')
+  , tablesorterTimeRangeComaparator = require('../../utils/tablesorter-time-range-comparator');
 
 module.exports = function (domElement/*, opts */) {
 	if (!window.jQuery) return;
+	window.jQuery.tablesorter.addParser({
+		// set a unique id 
+		id: 'times',
+		is: function (s) {
+			// return false so this parser is not auto detected 
+			return false;
+		},
+		format: tablesorterTimeRangeComaparator,
+		// set type, either numeric or text 
+		type: 'numeric'
+	});
 	var opts = normalizeOptions(arguments[1]);
 	setInterval(function () {
 		var element = window.jQuery(domElement);

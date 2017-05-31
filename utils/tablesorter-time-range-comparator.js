@@ -20,13 +20,11 @@ var getTime = function (res) {
 	return time;
 };
 
-module.exports = function (a, b) {
-	var resA, resB, timeA = 0, timeB = 0;
-	resA = a.replace(/\s+/g, '');
-	resB = b.replace(/\s+/g, '');
+module.exports = function (row) {
+	var res, time = 0;
+	res = row.replace(/\s+/g, '');
 
-	timeA = getTime(resA);
-	timeB = getTime(resB);
+	time = getTime(res);
 
-	return timeA - timeB;
+	return time;
 };
