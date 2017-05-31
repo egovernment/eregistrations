@@ -195,7 +195,7 @@ module.exports = memoize(function (db/*, options*/) {
 					}
 				};
 
-				this.processingSteps.map.forEach(function self(processingStep) {
+				this.constructor.prototype.processingSteps.map.forEach(function self(processingStep) {
 					if (db.ProcessingStepGroup && processingStep instanceof db.ProcessingStepGroup) {
 						processingStep.steps.map.forEach(self);
 						return;
@@ -222,11 +222,11 @@ module.exports = memoize(function (db/*, options*/) {
 				if (db.FormSectionBase &&
 						this.determinants.constructor !== db.FormSectionBase) {
 					Object.assign(schema.properties.request.properties.data.properties,
-						this.determinants.toWSSchema());
+						this.constructor.prototype.determinants.toWSSchema());
 				}
 
 				// dataForms
-				this.dataForms.map.forEach(function (form) {
+				this.constructor.prototype.dataForms.map.forEach(function (form) {
 					if (db.FormSectionBase &&
 							form.constructor !== db.FormSectionBase) {
 						Object.assign(schema.properties.request.properties.data.properties,
@@ -235,7 +235,7 @@ module.exports = memoize(function (db/*, options*/) {
 				});
 
 				//submissionForms
-				this.submissionForms.map.forEach(function (form) {
+				this.constructor.prototype.submissionForms.map.forEach(function (form) {
 					if (db.FormSectionBase &&
 							form.constructor !== db.FormSectionBase) {
 						Object.assign(schema.properties.request.properties.data.properties,
