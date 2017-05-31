@@ -38,7 +38,7 @@ module.exports = exports = function (db) {
 				path: null,
 				label: null
 			},
-			occurrencesCount: 0,
+			occurrencesCount: 1,
 			date: {
 				ts: null,
 				date: null
@@ -77,6 +77,11 @@ module.exports = exports = function (db) {
 				result.hasOnlySystemicReasons = false;
 				result.rejectionReasons.push(
 					rejectionReason('processingStep', ['other'], otherValue, '')
+				);
+			} else if (processStep.customRejectionReasons.size) {
+				result.rejectionReasons.push(
+					rejectionReason('processingStep', ['other'],
+						processStep.customRejectionReasons.toArray().join(', '), '')
 				);
 			}
 			return true;
