@@ -19,7 +19,8 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , dateFromToBlock    = require('./components/filter-bar/select-date-range-safe-fallback')
   , oToArray           = require('es5-ext/object/to-array')
   , getStepLabelByShortPath = require('../utils/get-step-label-by-short-path')
-  , getDynamicUrl           = require('./utils/get-dynamic-url');
+  , getDynamicUrl           = require('./utils/get-dynamic-url')
+  , initTableSortingOnClient = require('./utils/init-table-sorting-on-client');
 
 exports._parent        = require('./statistics-files');
 exports._customFilters = Function.prototype;
@@ -122,19 +123,19 @@ exports['statistics-main'] = function () {
 			br(),
 			data.map(function (result) {
 				var step = location.query.step || Object.keys(processingSteps)[0];
-				var mode = modes.get(location.query.mode || 'daily');
+				var mode = modes.get(location.query.mode || 'daily'), container, currentTable;
 
-				return section({ class: "section-primary" },
+				container = section({ class: "section-primary" },
 					h3(getStepLabelByShortPath(step)),
-					table({ class: 'statistics-table' },
-						thead(
+					currentTable = table({ class: 'statistics-table' },
+						thead(tr(
 							th({ class: 'statistics-table-number fixed-first-cell' }, mode.labelNoun),
 							th({ class: 'statistics-table-number' }, _("Operator")),
 							th({ class: 'statistics-table-number' }, _("Files Processed")),
 							th({ class: 'statistics-table-number' }, _("Validated")),
 							th({ class: 'statistics-table-number' }, _("Sent Back for corrections")),
 							th({ class: 'statistics-table-number' }, _("Rejected"))
-						),
+						)),
 						tbody(Object.keys(result).length ?
 								oToArray(result, function (dateResult, date) {
 									return oToArray(dateResult, function (processorResult, processorId) {
@@ -149,5 +150,7 @@ exports['statistics-main'] = function () {
 									});
 								}) : tr(td({ class: 'empty statistics-table-info', colspan: 6 },
 								_("No data for this criteria"))))));
+				initTableSortingOnClient(currentTable);
+				return container;
 			})));
 };
