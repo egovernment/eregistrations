@@ -16,6 +16,23 @@ module.exports = function (domElement/*, opts */) {
 		// set type, either numeric or text 
 		type: 'numeric'
 	});
+	window.jQuery.tablesorter.addParser({
+		// set a unique id 
+		id: 'dates',
+		is: function (s) {
+			// return false so this parser is not auto detected 
+			return false;
+		},
+		format: function (item) {
+			var parsedItem = item;
+			if (item.indexOf('/') !== -1) {
+				parsedItem = item.replace(/\/+/g, '-').split('-').reverse().join('-');
+			}
+			return new Date(parsedItem);
+		},
+		// set type, either numeric or text 
+		type: 'numeric'
+	});
 	var opts = normalizeOptions(arguments[1]);
 	setInterval(function () {
 		var element = window.jQuery(domElement);
