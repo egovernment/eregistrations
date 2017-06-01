@@ -1,13 +1,18 @@
 'use strict';
 
-var mongoDB = require('../mongo-db');
+var mongoDB = require('../server/mongo-db');
 
-exports.update = function (data) {
+exports.findOneAndUpdate = function (query, data) {
 	return mongoDB.connect()(function (db) {
 		var collection = db.collection('wsRequests');
-		if (data._id) {
-			return collection.update({ _id: data._id }, { $set: data });
-		}
+		return collection.findOneAndUpdate(query, { $set: data },
+			{ upsert: true, returnNewDocument: true });
+	});
+};
+
+exports.insertOne = function (data) {
+	return mongoDB.connect()(function (db) {
+		var collection = db.collection('wsRequests');
 		return collection.insertOne(data);
 	});
 };
