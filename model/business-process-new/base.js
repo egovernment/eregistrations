@@ -172,9 +172,9 @@ module.exports = memoize(function (db/*, options*/) {
 		},
 		toWSSchema: {
 			value: function (ignore) {
-				var schema, db;
-				db = this.database;
-				schema = {
+				var formSchema
+				  , db = this.database
+				  , schema = {
 					typeName: this.constructor.__id__,
 					properties: {
 						id: { type: "string" },
@@ -189,10 +189,28 @@ module.exports = memoize(function (db/*, options*/) {
 								costs: {},
 								payments: {},
 								certificates: {},
-								data: {}
+								data: {
+									dataForms: [],
+									type: "object",
+									properties: {}
+								}
 							}
 						}
 					}
+				};
+
+				var assignForm = function (form) {
+					formSchema = form.toWSSchema();
+					if (formSchema.dataForms) {
+						//dataForms will have to be set via iteration because assign
+						//will overwrite existing value of schema dataForms property.
+						formSchema.dataForms.forEach(function (dataForm) {
+							schema.properties.request.properties.data.dataForms.push(dataForm);
+						});
+						delete formSchema.dataForms;
+					}
+
+					Object.assign(schema.properties.request.properties.data.properties, formSchema);
 				};
 
 				this.constructor.prototype.processingSteps.map.forEach(function self(processingStep) {
@@ -215,22 +233,18 @@ module.exports = memoize(function (db/*, options*/) {
 				schema.properties.request.properties.payments =
 					this.paymentReceiptUploads.map._descriptorPrototype_.type.prototype.toWSSchema();
 
-				schema.properties.request.properties.data = { type: "object", properties: {} };
-
 				// guide
 				// toWSSchema is not implemented on FormSectionBase
 				if (db.FormSectionBase &&
 						this.determinants.constructor !== db.FormSectionBase) {
-					Object.assign(schema.properties.request.properties.data.properties,
-						this.constructor.prototype.determinants.toWSSchema());
+					assignForm(this.constructor.prototype.determinants);
 				}
 
 				// dataForms
 				this.constructor.prototype.dataForms.map.forEach(function (form) {
 					if (db.FormSectionBase &&
 							form.constructor !== db.FormSectionBase) {
-						Object.assign(schema.properties.request.properties.data.properties,
-							form.toWSSchema());
+						assignForm(form);
 					}
 				});
 
@@ -238,8 +252,7 @@ module.exports = memoize(function (db/*, options*/) {
 				this.constructor.prototype.submissionForms.map.forEach(function (form) {
 					if (db.FormSectionBase &&
 							form.constructor !== db.FormSectionBase) {
-						Object.assign(schema.properties.request.properties.data.properties,
-							form.toWSSchema());
+						assignForm(form);
 					}
 				});
 
