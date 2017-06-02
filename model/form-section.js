@@ -327,10 +327,8 @@ module.exports = memoize(function (db) {
 
 					Object.assign(schema, descriptor.fieldToSchemaJSON());
 				}, this);
-				dataForm.title = this.label;
-				dataForm.properties = Array.from(this.propertyNamesDeep).map(function (prop) {
-					return prop.slice(prop.lastIndexOf('/') + 1);
-				});
+				dataForm.title = this.label || '';
+				dataForm.properties = Array.from(this.propertyNamesDeep);
 				schema.dataForms.push(dataForm);
 				return schema;
 			}
