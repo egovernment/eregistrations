@@ -186,7 +186,7 @@ module.exports = memoize(function (db) {
 						}, this);
 						delete sectionSchema.dataForms;
 					}
-					Object.assign(schema[this.key], sectionSchema);
+					Object.assign(schema[this.key].properties, sectionSchema);
 				}, this);
 				return schema;
 			}
