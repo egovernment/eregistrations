@@ -59,9 +59,10 @@ module.exports = memoize(function (db) {
 			};
 		},
 		fieldToSchemaJSON: function (ignore) {
-			var schema = {};
-			schema[this.key] = { label: this.labelToJSON() };
-			Object.assign(schema[this.key], this.typeToSchemaJSON());
+			var schema = {}
+				, key = this.__valueId__.slice(this.__valueId__.indexOf('/') + 1);
+			schema[key] = { label: this.labelToJSON() };
+			Object.assign(schema[key], this.typeToSchemaJSON());
 			return schema;
 		},
 		isValueEmpty: function (ignore) {
