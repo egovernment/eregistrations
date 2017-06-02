@@ -320,13 +320,18 @@ module.exports = memoize(function (db) {
 
 		toWSSchema: {
 			value: function (ignore) {
-				var schema = {};
-				this.propertyNames.forEach(function (prop) {
+				var schema = { dataForms: [] }, dataForm = {};
+				this.propertyNamesDeep.forEach(function (prop) {
 					var data = this.propertyMaster.resolveSKeyPath(prop)
 					  , descriptor = data.ownDescriptor;
 
 					Object.assign(schema, descriptor.fieldToSchemaJSON());
 				}, this);
+				dataForm.title = this.label;
+				dataForm.properties = Array.from(this.propertyNamesDeep).map(function (prop) {
+					return prop.slice(prop.lastIndexOf('/') + 1);
+				});
+				schema.dataForms.push(dataForm);
 				return schema;
 			}
 		}
