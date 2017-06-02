@@ -282,18 +282,28 @@ module.exports = memoize(function (db) {
 
 		toWSSchema: {
 			value: function (ignore) {
-				var entityObjects, Item, isEntitiesNestedMap, schema = {};
+				var entityObjects, Item, isEntitiesNestedMap, schema = {}, sectionSchema = {};
 				schema[this.propertyName] = {
 					type: "array",
-					items: { type: "object", properties: {} }
+					items: { type: "object", properties: {}, dataForms: [] }
 				};
 				entityObjects = this.propertyMaster.resolveSKeyPath(this.propertyName);
 				isEntitiesNestedMap = entityObjects.value instanceof this.database.NestedMap;
 				if (!isEntitiesNestedMap) return schema;
 				Item = entityObjects.value.getItemType();
 				Item.prototype.getBySKeyPath(this.sectionProperty).map.forEach(function (section) {
-					Object.assign(schema[this.propertyName].items.properties, section.toWSSchema());
-				}.bind(this));
+					sectionSchema = section.toWSSchema();
+					if (sectionSchema.dataForms) {
+						//dataForms will have to be set via iteration because assign
+						//will overwrite existing value of existing dataForms property.
+						sectionSchema.dataForms.forEach(function (dataForm) {
+							schema[this.propertyName].items.dataForms.push(dataForm);
+						}, this);
+						delete sectionSchema.dataForms;
+					}
+					//Object.assign(schema, sectionSchema);
+					Object.assign(schema[this.propertyName].items.properties, sectionSchema);
+				}, this);
 				return schema;
 			}
 		}
