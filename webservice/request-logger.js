@@ -17,6 +17,13 @@ exports.insertOne = function (data) {
 	});
 };
 
+exports.findOne = function (query) {
+	return mongoDB.connect()(function (db) {
+		var collection = db.collection('wsRequests');
+		return collection.findOne(query);
+	});
+};
+
 exports.getErrored = function () {
 	return mongoDB.connect()(function (db) {
 		var collection = db.collection('wsRequests');
