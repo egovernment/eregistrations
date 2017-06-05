@@ -12,7 +12,8 @@ var _                            = require('mano').i18n.bind('View: Statistics')
   , selectRejectionReason = require('./components/filter-bar/select-rejection-reason')
   , queryServer       = require('./utils/statistics-rejections-query-server')
   , dateFromToBlock    = require('./components/filter-bar/select-date-range-safe-fallback')
-  , getDynamicUrl      = require('./utils/get-dynamic-url');
+  , getDynamicUrl      = require('./utils/get-dynamic-url')
+  , initTableSortingOnClient = require('./utils/init-table-sorting-on-client');
 
 exports._parent        = require('./user-base');
 exports._customFilters = Function.prototype;
@@ -80,10 +81,11 @@ exports['sub-main'] = {
 			section({ class: 'pad-if-pagination' }, pagination),
 			br(),
 			data.map(function (result) {
-				var defaultOpts = { class: "submitted-user-data-table-date-time" };
-				return section({ class: 'table-responsive-container' },
-					table({ class: 'submitted-user-data-table' },
-						thead(
+				var defaultOpts = { class: "submitted-user-data-table-date-time" }
+				  , container, currentTable;
+				container = section({ class: 'table-responsive-container' },
+					currentTable = table({ class: 'submitted-user-data-table' },
+						thead(tr(
 							th(defaultOpts, _("Rejection reason")),
 							th(defaultOpts),
 							th(defaultOpts),
@@ -92,7 +94,7 @@ exports['sub-main'] = {
 							th(defaultOpts, _("Date")),
 							th({ class: "submitted-user-data-table-name" }, _("Entity")),
 							th({ class: "submitted-user-data-table-link" })
-						),
+						)),
 						tbody(result.length ? result.map(function (dataRow) {
 							return tr(dataRow.map(function (cellContent, index) {
 								if (index === 0) {
@@ -116,6 +118,12 @@ exports['sub-main'] = {
 							}));
 						}) : tr({ class: 'empty' }, td({ colspan: 8 },
 							_("No data for this criteria"))))));
+				initTableSortingOnClient(currentTable,
+					{ headers: {
+						1: { sorter: false },
+						5: { sorter: 'dates' }
+					} });
+				return container;
 			}));
 	}
 };

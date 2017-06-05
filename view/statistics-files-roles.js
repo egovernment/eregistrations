@@ -28,7 +28,8 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , calculateDurationByMode = require('../utils/calculate-duration-by-mode')
   , dateFromToBlock         = require('./components/filter-bar/select-date-range-safe-fallback')
   , reduceResult            = require('../utils/statistics-flow-reduce-processing-step')
-  , filterData              = require('../utils/statistics-flow-roles-filter-result');
+  , filterData              = require('../utils/statistics-flow-roles-filter-result')
+  , initTableSortingOnClient = require('./utils/init-table-sorting-on-client');
 
 exports._parent        = require('./statistics-files');
 exports._customFilters = Function.prototype;
@@ -173,18 +174,18 @@ exports['statistics-main'] = function () {
 		section({ class: 'pad-if-pagination' }, pagination),
 		br(),
 			data.map(function (result) {
-			var mode = modes.get(location.query.mode || 'daily');
-			return div({ class: 'overflow-x table-responsive-container' },
-					table({ class: 'submitted-user-data-table statistics-table statistics-flow-roles-table' },
-					thead(
-						tr(
-							th({ class: 'statistics-table-number' }, mode.labelNoun),
-							list(Object.keys(processingSteps), function (shortStepPath) {
-								return th({ class: 'statistics-table-number' },
-									getStepLabelByShortPath(shortStepPath));
-							})
-						)
-					),
+			var mode = modes.get(location.query.mode || 'daily'), currentTable, container;
+			container = div({ class: 'overflow-x table-responsive-container' },
+					currentTable = table({ class:
+						'submitted-user-data-table statistics-table statistics-flow-roles-table' },
+					thead(tr(
+						th({ class: 'statistics-table-number' }, mode.labelNoun),
+						list(Object.keys(processingSteps), function (shortStepPath) {
+							return th({ class: 'statistics-table-number' },
+								getStepLabelByShortPath(shortStepPath));
+						})
+					)
+						),
 					tbody({
 						onEmpty: tr(td({ class: 'empty', colspan: Object.keys(processingSteps).length },
 							_("No data for this criteria")))
@@ -201,5 +202,7 @@ exports['statistics-main'] = function () {
 							}, _("Nothing to report for this period"))
 						);
 					})));
+			initTableSortingOnClient(currentTable);
+			return container;
 		}));
 };
