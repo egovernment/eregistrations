@@ -325,6 +325,7 @@ module.exports = memoize(function (db) {
 					var owner, child;
 
 					if (prop.indexOf('/') === -1) {
+						//FIXME change to deepMerge
 						Object.assign(schema.properties, descriptor.fieldToSchemaJSON());
 					} else {
 						//property is nested

@@ -174,19 +174,19 @@ module.exports = memoize(function (db) {
 	FormSectionGroup.prototype.defineProperties({
 		toWSSchema: {
 			value: function (ignore) {
-				var schema = {}, sectionSchema = {};
-				schema[this.key] = { type: "object", dataForms: [], properties: {} };
+				var schema = { dataForms: [], properties: {} }, sectionSchema = {};
 				this.sections.forEach(function (section) {
 					sectionSchema = section.toWSSchema();
 					if (sectionSchema.dataForms) {
 						//dataForms will have to be set via iteration because assign
 						//will overwrite existing value of schema dataForms property.
 						sectionSchema.dataForms.forEach(function (dataForm) {
-							schema[this.key].dataForms.push(dataForm);
+							schema.dataForms.push(dataForm);
 						}, this);
 						delete sectionSchema.dataForms;
 					}
-					Object.assign(schema[this.key].properties, sectionSchema);
+					//FIXME needs deepMerge
+					Object.assign(schema, sectionSchema);
 				}, this);
 				return schema;
 			}
