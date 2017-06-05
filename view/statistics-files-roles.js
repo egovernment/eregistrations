@@ -177,11 +177,13 @@ exports['statistics-main'] = function () {
 			return div({ class: 'overflow-x table-responsive-container' },
 					table({ class: 'submitted-user-data-table statistics-table statistics-flow-roles-table' },
 					thead(
-						th({ class: 'statistics-table-number' }, mode.labelNoun),
-						list(Object.keys(processingSteps), function (shortStepPath) {
-							return th({ class: 'statistics-table-number' },
-								getStepLabelByShortPath(shortStepPath));
-						})
+						tr(
+							th({ class: 'statistics-table-number' }, mode.labelNoun),
+							list(Object.keys(processingSteps), function (shortStepPath) {
+								return th({ class: 'statistics-table-number' },
+									getStepLabelByShortPath(shortStepPath));
+							})
+						)
 					),
 					tbody({
 						onEmpty: tr(td({ class: 'empty', colspan: Object.keys(processingSteps).length },
