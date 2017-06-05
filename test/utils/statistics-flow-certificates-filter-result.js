@@ -47,7 +47,8 @@ module.exports = function (t, a) {
 			pickup: 0,
 			withdrawn: 0,
 			rejected: 2,
-			sentBack: 44
+			sentBack: 44,
+			approved: 0
 		}
 	};
 	a.deep(t(inputMap, {}), expected);
@@ -59,7 +60,8 @@ module.exports = function (t, a) {
 			pickup: 0,
 			withdrawn: 0,
 			rejected: 2,
-			sentBack: 40
+			sentBack: 40,
+			approved: 0
 		}
 	};
   // service
@@ -72,7 +74,8 @@ module.exports = function (t, a) {
 			pickup: 0,
 			withdrawn: 0,
 			rejected: 0,
-			sentBack: 0
+			sentBack: 0,
+			approved: 0
 		}
 	};
 	a.deep(t(inputMap, { certificate: 'certA' }), expected);

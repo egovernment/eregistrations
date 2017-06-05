@@ -28,7 +28,9 @@ Date map layout:
 		// 1.5 At withdrawn or closed
 		withdrawn: sum,
 		// 1.6 At rejected
-		rejected: sum
+		rejected: sum,
+		// 1.7 At approved
+		approved: sum
 	},
 	// Certificate statuses: pending, rejected, approved
 	certificate[certificateName]: {
@@ -92,7 +94,7 @@ var getDateMap = function (data, statusHistoryData) {
 
 		if (!dataset.businessProcess) {
 			dataset.businessProcess = { pending: { at: [], start: [], end: [] },
-				pickup: [], sentBack: [], submitted: 0, withdrawn: 0, rejected: 0 };
+				pickup: [], sentBack: [], submitted: 0, withdrawn: 0, rejected: 0, approved: 0 };
 		}
 
 		return dataset.businessProcess;
@@ -305,7 +307,7 @@ var getDateMap = function (data, statusHistoryData) {
 		}
 
 		// Business process statuses: draft, revision, sentBack, process, pickup, rejected,
-		// withdrawn, closed
+		// withdrawn, closed, approved
 		statusHistoryLogs.forEach(function (statusHistoryLog) {
 			var logStauts = statusHistoryLog.status
 			  , logDate   = statusHistoryLog.date;
@@ -316,6 +318,12 @@ var getDateMap = function (data, statusHistoryData) {
 				dataset.rejected++;
 				// 2.6 [date][serviceName].certificate[certificateName].rejected
 				incrementCertStatus(logDate, 'rejected');
+			}
+
+			if (logStauts === 'closed') {
+				// 1.7 [date][serviceName].businessProcess.approved
+				dataset = getDataset(logDate);
+				dataset.approved++;
 			}
 
 			if ((logStauts === 'revision') || (logStauts === 'process')) {
