@@ -16,7 +16,8 @@ module.exports = function (result, config) {
 			_("Ready for withdraw"),
 			_("Withdrawn by user"),
 			_("Rejected"),
-			_("Sent back for correction")
+			_("Sent back for correction"),
+			_("Approved")
 		].join(',')
 	];
 
