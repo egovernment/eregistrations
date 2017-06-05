@@ -320,11 +320,11 @@ module.exports = memoize(function (db) {
 
 		toWSSchema: {
 			value: function (ignore) {
-				var schema = { dataForms: [] }, dataForm = {}
+				var schema = { dataForms: [] , properties: {} }, dataForm = {}
 				  , genObjFromNestedProperty = function (schema, prop, descriptor) {
 					var owner, child;
 
-					if (prop.indexOf('/') === -1) Object.assign(schema, descriptor.fieldToSchemaJSON());
+					if (prop.indexOf('/') === -1) Object.assign(schema.properties, descriptor.fieldToSchemaJSON());
 					else {
 							//property is nested
 							owner = prop.slice(0, prop.indexOf('/'));
