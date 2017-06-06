@@ -30,7 +30,9 @@ Date map layout:
 		// 1.6 At rejected
 		rejected: sum,
 		// 1.7 At approved
-		approved: sum
+		approved: sum,
+		// 1.8 withdrawn or reached pickup or is closed
+		atPickupWithdrawnOrClosed: [bpId1, bpId2, …, bpIdn]
 	},
 	// Certificate statuses: pending, rejected, approved
 	certificate[certificateName]: {
@@ -94,7 +96,8 @@ var getDateMap = function (data, statusHistoryData) {
 
 		if (!dataset.businessProcess) {
 			dataset.businessProcess = { pending: { at: [], start: [], end: [] },
-				pickup: [], sentBack: [], submitted: 0, withdrawn: 0, rejected: 0, approved: 0 };
+				pickup: [], sentBack: [], submitted: 0, withdrawn: 0, rejected: 0
+			  , approved: 0, atPickupWithdrawnOrClosed: [] };
 		}
 
 		return dataset.businessProcess;
@@ -324,6 +327,7 @@ var getDateMap = function (data, statusHistoryData) {
 				// 1.7 [date][serviceName].businessProcess.approved
 				dataset = getDataset(logDate);
 				dataset.approved++;
+				dataset.atPickupWithdrawnOrClosed.push(bpId);
 			}
 
 			if ((logStauts === 'revision') || (logStauts === 'process')) {
@@ -343,6 +347,11 @@ var getDateMap = function (data, statusHistoryData) {
 				storeCertStatusRange(statusStartDates.sentBack, logDate, 'sentBack', bpId);
 
 				statusStartDates.sentBack = null;
+			}
+
+			if (logStauts === 'pickup' || logStauts === 'withdrawn') {
+				dataset = getDataset(logDate);
+				dataset.atPickupWithdrawnOrClosed.push(bpId);
 			}
 		});
 
