@@ -204,7 +204,8 @@ module.exports = function (config) {
 					if (!resultServiceData) {
 						resultServiceData = result.byService[serviceName] = {};
 					}
-					var count = periodData.atPickupWithdrawnOrClosed || 0;
+					var count = (periodData[serviceName] && periodData[serviceName].businessProcess &&
+						periodData[serviceName].businessProcess.atPickupWithdrawnOrClosed) || 0;
 					resultServiceData[periodName] = count;
 					if (!result.total[periodName]) {
 						result.total[periodName] = 0;
