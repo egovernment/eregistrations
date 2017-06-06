@@ -152,89 +152,64 @@ module.exports = function (config) {
 	var rejectionsQueryHandler = new QueryHandler(rejectionsQueryHandlerConf);
 
 	var getFilesCompleted = function (query) {
-		// Spec of data needed:
-		// # Files completed since system launch
-		//   businessProcesses | filter(approved) | reduce()[all, byService]
-		// # Files completed this year
-		//   businessProcesses | filter(approvedThisYear) | reduce()[all, byService]
-		// # Files completed this month
-		//   businessProcesses | filter(approvedThisMonth) | reduce()[all, byService]
-		// # Files completed this week
-		//   businessProcesses | filter(approvedThisWeek) | reduce()[all, byService]
-		// # Files completed today
-		//   businessProcesses | filter(approvedToday) | reduce()[all, byService]
-		// # Files completed in given period
-		//   businessProcesses | filter(approvedAtQueryDateRange) | reduce()[all, byService]
-		var approvedQuery = { flowStatus: 'approved' }
-		  , today = toDateInTz(new Date(), db.timeZone)
+		var today = toDateInTz(new Date(), db.timeZone)
 		  , periods = {};
 
-		return getData(driver)(function (data) {
-			getPeriods().forEach(function (key) {
-				switch (key) {
-				case 'thisMonth':
-					periods[key] = reduceBusinessProcesses(filterBusinessProcesses(
-						data.businessProcesses,
-						assign({
-							dateFrom: new db.Date(today.getUTCFullYear(), today.getUTCMonth(), 1)
-						}, approvedQuery)
-					));
-					break;
-				case 'thisWeek':
-					periods[key] = reduceBusinessProcesses(filterBusinessProcesses(
-						data.businessProcesses,
-						assign({
-							dateFrom: new db.Date(today.getUTCFullYear(), today.getUTCMonth(),
-								today.getUTCDate() - ((6 + today.getUTCDay()) % 7))
-						}, approvedQuery)
-					));
-					break;
-				case 'today':
-					periods[key] = reduceBusinessProcesses(filterBusinessProcesses(
-						data.businessProcesses,
-						assign({ dateFrom: today }, approvedQuery)
-					));
-					break;
-				case 'inPeriod':
-					periods[key] = reduceBusinessProcesses(filterBusinessProcesses(
-						data.businessProcesses,
-						assign({}, approvedQuery, query)
-					));
-					break;
-				default:
-					var currentYear = new db.Date(key, 0, 1);
-					periods[currentYear.getUTCFullYear()] = reduceBusinessProcesses(
-						filterBusinessProcesses(
-							data.businessProcesses,
-							assign({}, approvedQuery,
-								{
-									dateFrom: new db.Date(currentYear.getUTCFullYear(), 0, 1),
-									dateTo: new db.Date(currentYear.getUTCFullYear(), 11, 31)
-								})
-						)
-					);
-					break;
-				}
+		return deferred.map(getPeriods(), function (key) {
+			periods[key] = null;
+			if (key === 'thisMonth') {
+				return calculateStatusEventsSums(new db.Date(today.getUTCFullYear(),
+					today.getUTCMonth(), 1), query.dateTo).then(function (res) {
+					periods[key] = res;
+				});
+			}
+			if (key === 'thisWeek') {
+				return calculateStatusEventsSums(new db.Date(today.getUTCFullYear(),
+					today.getUTCMonth(),
+					today.getUTCDate() - ((6 + today.getUTCDay()) % 7)),
+					query.dateTo).then(function (res) {
+					periods[key] = res;
+				});
+			}
+			if (key === 'today') {
+				return calculateStatusEventsSums(today, today).then(function (res) {
+					periods[key] = res;
+				});
+			}
+			if (key === 'inPeriod') {
+				return calculateStatusEventsSums(query.dateFrom,
+					query.dateTo).then(function (res) {
+					periods[key] = res;
+				});
+			}
+			var currentYear = new db.Date(key, 0, 1);
+			return calculateStatusEventsSums(
+				currentYear,
+				new db.Date(currentYear.getUTCFullYear(), 11, 31)
+			).then(function (res) {
+				periods[key] = res;
 			});
-			return periods;
-		})(function (data) {
+		})(function () {
 			// Apply formatting to match view table format
 			var result = {
 				byService: {},
 				total: {}
 			};
 
-			oForEach(data, function (periodData, periodName) {
-				result.total[periodName] = periodData.all.startedCount;
-
-				oForEach(periodData.byService, function (serviceData, serviceName) {
+			oForEach(periods, function (periodData, periodName) {
+				db.BusinessProcess.extensions.forEach(function (BpType) {
+					var serviceName =
+						uncapitalize.call(BpType.__id__.replace('BusinessProcess', ''));
 					var resultServiceData = result.byService[serviceName];
-
 					if (!resultServiceData) {
 						resultServiceData = result.byService[serviceName] = {};
 					}
-
-					resultServiceData[periodName] = serviceData.startedCount;
+					var count = periodData.atPickupWithdrawnOrClosed || 0;
+					resultServiceData[periodName] = count;
+					if (!result.total[periodName]) {
+						result.total[periodName] = 0;
+					}
+					result.total[periodName] += count;
 				});
 			});
 
