@@ -93,6 +93,7 @@ module.exports = memoize(function (db/*, options*/) {
 
 		toWSSchema: {
 			value: function (ignore) {
+				if (!process) return;
 				return {
 					type: "array",
 					items: {

@@ -16,7 +16,7 @@ var validDb               = require('dbjs/valid-dbjs')
 module.exports = function (Entity, property) {
 	var FormSectionBase, Percentage, db, UInteger;
 	db = validDb(Entity.database);
-	validDbType(Entity);
+	validDbType(Entity);f
 	UInteger        = defineUInteger(db);
 	FormSectionBase = defineFormSectionBase(db);
 	Percentage      = definePercentage(db);

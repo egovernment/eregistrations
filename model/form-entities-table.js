@@ -282,6 +282,7 @@ module.exports = memoize(function (db) {
 
 		toWSSchema: {
 			value: function (ignore) {
+				if (!process) return;
 				var entityObjects, Item, isEntitiesNestedMap, schema = { properties: {} }
 				  , sectionSchema = {};
 				schema.properties[this.propertyName] = {
@@ -302,8 +303,7 @@ module.exports = memoize(function (db) {
 						}, this);
 						delete sectionSchema.dataForms;
 					}
-					//FIXME needs deepMerge
-					Object.assign(schema.properties[this.propertyName].items, sectionSchema);
+					db.Object.deepAssign(schema.properties[this.propertyName].items, sectionSchema);
 				}, this);
 				return schema;
 			}

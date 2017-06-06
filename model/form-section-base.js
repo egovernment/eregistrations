@@ -22,7 +22,8 @@ module.exports = memoize(function (db) {
 		} },
 		getApplicablePropName: { type: db.Function, value: function (prop) {
 			return 'is' + prop[0].toUpperCase() + prop.slice(1) + 'Applicable';
-		} }
+		} },
+		deepAssign: { type: db.Function, value: require('deep-assign') }
 	});
 	DateType   = defineDate(db);
 	UInteger   = defineUInteger(db);
@@ -336,6 +337,7 @@ module.exports = memoize(function (db) {
 		},
 		toWSSchema: {
 			value: function (ignore) {
+				if (!process) return;
 				throw new Error("toWSSchema not implemented for " + this.__id__);
 			}
 		}

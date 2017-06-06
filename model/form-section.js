@@ -320,18 +320,18 @@ module.exports = memoize(function (db) {
 
 		toWSSchema: {
 			value: function (ignore) {
+				if (!process) return;
 				var schema = { dataForms: [], properties: {} }, dataForm = {}
 				  , genObjFromNestedProperty = function (schema, prop, descriptor) {
 					var owner, child;
 
 					if (prop.indexOf('/') === -1) {
-						//FIXME change to deepMerge
-						Object.assign(schema.properties, descriptor.fieldToSchemaJSON());
+						db.Object.deepAssign(schema.properties, descriptor.fieldToSchemaJSON());
 					} else {
 						//property is nested
 						owner = prop.slice(0, prop.indexOf('/'));
 						child = prop.slice(prop.indexOf('/') + 1);
-						if (!schema.hasOwnProperty(owner)) {
+						if (!schema.properties.hasOwnProperty(owner)) {
 							schema.properties[owner] = { type: "object", properties: {} };
 						}
 						genObjFromNestedProperty(schema.properties[owner], child,  descriptor);

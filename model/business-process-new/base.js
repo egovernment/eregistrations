@@ -172,6 +172,7 @@ module.exports = memoize(function (db/*, options*/) {
 		},
 		toWSSchema: {
 			value: function (ignore) {
+				if (!process) return;
 				var formSchema
 				  , db = this.database
 				  , schema = {
@@ -210,8 +211,7 @@ module.exports = memoize(function (db/*, options*/) {
 						});
 						delete formSchema.dataForms;
 					}
-					//FIXME needs deepMerge
-					Object.assign(schema.properties.request.properties.data, formSchema);
+					db.Object.deepAssign(schema.properties.request.properties.data, formSchema);
 				};
 
 				this.constructor.prototype.processingSteps.map.forEach(function self(processingStep) {

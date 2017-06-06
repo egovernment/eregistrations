@@ -180,6 +180,7 @@ module.exports = memoize(function (db) {
 		},
 		toWSSchema: {
 			value: function (ignore) {
+				if (!process) return;
 				return this.document.toWSSchema();
 			}
 		}

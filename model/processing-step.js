@@ -182,6 +182,7 @@ module.exports = memoize(function (db) {
 		},
 		toWSSchema: {
 			value: function (ignore) {
+				if (!process) return;
 				var schema = {
 					type: "object",
 					label: this.label,

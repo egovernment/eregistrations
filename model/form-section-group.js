@@ -174,6 +174,7 @@ module.exports = memoize(function (db) {
 	FormSectionGroup.prototype.defineProperties({
 		toWSSchema: {
 			value: function (ignore) {
+				if (!process) return;
 				var schema = { dataForms: [], properties: {} }, sectionSchema = {};
 				this.sections.forEach(function (section) {
 					sectionSchema = section.toWSSchema();
@@ -185,8 +186,7 @@ module.exports = memoize(function (db) {
 						}, this);
 						delete sectionSchema.dataForms;
 					}
-					//FIXME needs deepMerge
-					Object.assign(schema, sectionSchema);
+					db.Object.deepAssign(schema, sectionSchema);
 				}, this);
 				return schema;
 			}

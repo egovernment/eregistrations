@@ -211,6 +211,7 @@ module.exports = memoize(function (db) {
 
 		toWSSchema: {
 			value: function (ignore) {
+				if (!process) return;
 				var schema = {
 					type: "array",
 					items: {
@@ -229,7 +230,6 @@ module.exports = memoize(function (db) {
 				schema.items.properties.owner = { type: "string" };
 				if (this.dataForm.constructor !== this.database.FormSectionBase) {
 					schema.items.properties.data = this.dataForm.toWSSchema();
-					schema.items.dataForms = [ { title: "", properties: [] } ];
 				}
 				return schema;
 			}
