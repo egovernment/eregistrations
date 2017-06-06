@@ -202,25 +202,16 @@ module.exports = memoize(function (db/*, options*/) {
 				var assignForm = function (form) {
 					formSchema = form.toWSSchema();
 					if (formSchema.dataForms) {
-						//handling of db.FormSection type dataForm
+						//handling of db.FormSection and db.FormSectionGroup type dataForm
 						//dataForms will have to be set via iteration because assign
 						//will overwrite existing value of schema dataForms property.
 						formSchema.dataForms.forEach(function (dataForm) {
 							schema.properties.request.properties.data.dataForms.push(dataForm);
 						});
 						delete formSchema.dataForms;
-					} else if (Object.keys(formSchema).length === 1
-							&& formSchema[Object.keys(formSchema)[0]].dataForms) {
-						//handling of db.FormSectionGroup type dataForm.
-						//dataForms will have to be set via iteration because assign
-						//will overwrite existing value of schema dataForms property.
-						formSchema[Object.keys(formSchema)[0]].dataForms.forEach(function (dataForm) {
-							schema.properties.request.properties.data.dataForms.push(dataForm);
-						});
-						delete formSchema[Object.keys(formSchema)[0]].dataForms;
 					}
-
-					Object.assign(schema.properties.request.properties.data.properties, formSchema);
+					//FIXME needs deepMerge
+					Object.assign(schema.properties.request.properties.data, formSchema);
 				};
 
 				this.constructor.prototype.processingSteps.map.forEach(function self(processingStep) {

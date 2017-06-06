@@ -282,8 +282,9 @@ module.exports = memoize(function (db) {
 
 		toWSSchema: {
 			value: function (ignore) {
-				var entityObjects, Item, isEntitiesNestedMap, schema = {}, sectionSchema = {};
-				schema[this.propertyName] = {
+				var entityObjects, Item, isEntitiesNestedMap, schema = { properties: {} }
+				  , sectionSchema = {};
+				schema.properties[this.propertyName] = {
 					type: "array",
 					items: { type: "object", properties: {}, dataForms: [] }
 				};
@@ -297,12 +298,12 @@ module.exports = memoize(function (db) {
 						//dataForms will have to be set via iteration because assign
 						//will overwrite existing value of existing dataForms property.
 						sectionSchema.dataForms.forEach(function (dataForm) {
-							schema[this.propertyName].items.dataForms.push(dataForm);
+							schema.properties[this.propertyName].items.dataForms.push(dataForm);
 						}, this);
 						delete sectionSchema.dataForms;
 					}
 					//FIXME needs deepMerge
-					Object.assign(schema[this.propertyName].items.properties, sectionSchema);
+					Object.assign(schema.properties[this.propertyName].items, sectionSchema);
 				}, this);
 				return schema;
 			}
