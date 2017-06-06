@@ -211,7 +211,7 @@ module.exports = memoize(function (db) {
 
 		toWSSchema: {
 			value: function (ignore) {
-				if (!process) return;
+				if (typeof process === 'undefined') return;
 				var schema = {
 					type: "array",
 					items: {

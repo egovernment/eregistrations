@@ -172,7 +172,7 @@ module.exports = memoize(function (db/*, options*/) {
 		},
 		toWSSchema: {
 			value: function (ignore) {
-				if (!process) return;
+				if (typeof process === 'undefined') return;
 				var formSchema
 				  , db = this.database
 				  , schema = {

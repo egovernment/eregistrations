@@ -337,7 +337,7 @@ module.exports = memoize(function (db) {
 		},
 		toWSSchema: {
 			value: function (ignore) {
-				if (!process) return;
+				if (typeof process === 'undefined') return;
 				throw new Error("toWSSchema not implemented for " + this.__id__);
 			}
 		}

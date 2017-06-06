@@ -172,7 +172,7 @@ module.exports = memoize(function (db) {
 
 		toWSSchema: {
 			value: function (ignore) {
-				if (!process) return;
+				if (typeof process === 'undefined') return;
 				// method is not for instance-only logic as is this class. Use fallback.
 				return this.sourceSection.toWSSchema();
 			}

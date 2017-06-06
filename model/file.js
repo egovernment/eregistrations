@@ -28,7 +28,7 @@ module.exports = memoize(function (db) {
 		isEmpty: { value: function (ignore) { return !this.path; } },
 		toWSSchema: {
 			value: function (ignore) {
-				if (!process) return;
+				if (typeof process === 'undefined') return;
 				return {
 					type: "array",
 					items: {

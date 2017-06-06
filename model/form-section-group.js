@@ -174,7 +174,7 @@ module.exports = memoize(function (db) {
 	FormSectionGroup.prototype.defineProperties({
 		toWSSchema: {
 			value: function (ignore) {
-				if (!process) return;
+				if (typeof process === 'undefined') return;
 				var schema = { dataForms: [], properties: {} }, sectionSchema = {};
 				this.sections.forEach(function (section) {
 					sectionSchema = section.toWSSchema();
