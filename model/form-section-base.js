@@ -23,7 +23,7 @@ module.exports = memoize(function (db) {
 		getApplicablePropName: { type: db.Function, value: function (prop) {
 			return 'is' + prop[0].toUpperCase() + prop.slice(1) + 'Applicable';
 		} },
-		deepAssign: { type: db.Function, value: require('deep-assign') }
+		deepAssign: { type: db.Function, value: require('assign-deep') }
 	});
 	DateType   = defineDate(db);
 	UInteger   = defineUInteger(db);
