@@ -147,9 +147,9 @@ exports['statistics-main'] = function () {
 							td({ class: 'statistics-table-number' }, rowData.avgTime),
 							td({ class: 'statistics-table-number' }, rowData.minTime),
 							td({ class: 'statistics-table-number' }, rowData.maxTime)
-						);
+							);
 					})
-				);
+					);
 				initTableSortingOnClient(statisticsTable,
 					{ headers: {
 						0: { sorter: false },
@@ -159,8 +159,8 @@ exports['statistics-main'] = function () {
 					} },
 					{ beforeSortStartFn: function (jqueryTableElem) {
 						jqueryTableElem.find('.detail').remove();
-					}}
-				);
+					} }
+					);
 				return [section({ class: "section-primary" },
 					h3(queryResult[shortStepPath].label),
 					statisticsTable), br()];
