@@ -153,9 +153,9 @@ exports['statistics-main'] = function () {
 				initTableSortingOnClient(statisticsTable,
 					{ headers: {
 						0: { sorter: false },
-						2: { sorter: 'dates' },
-						3: { sorter: 'dates' },
-						4: { sorter: 'dates' }
+						2: { sorter: 'times' },
+						3: { sorter: 'times' },
+						4: { sorter: 'times' }
 					} },
 					{ beforeSortStartFn: function (jqueryTableElem) {
 						jqueryTableElem.find('.detail').remove();
