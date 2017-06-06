@@ -36,20 +36,14 @@ module.exports = function (domElement/*, opts */) {
 	var opts = normalizeOptions(arguments[1]);
 	var additionalOpts = normalizeOptions(arguments[2]);
 
-	if (additionalOpts && additionalOpts.beforeSortStartFn) {
-		setTimeout(function () {
-			var element = window.jQuery(domElement);
+	setTimeout(function () {
+		var element = window.jQuery(domElement);
+		if (additionalOpts && additionalOpts.beforeSortStartFn) {
 			element.bind("sortStart", function () {
 				additionalOpts.beforeSortStartFn(element);
 			});
-			element.tablesorter(opts);
-		}, 1000);
-	} else {
-		setInterval(function () {
-			var element = window.jQuery(domElement);
-			element.trigger('update');
-			element.tablesorter(opts);
-		}, 500);
-	}
+		}
+		element.tablesorter(opts);
+	}, 1000);
 
 };
