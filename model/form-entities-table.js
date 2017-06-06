@@ -301,7 +301,7 @@ module.exports = memoize(function (db) {
 						}, this);
 						delete sectionSchema.dataForms;
 					}
-					//Object.assign(schema, sectionSchema);
+					//FIXME needs deepMerge
 					Object.assign(schema[this.propertyName].items.properties, sectionSchema);
 				}, this);
 				return schema;
