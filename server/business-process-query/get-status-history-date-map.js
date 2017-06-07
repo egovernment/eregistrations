@@ -28,7 +28,9 @@ Date map layout:
 		// 1.5 At withdrawn or closed
 		withdrawn: sum,
 		// 1.6 At rejected
-		rejected: sum
+		rejected: sum,
+		// 1.7 At approved
+		approved: sum
 	},
 	// Certificate statuses: pending, rejected, approved
 	certificate[certificateName]: {
@@ -43,7 +45,9 @@ Date map layout:
 		// 2.5 On business process - At withdrawn or closed
 		withdrawn: sum,
 		// 2.6 On business process - At rejected
-		rejected: sum
+		rejected: sum,
+		// 2.7 Notice: Not on business process, but on actual certificate approved
+		approved: sum
 	},
 	// Processing step stauses: pending, paused, sentBack, rejected, approved, redelegated
 	processingStep[stepName]: {
@@ -90,7 +94,7 @@ var getDateMap = function (data, statusHistoryData) {
 
 		if (!dataset.businessProcess) {
 			dataset.businessProcess = { pending: { at: [], start: [], end: [] },
-				pickup: [], sentBack: [], submitted: 0, withdrawn: 0, rejected: 0 };
+				pickup: [], sentBack: [], submitted: 0, withdrawn: 0, rejected: 0, approved: 0 };
 		}
 
 		return dataset.businessProcess;
@@ -103,7 +107,7 @@ var getDateMap = function (data, statusHistoryData) {
 
 		if (!dataset.certificate[certificateName]) {
 			dataset.certificate[certificateName] = { pending: { at: [], start: [], end: [] },
-				pickup: [], sentBack: [], submitted: 0, withdrawn: 0, rejected: 0 };
+				pickup: [], sentBack: [], submitted: 0, withdrawn: 0, rejected: 0, approved: 0 };
 		}
 
 		return dataset.certificate[certificateName];
@@ -223,6 +227,11 @@ var getDateMap = function (data, statusHistoryData) {
 				var logStauts = statusHistoryLog.status
 				  , logDate   = statusHistoryLog.date;
 
+				// 2.7 [date][serviceName].certificate[certificateName].approved
+				if (logStauts === 'approved') {
+					getCertificateDataset(logDate)[logStauts]++;
+				}
+
 				if (logStauts === 'pending') {
 					if (!pendingStartDate) pendingStartDate = logDate;
 				} else if (pendingStartDate) {
@@ -298,7 +307,7 @@ var getDateMap = function (data, statusHistoryData) {
 		}
 
 		// Business process statuses: draft, revision, sentBack, process, pickup, rejected,
-		// withdrawn, closed
+		// withdrawn, closed, approved
 		statusHistoryLogs.forEach(function (statusHistoryLog) {
 			var logStauts = statusHistoryLog.status
 			  , logDate   = statusHistoryLog.date;
@@ -309,6 +318,12 @@ var getDateMap = function (data, statusHistoryData) {
 				dataset.rejected++;
 				// 2.6 [date][serviceName].certificate[certificateName].rejected
 				incrementCertStatus(logDate, 'rejected');
+			}
+
+			if (logStauts === 'closed') {
+				// 1.7 [date][serviceName].businessProcess.approved
+				dataset = getDataset(logDate);
+				dataset.approved++;
 			}
 
 			if ((logStauts === 'revision') || (logStauts === 'process')) {

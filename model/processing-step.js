@@ -60,6 +60,8 @@ module.exports = memoize(function (db) {
 		sendBackReason: { type: db.String, required: true },
 		// Eventual reason of rejection
 		rejectionReason: { type: db.String, required: true, label: _("Rejection reason") },
+		// used to customize rejection or send back reasons
+		customRejectionReasons: { type: db.String, multiple: true },
 		// Reason of redelegation
 		redelegationReason: { type: db.String, required: true },
 		// Final status as decided by official
