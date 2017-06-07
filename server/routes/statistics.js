@@ -135,6 +135,49 @@ var getPeriods = function () {
 	return periods;
 };
 
+var getPeriodsWithData = function (query) {
+	var today = toDateInTz(new Date(), db.timeZone)
+	  , periods = {};
+
+	return deferred.map(getPeriods(), function (key) {
+		periods[key] = null;
+		if (key === 'thisMonth') {
+			return calculateStatusEventsSums(new db.Date(today.getUTCFullYear(),
+				today.getUTCMonth(), 1), query.dateTo).then(function (res) {
+				periods[key] = res;
+			});
+		}
+		if (key === 'thisWeek') {
+			return calculateStatusEventsSums(new db.Date(today.getUTCFullYear(),
+				today.getUTCMonth(),
+				today.getUTCDate() - ((6 + today.getUTCDay()) % 7)),
+				query.dateTo).then(function (res) {
+				periods[key] = res;
+			});
+		}
+		if (key === 'today') {
+			return calculateStatusEventsSums(today, today).then(function (res) {
+				periods[key] = res;
+			});
+		}
+		if (key === 'inPeriod') {
+			return calculateStatusEventsSums(query.dateFrom,
+				query.dateTo).then(function (res) {
+				periods[key] = res;
+			});
+		}
+		var currentYear = new db.Date(key, 0, 1);
+		return calculateStatusEventsSums(
+			currentYear,
+			new db.Date(currentYear.getUTCFullYear(), 11, 31)
+		).then(function (res) {
+			periods[key] = res;
+		});
+	}).then(function () {
+		return periods;
+	});
+};
+
 module.exports = function (config) {
 	var driver = ensureDriver(ensureObject(config).driver)
 	  , customChartsController;
@@ -152,44 +195,7 @@ module.exports = function (config) {
 	var rejectionsQueryHandler = new QueryHandler(rejectionsQueryHandlerConf);
 
 	var getFilesCompleted = function (query) {
-		var today = toDateInTz(new Date(), db.timeZone)
-		  , periods = {};
-
-		return deferred.map(getPeriods(), function (key) {
-			periods[key] = null;
-			if (key === 'thisMonth') {
-				return calculateStatusEventsSums(new db.Date(today.getUTCFullYear(),
-					today.getUTCMonth(), 1), query.dateTo).then(function (res) {
-					periods[key] = res;
-				});
-			}
-			if (key === 'thisWeek') {
-				return calculateStatusEventsSums(new db.Date(today.getUTCFullYear(),
-					today.getUTCMonth(),
-					today.getUTCDate() - ((6 + today.getUTCDay()) % 7)),
-					query.dateTo).then(function (res) {
-					periods[key] = res;
-				});
-			}
-			if (key === 'today') {
-				return calculateStatusEventsSums(today, today).then(function (res) {
-					periods[key] = res;
-				});
-			}
-			if (key === 'inPeriod') {
-				return calculateStatusEventsSums(query.dateFrom,
-					query.dateTo).then(function (res) {
-					periods[key] = res;
-				});
-			}
-			var currentYear = new db.Date(key, 0, 1);
-			return calculateStatusEventsSums(
-				currentYear,
-				new db.Date(currentYear.getUTCFullYear(), 11, 31)
-			).then(function (res) {
-				periods[key] = res;
-			});
-		})(function () {
+		return getPeriodsWithData(query).then(function (periods) {
 			// Apply formatting to match view table format
 			var result = {
 				byService: {},
@@ -214,6 +220,41 @@ module.exports = function (config) {
 				});
 			});
 
+			return result;
+		});
+	};
+
+	var getApprovedCerts = function (query) {
+		var result = [];
+		return getPeriodsWithData(query).then(function (periods) {
+			var approvedCertsResult = [], total = [_("Total")];
+			db.BusinessProcess.extensions.forEach(function (BpType) {
+				var serviceName =
+					uncapitalize.call(BpType.__id__.replace('BusinessProcess', ''));
+				BpType.prototype.certificates.map.forEach(function (cert) {
+					var approvedCertsResultItem = [BpType.prototype.label, cert.abbr];
+					getPeriods().forEach(function (key) {
+						if (!periods[key][serviceName] ||
+								!periods[key][serviceName].certificate ||
+								!periods[key][serviceName].certificate[cert.key] ||
+								!periods[key][serviceName].certificate[cert.key].approved) {
+							approvedCertsResultItem.push(0);
+						} else {
+							approvedCertsResultItem.push(
+								periods[key][serviceName].certificate[cert.key].approved
+							);
+						}
+						if (!total[approvedCertsResultItem.length - 2]) {
+							total[approvedCertsResultItem.length - 2] = 0;
+						}
+						total[approvedCertsResultItem.length - 2] +=
+							Number(approvedCertsResultItem.slice(-1));
+					});
+					approvedCertsResult.push(approvedCertsResultItem);
+				});
+			});
+			result = approvedCertsResult;
+			result.push(total);
 			return result;
 		});
 	};
@@ -533,7 +574,7 @@ module.exports = function (config) {
 						dateFrom: null,
 						dateTo: null,
 						pendingAt: query.dateTo || toDateInTz(new Date(), db.timeZone)
-					}), result = {}, periods = {};
+					}), result = {};
 					// Spec of data we need for each chart:
 					// # Files completed per time range
 					//   businessProcesses | filter(query) | reduce().byDateAndService
@@ -561,73 +602,12 @@ module.exports = function (config) {
 					result.chartsResult   = chartsResult;
 					return getFilesCompleted(query).then(function (res) {
 						result.filesCompleted = res;
+						return deferred(true);
 					}).then(function () {
-						var today = toDateInTz(new Date(), db.timeZone);
-						return deferred.map(getPeriods(), function (key) {
-							periods[key] = null;
-							if (key === 'thisMonth') {
-								return calculateStatusEventsSums(new db.Date(today.getUTCFullYear(),
-									today.getUTCMonth(), 1), query.dateTo).then(function (res) {
-									periods[key] = res;
-								});
-							}
-							if (key === 'thisWeek') {
-								return calculateStatusEventsSums(new db.Date(today.getUTCFullYear(),
-									today.getUTCMonth(),
-									today.getUTCDate() - ((6 + today.getUTCDay()) % 7)),
-									query.dateTo).then(function (res) {
-									periods[key] = res;
-								});
-							}
-							if (key === 'today') {
-								return calculateStatusEventsSums(today, today).then(function (res) {
-									periods[key] = res;
-								});
-							}
-							if (key === 'inPeriod') {
-								return calculateStatusEventsSums(query.dateFrom,
-									query.dateTo).then(function (res) {
-									periods[key] = res;
-								});
-							}
-							var currentYear = new db.Date(key, 0, 1);
-							return calculateStatusEventsSums(
-								currentYear,
-								new db.Date(currentYear.getUTCFullYear(), 11, 31)
-							).then(function (res) {
-								periods[key] = res;
-							});
+						return getApprovedCerts(query).then(function (res) {
+							result.approvedCertsData = res;
+							return result;
 						});
-					}).then(function () {
-						var approvedCertsResult = [], total = [_("Total")];
-						db.BusinessProcess.extensions.forEach(function (BpType) {
-							var serviceName =
-								uncapitalize.call(BpType.__id__.replace('BusinessProcess', ''));
-							BpType.prototype.certificates.map.forEach(function (cert) {
-								var approvedCertsResultItem = [BpType.prototype.label, cert.abbr];
-								getPeriods().forEach(function (key) {
-									if (!periods[key][serviceName] ||
-											!periods[key][serviceName].certificate ||
-											!periods[key][serviceName].certificate[cert.key] ||
-											!periods[key][serviceName].certificate[cert.key].approved) {
-										approvedCertsResultItem.push(0);
-									} else {
-										approvedCertsResultItem.push(
-											periods[key][serviceName].certificate[cert.key].approved
-										);
-									}
-									if (!total[approvedCertsResultItem.length - 2]) {
-										total[approvedCertsResultItem.length - 2] = 0;
-									}
-									total[approvedCertsResultItem.length - 2] +=
-										Number(approvedCertsResultItem.slice(-1));
-								});
-								approvedCertsResult.push(approvedCertsResultItem);
-							});
-						});
-						result.approvedCertsData = approvedCertsResult;
-						result.approvedCertsData.push(total);
-						return result;
 					});
 				});
 			});
