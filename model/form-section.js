@@ -12,12 +12,12 @@ var memoize               = require('memoizee/plain')
   , defineProgressRule      = require('./lib/progress-rule');
 
 module.exports = memoize(function (db) {
-	var StringLine, FormSectionBase, ProgressRule;
+	var StringLine, FormSectionBase, ProgressRule, FormSection;
 	validDb(db);
 	StringLine      = defineStringLine(db);
 	FormSectionBase = defineFormSectionBase(db);
 	ProgressRule    = defineProgressRule(db);
-	FormSectionBase.extend('FormSection', {
+	FormSection     = FormSectionBase.extend('FormSection', {
 		// Only for internal usage
 		resolvedPropertyNames: {
 			type: StringLine,
@@ -315,15 +315,50 @@ module.exports = memoize(function (db) {
 			}
 		}
 	});
-	db.FormSection.prototype.inputOptions._descriptorPrototype_.nested = true;
-	db.FormSection.prototype.inputOptions._descriptorPrototype_.type   = db.Object;
 
-	db.FormSection.prototype.progressRules.map.define('missingFields', {
+	FormSection.prototype.defineProperties({
+
+		toWSSchema: {
+			value: function (ignore) {
+				if (typeof process === 'undefined') return;
+				var schema = { dataForms: [], properties: {} }, dataForm = {}
+				  , genObjFromNestedProperty = function (schema, prop, descriptor) {
+					var owner, child;
+
+					if (prop.indexOf('/') === -1) {
+						db.Object.deepAssign(schema.properties, descriptor.fieldToSchemaJSON());
+					} else {
+						//property is nested
+						owner = prop.slice(0, prop.indexOf('/'));
+						child = prop.slice(prop.indexOf('/') + 1);
+						if (!schema.properties.hasOwnProperty(owner)) {
+							schema.properties[owner] = { type: "object", properties: {} };
+						}
+						genObjFromNestedProperty(schema.properties[owner], child,  descriptor);
+					}
+					return schema;
+				};
+				this.propertyNamesDeep.forEach(function (prop) {
+					var data = this.propertyMaster.resolveSKeyPath(prop)
+					  , descriptor = data.ownDescriptor;
+					genObjFromNestedProperty(schema, prop, descriptor);
+				}, this);
+				dataForm.title = this.label || '';
+				dataForm.properties = Array.from(this.propertyNamesDeep);
+				schema.dataForms.push(dataForm);
+				return schema;
+			}
+		}
+	});
+	FormSection.prototype.inputOptions._descriptorPrototype_.nested = true;
+	FormSection.prototype.inputOptions._descriptorPrototype_.type   = db.Object;
+
+	FormSection.prototype.progressRules.map.define('missingFields', {
 		type: ProgressRule,
 		nested: true
 	});
 
-	db.FormSection.prototype.progressRules.map.missingFields.setProperties({
+	FormSection.prototype.progressRules.map.missingFields.setProperties({
 		progress: function (_observe) {
 			var resolved, section, invalid, total = 0;
 			section = this.owner.owner.owner;
@@ -377,5 +412,5 @@ module.exports = memoize(function (db) {
 		}
 	});
 
-	return db.FormSection;
+	return FormSection;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

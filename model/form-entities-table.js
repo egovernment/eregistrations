@@ -278,6 +278,38 @@ module.exports = memoize(function (db) {
 		}
 	});
 
+	FormEntitiesTable.prototype.defineProperties({
+
+		toWSSchema: {
+			value: function (ignore) {
+				if (typeof process === 'undefined') return;
+				var entityObjects, Item, isEntitiesNestedMap, schema = { properties: {} }
+				  , sectionSchema = {};
+				schema.properties[this.propertyName] = {
+					type: "array",
+					items: { type: "object", properties: {}, dataForms: [] }
+				};
+				entityObjects = this.propertyMaster.resolveSKeyPath(this.propertyName);
+				isEntitiesNestedMap = entityObjects.value instanceof this.database.NestedMap;
+				if (!isEntitiesNestedMap) return schema;
+				Item = entityObjects.value.getItemType();
+				Item.prototype.getBySKeyPath(this.sectionProperty).map.forEach(function (section) {
+					sectionSchema = section.toWSSchema();
+					if (sectionSchema.dataForms) {
+						//dataForms will have to be set via iteration because assign
+						//will overwrite existing value of existing dataForms property.
+						sectionSchema.dataForms.forEach(function (dataForm) {
+							schema.properties[this.propertyName].items.dataForms.push(dataForm);
+						}, this);
+						delete sectionSchema.dataForms;
+					}
+					db.Object.deepAssign(schema.properties[this.propertyName].items, sectionSchema);
+				}, this);
+				return schema;
+			}
+		}
+	});
+
 	FormEntitiesTable.prototype.progressRules.map.define('entities', {
 		type: ProgressRule,
 		nested: true

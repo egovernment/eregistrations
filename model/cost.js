@@ -10,9 +10,8 @@ var memoize           = require('memoizee/plain')
 module.exports = memoize(function (db) {
 	var StringLine  = defineStringLine(db)
 	  , Currency    = defineCurrency(db)
-	  , Institution = defineInstitution(db);
-
-	return db.Object.extend('Cost', {
+	  , Institution = defineInstitution(db)
+	  , Cost        = db.Object.extend('Cost', {
 		// Cost label
 		label: { type: StringLine },
 		// Cost legend
@@ -41,7 +40,7 @@ module.exports = memoize(function (db) {
 		// Whether payment is made online
 		// Common case is that cost can be paid both physically and online
 		// In this scenario we mark it as electronic as soon as we detect
-		// an online payment beeing initialized
+		// an online payment being initialized
 		isElectronic: { type: db.Boolean, value: function () {
 			return this.isOnlinePaymentInitialized;
 		} },
@@ -56,4 +55,29 @@ module.exports = memoize(function (db) {
 			}
 		}
 	});
+
+	Cost.prototype.defineProperties({
+
+		toWSSchema: {
+			value: function (ignore) {
+				if (typeof process === 'undefined') return;
+				return {
+					type: "array",
+					items: {
+						type: "object",
+						properties: {
+							code: {
+								type: "enum",
+								ref: "costs"
+							},
+							amount: {
+								type: "number"
+							}
+						}
+					}
+				};
+			}
+		}
+	});
+	return Cost;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

@@ -170,6 +170,29 @@ module.exports = memoize(function (db) {
 			}
 		}
 	});
+
+	FormSectionGroup.prototype.defineProperties({
+		toWSSchema: {
+			value: function (ignore) {
+				if (typeof process === 'undefined') return;
+				var schema = { dataForms: [], properties: {} }, sectionSchema = {};
+				this.sections.forEach(function (section) {
+					sectionSchema = section.toWSSchema();
+					if (sectionSchema.dataForms) {
+						//dataForms will have to be set via iteration because assign
+						//will overwrite existing value of schema dataForms property.
+						sectionSchema.dataForms.forEach(function (dataForm) {
+							schema.dataForms.push(dataForm);
+						}, this);
+						delete sectionSchema.dataForms;
+					}
+					db.Object.deepAssign(schema, sectionSchema);
+				}, this);
+				return schema;
+			}
+		}
+	});
+
 	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSectionBase;
 
 	FormSectionGroup.prototype.progressRules.map.define('subSections', {

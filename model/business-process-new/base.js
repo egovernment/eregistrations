@@ -169,6 +169,96 @@ module.exports = memoize(function (db/*, options*/) {
 
 				return fields;
 			}
+		},
+		toWSSchema: {
+			value: function (ignore) {
+				if (typeof process === 'undefined') return;
+				var formSchema
+				  , db = this.database
+				  , schema = {
+					typeName: this.constructor.__id__,
+					properties: {
+						id: { type: "string" },
+						service: { type: "enum", ref: "services" },
+						submittedTimestamp: { type: "timestamp" },
+						processingSteps: { type: "object", properties: {} },
+						request: {
+							type: "object",
+							properties: {
+								registrations: {},
+								documentUploads: {},
+								costs: {},
+								payments: {},
+								certificates: {},
+								data: {
+									dataForms: [],
+									type: "object",
+									properties: {}
+								}
+							}
+						}
+					}
+				};
+
+				var assignForm = function (form) {
+					formSchema = form.toWSSchema();
+					if (formSchema.dataForms) {
+						//handling of db.FormSection and db.FormSectionGroup type dataForm
+						//dataForms will have to be set via iteration because assign
+						//will overwrite existing value of schema dataForms property.
+						formSchema.dataForms.forEach(function (dataForm) {
+							schema.properties.request.properties.data.dataForms.push(dataForm);
+						});
+						delete formSchema.dataForms;
+					}
+					db.Object.deepAssign(schema.properties.request.properties.data, formSchema);
+				};
+
+				this.constructor.prototype.processingSteps.map.forEach(function self(processingStep) {
+					if (db.ProcessingStepGroup && processingStep instanceof db.ProcessingStepGroup) {
+						processingStep.steps.map.forEach(self);
+						return;
+					}
+					schema.properties.processingSteps.properties[processingStep.key] =
+						processingStep.toWSSchema();
+				});
+
+				schema.properties.request.properties.registrations =
+					this.registrations.map._descriptorPrototype_.type.prototype.toWSSchema();
+				schema.properties.request.properties.costs =
+					this.costs.map._descriptorPrototype_.type.prototype.toWSSchema();
+				schema.properties.request.properties.certificates =
+					this.certificates.map._descriptorPrototype_.type.prototype.toWSSchema();
+				schema.properties.request.properties.documentUploads =
+					this.requirementUploads.map._descriptorPrototype_.type.prototype.toWSSchema();
+				schema.properties.request.properties.payments =
+					this.paymentReceiptUploads.map._descriptorPrototype_.type.prototype.toWSSchema();
+
+				// guide
+				// toWSSchema is not implemented on FormSectionBase
+				if (db.FormSectionBase &&
+						this.determinants.constructor !== db.FormSectionBase) {
+					assignForm(this.constructor.prototype.determinants);
+				}
+
+				// dataForms
+				this.constructor.prototype.dataForms.map.forEach(function (form) {
+					if (db.FormSectionBase &&
+							form.constructor !== db.FormSectionBase) {
+						assignForm(form);
+					}
+				});
+
+				//submissionForms
+				this.constructor.prototype.submissionForms.map.forEach(function (form) {
+					if (db.FormSectionBase &&
+							form.constructor !== db.FormSectionBase) {
+						assignForm(form);
+					}
+				});
+
+				return schema;
+			}
 		}
 	}, {
 		draftLimit: { type: UInteger, value: 20 }

@@ -207,6 +207,35 @@ module.exports = memoize(function (db) {
 		abbr: { type: StringLine }
 	});
 
+	Document.prototype.defineProperties({
+
+		toWSSchema: {
+			value: function (ignore) {
+				if (typeof process === 'undefined') return;
+				var schema = {
+					type: "array",
+					items: {
+						type: "object",
+						properties: {
+							code: {
+								type: "enum",
+								ref: "documents"
+							},
+							data: {}
+						}
+					}
+				};
+				schema.items.properties.files =
+					this.files.getItemType().prototype.toWSSchema();
+				schema.items.properties.owner = { type: "string" };
+				if (this.dataForm.constructor !== this.database.FormSectionBase) {
+					schema.items.properties.data = this.dataForm.toWSSchema();
+				}
+				return schema;
+			}
+		}
+	});
+
 	defineToWSJSONPrettyData(Document.prototype);
 	defineNestedMap(db);
 	// Map of uploaded files

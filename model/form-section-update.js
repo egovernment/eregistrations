@@ -168,6 +168,17 @@ module.exports = memoize(function (db) {
 		}
 	});
 
+	FormSectionUpdate.prototype.defineProperties({
+
+		toWSSchema: {
+			value: function (ignore) {
+				if (typeof process === 'undefined') return;
+				// method is not for instance-only logic as is this class. Use fallback.
+				return this.sourceSection.toWSSchema();
+			}
+		}
+	});
+
 	FormSectionUpdate.prototype.progressRules.map.define('sourceSection', {
 		type: ProgressRule,
 		nested: true

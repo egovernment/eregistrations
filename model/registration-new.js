@@ -89,6 +89,27 @@ module.exports = memoize(function (db/*, options*/) {
 		}
 	});
 
+	Registration.prototype.defineProperties({
+
+		toWSSchema: {
+			value: function (ignore) {
+				if (typeof process === 'undefined') return;
+				return {
+					type: "array",
+					items: {
+						type: "object",
+						properties: {
+							code: {
+								type: "enum",
+								ref: "registrations"
+							}
+						}
+					}
+				};
+			}
+		}
+	});
+
 	Document.prototype.getDescriptor('registration').type = Registration;
 
 	return Registration;

@@ -25,7 +25,23 @@ module.exports = memoize(function (db) {
 			return { kind: 'fileValue', name: this.name, path: this.path, thumbPath: this.thumb.path,
 				diskSize: this.diskSize, type: this.type, previewPath: this.preview.path };
 		} },
-		isEmpty: { value: function (ignore) { return !this.path; } }
+		isEmpty: { value: function (ignore) { return !this.path; } },
+		toWSSchema: {
+			value: function (ignore) {
+				if (typeof process === 'undefined') return;
+				return {
+					type: "array",
+					items: {
+						type: "object",
+						properties: {
+							url: {
+								type: "string"
+							}
+						}
+					}
+				};
+			}
+		}
 	});
 	File.accept = ['image/jpeg', 'application/pdf', 'image/png'].concat(docMimeTypes);
 

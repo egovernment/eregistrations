@@ -27,7 +27,7 @@ module.exports = memoize(function (db) {
 		['invalid', { label: _("Invalid"), htmlClass: 'error' }]
 	]));
 
-	// Enum for document upload reject reasn
+	// Enum for document upload reject reason
 	var RequirementUploadRejectReason = StringLine.createEnum('RequirementUploadRejectReason',
 		new Map([
 			['illegible', { label: _("The document is unreadable") }],
@@ -177,6 +177,12 @@ module.exports = memoize(function (db) {
 		// The user who uploaded the requirementUpload
 		uploadedBy: {
 			type: User
+		},
+		toWSSchema: {
+			value: function (ignore) {
+				if (typeof process === 'undefined') return;
+				return this.document.toWSSchema();
+			}
 		}
 	});
 
