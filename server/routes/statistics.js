@@ -289,6 +289,7 @@ module.exports = function (config) {
 			sort: {
 				'service.businessName': 1,
 				'service.businessId': 1,
+				'processingStep.path': 1,
 				'date.ts': 1
 			}
 		}).then(function (statusHistory) {
