@@ -24,7 +24,6 @@ module.exports = function (result, config) {
 	Object.keys(result).forEach(function (rowName) {
 		var parsedDate = Date.parse(rowName);
 		var resultItem = isNaN(parsedDate) ? [rowName] : [mode.getDisplayedKey(new Date(parsedDate))];
-		console.log('MY RESULT ITEM', resultItem);
 		Array.prototype.push.apply(resultItem,
 			Object.keys(result[rowName]).map(function (status) {
 				return result[rowName][status];
