@@ -21,11 +21,13 @@ module.exports = function (result, config) {
 		].join(',')
 	];
 
-	Object.keys(result).forEach(function (date) {
-		var resultItem = [mode.getDisplayedKey(new Date(date))];
+	Object.keys(result).forEach(function (rowName) {
+		var parsedDate = Date.parse(rowName);
+		var resultItem = isNaN(parsedDate) ? [rowName] : [mode.getDisplayedKey(new Date(parsedDate))];
+		console.log('MY RESULT ITEM', resultItem);
 		Array.prototype.push.apply(resultItem,
-			Object.keys(result[date]).map(function (status) {
-				return result[date][status];
+			Object.keys(result[rowName]).map(function (status) {
+				return result[rowName][status];
 			}));
 		data.push(resultItem.join(','));
 	});

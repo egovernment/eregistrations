@@ -21,12 +21,6 @@ module.exports = function () {
 			},
 			view: require('../view/statistics-dashboard')
 		},
-		files: {
-			decorateContext: function () {
-				this.processingStepsMeta = processingStepsMeta;
-			},
-			view: require('../view/statistics-files-certificates')
-		},
 		'files/by-role': {
 			view: require('../view/statistics-files-roles')
 		},
@@ -54,6 +48,7 @@ module.exports = function () {
 		},
 		rejections: require('../view/statistics-rejections'),
 		accounts: require('../view/statistics-accounts'),
+		old: require('../view/statistics-old'),
 
 		// Business process views
 
