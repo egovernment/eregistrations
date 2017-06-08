@@ -12,7 +12,8 @@ var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step
   , mano                          = require('mano')
   , mongoDB                       = require('../mongo-db')
   , debug                         = require('debug-ext')('status-history-logger')
-  , deferred                      = require('deferred');
+  , deferred                      = require('deferred')
+  , assign                        = require('es5-ext/object/assign');
 
 var getPathSuffix = function () {
 	return 'statusHistory/map/' + uniqIdPrefix + uuid();
@@ -88,7 +89,7 @@ var storeLogMongo = function (storeResult) {
 	});
 };
 
-module.exports = function () {
+module.exports = exports = function () {
 	var allStorages = new Set(), driver;
 	// Cannot be initialized before call
 	driver = mano.dbDriver;
@@ -109,6 +110,7 @@ module.exports = function () {
 						return storeLogMongo(storeResult);
 					});
 				saveRejectionReason(event);
+				exports.onProcessingStepStatusChange({ event: event, path: stepPath });
 			});
 		});
 	});
@@ -125,4 +127,19 @@ module.exports = function () {
 				});
 		});
 	});
+};
+
+exports.onProcessingStepStatusChange = function (data) {
+	var event = data.event, status, oldStatus;
+
+	if (event.type !== 'computed') return null;
+	// We don't want to save null, as status is cardinalProperty of nested map and
+	// needs to be set in order to avoid inconsistency with in memory engine
+	status    = unserializeValue(event.data.value) || '';
+	oldStatus = (event.old && unserializeValue(event.old.value)) || '';
+
+	// We ignore such cases, they may happen when direct overwrites computed
+	if (status === oldStatus) return null;
+
+	return assign({}, data, { status: status, oldStatus: oldStatus });
 };
