@@ -21,6 +21,7 @@ module.exports = function () {
 			},
 			view: require('../view/statistics-dashboard')
 		},
+		'files/certificates-issued': require('../view/statistics-certificates-issued'),
 		'files/by-role': {
 			view: require('../view/statistics-files-roles')
 		},

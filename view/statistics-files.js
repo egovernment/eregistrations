@@ -8,6 +8,9 @@ exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
 		ul({ id: 'statistics-sub-menu', class: 'pills-nav' }, [
+			li({ class: 'bring-to-front', id: 'certificates-issued-nav' },
+				a({ href: '/files/certificates-issued/', class: 'pills-nav-pill' },
+					_("Certificates issued"))),
 			li({ class: 'bring-to-front', id: 'flow-by-role-nav' },
 				a({ href: '/files/by-role/', class: 'pills-nav-pill' }, _("Roles"))),
 			li({ class: 'bring-to-front', id: 'flow-by-operator-nav' },

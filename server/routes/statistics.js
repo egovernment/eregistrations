@@ -453,6 +453,13 @@ module.exports = function (config) {
 	getStatusHistoryDateMap(driver).done();
 
 	return assign({
+		'get-certificates-issued-data': function (query) {
+			return queryHandler.resolve(query)(function (query) {
+				return getApprovedCerts(query).then(function (res) {
+					return res;
+				});
+			});
+		},
 		'get-flow-data': function (unresolvedQuery) {
 			return flowQueryHandler.resolve(unresolvedQuery)(calculatePerDateStatusEventsSums);
 		},
