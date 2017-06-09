@@ -637,7 +637,27 @@ module.exports = function (config) {
 						return deferred(true);
 					}).then(function () {
 						return getApprovedCerts(query).then(function (res) {
-							result.approvedCertsData = res;
+							var approvedCertsData = [], row, nextIndex, totalRow;
+							totalRow = [_("Total")];
+							res.forEach(function (serviceItem) {
+								nextIndex = 0;
+								serviceItem.data.forEach(function (certItem, index) {
+									if (index < nextIndex) return;
+									row = [serviceItem.service.label, certItem.certificate.abbr];
+									getPeriods().forEach(function (period, periodIndex) {
+										if (!totalRow[periodIndex + 1]) {
+											totalRow[periodIndex + 1] = 0;
+										}
+										row.push(serviceItem.data[index + periodIndex].amount);
+										totalRow[periodIndex + 1] +=
+											serviceItem.data[index + periodIndex].amount;
+										nextIndex = index + periodIndex + 1;
+									});
+									approvedCertsData.push(row);
+								});
+							});
+							approvedCertsData.push(totalRow);
+							result.approvedCertsData = approvedCertsData;
 							return result;
 						});
 					});
