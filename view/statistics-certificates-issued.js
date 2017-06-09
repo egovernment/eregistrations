@@ -39,37 +39,33 @@ var approvedCertsPeriods = completedFilesPeriods.slice(0);
 approvedCertsPeriods.splice(0, 0, { name: 'certificate', label: _("Certificate") });
 
 var getTablesFromData = function (certData) {
-	return table(
-		{ id: 'approved-certificates', class: 'statistics-table statistics-table-registrations' },
-		thead(tr(
-			th({ class: 'statistics-table-header-waiting' }, _("Service")),
-			list(approvedCertsPeriods, function (period) {
-				return th({ class: 'statistics-table-number' }, period.label);
-			})
-		)),
-		tbody(
-			mmap(certData, function (rows) {
-				if (!rows) return;
+	return list(certData, function (item) {
+		return [
+			section({ class: 'section-primary' },
+				h3(item.header),
+				table(
+					{ class: 'statistics-table statistics-table-registrations' },
+					thead(tr(
+						th({ class: 'statistics-table-header-waiting' }, _("Certificate")),
+						th({ class: 'statistics-table-header-waiting' }, _("Number of issued"))
+					)),
+					tbody(
+						list(item.data, function (row) {
+							if (!row) return;
 
-				return list(rows, function (row, index) {
-					return tr(list(row, function (cell, innerIndex) {
-						// if total
-						if (index === (rows.length - 1)) {
-							if (innerIndex === 0) {
-								return td({ class: 'statistics-table-number', colspan: 2 }, cell);
-							}
-						}
-						return td({ class: 'statistics-table-number' }, cell);
-					}
-						));
-				});
-			})
-		)
-	);
+							return tr(list(row, function (cell) {
+								return td({ class: 'statistics-table-number' }, cell);
+							}));
+						})
+					)
+				)),
+			br()
+		];
+	});
 };
 
 exports['statistics-main'] = function () {
-	var queryHandler, data = new ObservableValue(), handlerConf, params;
+	var queryHandler, data = new ObservableValue([]), handlerConf, params;
 
 	handlerConf = queryHandlerConf.slice(0);
 	queryHandler = setupQueryHandler(handlerConf,
@@ -114,7 +110,5 @@ exports['statistics-main'] = function () {
 				),
 				p({ class: 'submit' }, input({ type: 'submit' })))),
 		br(),
-		section({ class: "section-primary" },
-			h3(_("Certificates issued")),
-			getTablesFromData(data)));
+		getTablesFromData(data));
 };

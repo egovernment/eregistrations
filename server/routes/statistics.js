@@ -224,38 +224,50 @@ module.exports = function (config) {
 		});
 	};
 
+	/*
+		Produces the following:
+
+		[
+			{
+				service: { label: 'My bp' },
+				data: [
+					{
+						period: 'thisYear',
+						certificate: { abbr: 'ABBR', label: 'My certificate' },
+						amount: 5
+					}, {...}
+				]
+			}
+		]
+	*/
+
 	var getApprovedCerts = function (query) {
-		var result = [];
+		var approvedCertsResult = [];
 		return getPeriodsWithData(query).then(function (periods) {
-			var approvedCertsResult = [], total = [_("Total")];
 			db.BusinessProcess.extensions.forEach(function (BpType) {
 				var serviceName =
-					uncapitalize.call(BpType.__id__.replace('BusinessProcess', ''));
+					uncapitalize.call(BpType.__id__.replace('BusinessProcess', '')), currentItem;
+				currentItem = { service: { label: BpType.prototype.label }, data: [] };
+				approvedCertsResult.push(currentItem);
 				BpType.prototype.certificates.map.forEach(function (cert) {
-					var approvedCertsResultItem = [BpType.prototype.label, cert.abbr];
 					getPeriods().forEach(function (key) {
-						if (!periods[key][serviceName] ||
-								!periods[key][serviceName].certificate ||
-								!periods[key][serviceName].certificate[cert.key] ||
-								!periods[key][serviceName].certificate[cert.key].approved) {
-							approvedCertsResultItem.push(0);
-						} else {
-							approvedCertsResultItem.push(
-								periods[key][serviceName].certificate[cert.key].approved
-							);
+						var currentDataItem = {
+							period: key,
+							certificate: { abbr: cert.abbr, label: cert.label },
+							amount: 0
+						};
+						if (periods[key][serviceName] &&
+								periods[key][serviceName].certificate &&
+								periods[key][serviceName].certificate[cert.key] &&
+								periods[key][serviceName].certificate[cert.key].approved) {
+							currentDataItem.amount = periods[key][serviceName].certificate[cert.key].approved;
 						}
-						if (!total[approvedCertsResultItem.length - 2]) {
-							total[approvedCertsResultItem.length - 2] = 0;
-						}
-						total[approvedCertsResultItem.length - 2] +=
-							Number(approvedCertsResultItem.slice(-1));
+						currentItem.data.push(currentDataItem);
 					});
-					approvedCertsResult.push(approvedCertsResultItem);
 				});
 			});
-			result = approvedCertsResult;
-			result.push(total);
-			return result;
+
+			return approvedCertsResult;
 		});
 	};
 
@@ -456,7 +468,20 @@ module.exports = function (config) {
 		'get-certificates-issued-data': function (query) {
 			return queryHandler.resolve(query)(function (query) {
 				return getApprovedCerts(query).then(function (res) {
-					return res;
+					var result = [], currentItem;
+					res.forEach(function (serviceItem) {
+						currentItem = { data: [] };
+						currentItem.header = serviceItem.service.label;
+						serviceItem.data.forEach(function (certItem) {
+							if (certItem.period !== 'inPeriod') return;
+							currentItem.data.push([
+								certItem.certificate.label,
+								certItem.amount
+							]);
+						});
+						result.push(currentItem);
+					});
+					return result;
 				});
 			});
 		},
