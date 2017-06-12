@@ -25,6 +25,7 @@ var assign = require('es5-ext/object/assign')
   , timePerPersonPrint = require('../pdf-renderers/statistics-time-per-person')
   , timePerRolePrint = require('../pdf-renderers/statistics-time-per-role')
   , issuedCertificatesPrint = require('../pdf-renderers/statistics-issued-certificates')
+  , issuedCertficatesCsv = require('../csv-renderers/statistics-issued-certificates')
   , flowCertificatesPrint = require('../pdf-renderers/statistics-flow-certificates')
   , flowRolesPrint = require('../pdf-renderers/statistics-flow-roles')
   , flowOperatorsPrint = require('../pdf-renderers/statistics-flow-operators')
@@ -500,6 +501,12 @@ module.exports = function (config) {
 			return certificatesApprovedPrintHandler.resolve(unresolvedQuery)
 				.then(getCertificatesIssuedData).then(function (data) {
 					return issuedCertificatesPrint(data, rendererConfig);
+				});
+		}),
+		'certificates-issued.csv':  makeCsv(function (unresolvedQuery) {
+			return certificatesApprovedPrintHandler.resolve(unresolvedQuery)
+				.then(getCertificatesIssuedData).then(function (data) {
+					return issuedCertficatesCsv(data, rendererConfig);
 				});
 		}),
 		'get-flow-data': function (unresolvedQuery) {
