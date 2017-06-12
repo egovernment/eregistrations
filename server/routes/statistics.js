@@ -24,6 +24,7 @@ var assign = require('es5-ext/object/assign')
   , rejectionsQueryHandlerConf = require('../../apps/statistics/rejections-query-conf')
   , timePerPersonPrint = require('../pdf-renderers/statistics-time-per-person')
   , timePerRolePrint = require('../pdf-renderers/statistics-time-per-role')
+  , issuedCertificatesPrint = require('../pdf-renderers/statistics-issued-certificates')
   , flowCertificatesPrint = require('../pdf-renderers/statistics-flow-certificates')
   , flowRolesPrint = require('../pdf-renderers/statistics-flow-roles')
   , flowOperatorsPrint = require('../pdf-renderers/statistics-flow-operators')
@@ -75,6 +76,11 @@ var flowQueryHandlerRolesPrintConf = [
 	require('../../apps-common/query-conf/service'),
 	require('../../apps-common/query-conf/certificate'),
 	require('../../apps-common/query-conf/processing-step-status')
+];
+
+var certificatesApprovedPrintConf = [
+	require('../../apps-common/query-conf/date-from'),
+	require('../../apps-common/query-conf/date-to')
 ];
 
 var calculatePerDateStatusEventsSums = function (query) {
@@ -193,6 +199,7 @@ module.exports = function (config) {
 	var flowQueryRolesPrintHandler = new QueryHandler(flowQueryHandlerRolesPrintConf);
 	var flowQueryHandlerOperators = new QueryHandler(flowQueryOperatorsHandlerConf);
 	var rejectionsQueryHandler = new QueryHandler(rejectionsQueryHandlerConf);
+	var certificatesApprovedPrintHandler = new QueryHandler(certificatesApprovedPrintConf);
 
 	var getFilesCompleted = function (query) {
 		return getPeriodsWithData(query).then(function (periods) {
@@ -269,6 +276,26 @@ module.exports = function (config) {
 			});
 
 			return approvedCertsResult;
+		});
+	};
+
+	var getCertificatesIssuedData = function (query) {
+		return getApprovedCerts(query).then(function (res) {
+			var result = [], currentItem;
+			res.forEach(function (serviceItem) {
+				currentItem = { data: [] };
+				currentItem.header = serviceItem.service.label;
+				serviceItem.data.forEach(function (certItem) {
+					if (certItem.period !== 'inPeriod') return;
+					currentItem.data.push([
+						certItem.certificate.categoryLabel,
+						certItem.certificate.label,
+						certItem.amount
+					]);
+				});
+				result.push(currentItem);
+			});
+			return result;
 		});
 	};
 
@@ -467,26 +494,14 @@ module.exports = function (config) {
 
 	return assign({
 		'get-certificates-issued-data': function (query) {
-			return queryHandler.resolve(query)(function (query) {
-				return getApprovedCerts(query).then(function (res) {
-					var result = [], currentItem;
-					res.forEach(function (serviceItem) {
-						currentItem = { data: [] };
-						currentItem.header = serviceItem.service.label;
-						serviceItem.data.forEach(function (certItem) {
-							if (certItem.period !== 'inPeriod') return;
-							currentItem.data.push([
-								certItem.certificate.categoryLabel,
-								certItem.certificate.label,
-								certItem.amount
-							]);
-						});
-						result.push(currentItem);
-					});
-					return result;
-				});
-			});
+			return queryHandler.resolve(query)(getCertificatesIssuedData);
 		},
+		'certificates-issued.pdf':  makePdf(function (unresolvedQuery) {
+			return certificatesApprovedPrintHandler.resolve(unresolvedQuery)
+				.then(getCertificatesIssuedData).then(function (data) {
+					return issuedCertificatesPrint(data, rendererConfig);
+				});
+		}),
 		'get-flow-data': function (unresolvedQuery) {
 			return flowQueryHandler.resolve(unresolvedQuery)(calculatePerDateStatusEventsSums);
 		},
