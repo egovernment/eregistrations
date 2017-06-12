@@ -1,7 +1,6 @@
 'use strict';
 
 var _                 = require('mano').i18n.bind('View: Statistics')
-  , db                = require('../db')
   , location          = require('mano/lib/client/location')
   , queryHandlerConf  = require('../apps/statistics/flow-query-conf')
   , setupQueryHandler = require('../utils/setup-client-query-handler')
@@ -9,34 +8,13 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , ObservableValue   = require('observable-value')
   , queryServer       = require('./utils/statistics-certificates-issued-query-server')
   , getDynamicUrl     = require('./utils/get-dynamic-url')
-  , dateFromToBlock   = require('./components/filter-bar/select-date-range-safe-fallback')
-  , toDateInTz        = require('../utils/to-date-in-time-zone');
+  , dateFromToBlock   = require('./components/filter-bar/select-date-range-safe-fallback');
 
 exports._parent        = require('./statistics-files');
 exports._customFilters = Function.prototype;
 
 exports['files-nav']                = { class: { 'submitted-menu-item-active': true } };
 exports['certificates-issued-nav'] = { class: { 'pills-nav-active': true } };
-
-var completedFilesPeriods = [
-	{ name: 'inPeriod', label: _("Period") },
-	{ name: 'today', label: _("Today") },
-	{ name: 'thisWeek', label: _("This week") },
-	{ name: 'thisMonth', label: _("This month") }
-];
-var today = toDateInTz(new Date(), db.timeZone);
-var currentYear = new db.Date(today.getUTCFullYear(), 0, 1);
-var lastYearInRange = new db.Date(today.getUTCFullYear() - 5, 0, 1);
-
-while (currentYear >= lastYearInRange) {
-	completedFilesPeriods.push({
-		name: currentYear.getUTCFullYear(),
-		label: currentYear.getUTCFullYear()
-	});
-	currentYear.setUTCFullYear(currentYear.getUTCFullYear() - 1);
-}
-var approvedCertsPeriods = completedFilesPeriods.slice(0);
-approvedCertsPeriods.splice(0, 0, { name: 'certificate', label: _("Certificate") });
 
 var getTablesFromData = function (certData) {
 	return list(certData, function (item) {
@@ -45,10 +23,11 @@ var getTablesFromData = function (certData) {
 				h3(item.header),
 				table(
 					{ class: 'statistics-table statistics-table-registrations' },
-					thead(tr(
+					thead(
+						th({ class: 'statistics-table-header-waiting' }, _("Category")),
 						th({ class: 'statistics-table-header-waiting' }, _("Certificate")),
 						th({ class: 'statistics-table-header-waiting' }, _("Number of issued"))
-					)),
+					),
 					tbody(
 						list(item.data, function (row) {
 							if (!row) return;

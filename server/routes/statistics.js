@@ -253,7 +253,8 @@ module.exports = function (config) {
 					getPeriods().forEach(function (key) {
 						var currentDataItem = {
 							period: key,
-							certificate: { abbr: cert.abbr, label: cert.label },
+							certificate: { abbr: cert.abbr, label: cert.label,
+								categoryLabel: cert.certificateCategory.label },
 							amount: 0
 						};
 						if (periods[key][serviceName] &&
@@ -475,6 +476,7 @@ module.exports = function (config) {
 						serviceItem.data.forEach(function (certItem) {
 							if (certItem.period !== 'inPeriod') return;
 							currentItem.data.push([
+								certItem.certificate.categoryLabel,
 								certItem.certificate.label,
 								certItem.amount
 							]);

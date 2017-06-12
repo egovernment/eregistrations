@@ -16,7 +16,8 @@ var Map                     = require('es6-map')
   , definePerson            = require('./person')
   , defineGetTranslations   = require('./lib/define-get-translations')
   , defineStatusHistoryItem = require('./lib/status-history-item')
-  , defineToWSJSONPrettyData = require('./lib/define-to-ws-json-pretty-data');
+  , defineToWSJSONPrettyData = require('./lib/define-to-ws-json-pretty-data')
+  , defineCertificateCategory = require('./lib/certificate-category');
 
 module.exports = memoize(function (db) {
 	var StringLine       = defineStringLine(db)
@@ -28,6 +29,9 @@ module.exports = memoize(function (db) {
 	  , Person           = definePerson(db)
 	  , StatusHistoryItem = defineStatusHistoryItem(db)
 	  , Document;
+
+	// We assure that certificate categories are defined from now on
+	defineCertificateCategory(db);
 
 	// Enum for processing step status
 	var CertificateStatus = StringLine.createEnum('CertificateStatus', new Map([
@@ -98,6 +102,10 @@ module.exports = memoize(function (db) {
 		isCertificate: { type: db.Boolean, value: function (_observe) {
 			return this.owner === this.master.certificates.map;
 		} },
+		certificateCategory: {
+			type: db.Object,
+			value: db.businessRegistryCertificateCategory
+		},
 		// True if this document is a certificate that is supposed to be handed over at front desk
 		isToBeHanded: { type: db.Boolean, value: false },
 		// Whether certificate was handed over (at front desk)
