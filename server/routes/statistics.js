@@ -249,7 +249,7 @@ module.exports = function (config) {
 					uncapitalize.call(BpType.__id__.replace('BusinessProcess', '')), currentItem;
 				currentItem = { service: { label: BpType.prototype.label }, data: [] };
 				approvedCertsResult.push(currentItem);
-				BpType.prototype.certificates.map.forEach(function (cert) {
+				BpType.prototype.certificates.ordered.forEach(function (cert) {
 					getPeriods().forEach(function (key) {
 						var currentDataItem = {
 							period: key,
