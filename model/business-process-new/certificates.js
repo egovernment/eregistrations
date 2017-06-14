@@ -88,6 +88,17 @@ module.exports = memoize(function (db/* options */) {
 
 			return this.released;
 		} },
+		ordered: {
+			type: Document,
+			multiple: true,
+			value: function () {
+				var result = [];
+				this.map.forEach(function (cert) {
+					result.push(cert);
+				});
+				return result; // default order as on map
+			}
+		},
 		// It's for data snapshots functionality
 		// Returns overview of gathered (or applied) certificates.
 		// It is run on business process closure (no matter if rejection or approval)
