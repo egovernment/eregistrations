@@ -24,6 +24,8 @@ var assign = require('es5-ext/object/assign')
   , rejectionsQueryHandlerConf = require('../../apps/statistics/rejections-query-conf')
   , timePerPersonPrint = require('../pdf-renderers/statistics-time-per-person')
   , timePerRolePrint = require('../pdf-renderers/statistics-time-per-role')
+  , issuedCertificatesPrint = require('../pdf-renderers/statistics-issued-certificates')
+  , issuedCertficatesCsv = require('../csv-renderers/statistics-issued-certificates')
   , flowCertificatesPrint = require('../pdf-renderers/statistics-flow-certificates')
   , flowRolesPrint = require('../pdf-renderers/statistics-flow-roles')
   , flowOperatorsPrint = require('../pdf-renderers/statistics-flow-operators')
@@ -75,6 +77,11 @@ var flowQueryHandlerRolesPrintConf = [
 	require('../../apps-common/query-conf/service'),
 	require('../../apps-common/query-conf/certificate'),
 	require('../../apps-common/query-conf/processing-step-status')
+];
+
+var certificatesApprovedPrintConf = [
+	require('../../apps-common/query-conf/date-from'),
+	require('../../apps-common/query-conf/date-to')
 ];
 
 var calculatePerDateStatusEventsSums = function (query) {
@@ -193,6 +200,7 @@ module.exports = function (config) {
 	var flowQueryRolesPrintHandler = new QueryHandler(flowQueryHandlerRolesPrintConf);
 	var flowQueryHandlerOperators = new QueryHandler(flowQueryOperatorsHandlerConf);
 	var rejectionsQueryHandler = new QueryHandler(rejectionsQueryHandlerConf);
+	var certificatesApprovedPrintHandler = new QueryHandler(certificatesApprovedPrintConf);
 
 	var getFilesCompleted = function (query) {
 		return getPeriodsWithData(query).then(function (periods) {
@@ -224,37 +232,70 @@ module.exports = function (config) {
 		});
 	};
 
+	/*
+		Produces the following:
+
+		[
+			{
+				service: { label: 'My bp' },
+				data: [
+					{
+						period: 'thisYear',
+						certificate: { abbr: 'ABBR', label: 'My certificate' },
+						amount: 5
+					}, {...}
+				]
+			}
+		]
+	*/
+
 	var getApprovedCerts = function (query) {
-		var result = [];
+		var approvedCertsResult = [];
 		return getPeriodsWithData(query).then(function (periods) {
-			var approvedCertsResult = [], total = [_("Total")];
 			db.BusinessProcess.extensions.forEach(function (BpType) {
 				var serviceName =
-					uncapitalize.call(BpType.__id__.replace('BusinessProcess', ''));
-				BpType.prototype.certificates.map.forEach(function (cert) {
-					var approvedCertsResultItem = [BpType.prototype.label, cert.abbr];
+					uncapitalize.call(BpType.__id__.replace('BusinessProcess', '')), currentItem;
+				currentItem = { service: { label: BpType.prototype.label }, data: [] };
+				approvedCertsResult.push(currentItem);
+				BpType.prototype.certificates.ordered.forEach(function (cert) {
 					getPeriods().forEach(function (key) {
-						if (!periods[key][serviceName] ||
-								!periods[key][serviceName].certificate ||
-								!periods[key][serviceName].certificate[cert.key] ||
-								!periods[key][serviceName].certificate[cert.key].approved) {
-							approvedCertsResultItem.push(0);
-						} else {
-							approvedCertsResultItem.push(
-								periods[key][serviceName].certificate[cert.key].approved
-							);
+						var currentDataItem = {
+							period: key,
+							certificate: { abbr: cert.abbr, label: cert.label,
+								categoryLabel: cert.certificateCategory.label },
+							amount: 0
+						};
+						if (periods[key][serviceName] &&
+								periods[key][serviceName].certificate &&
+								periods[key][serviceName].certificate[cert.key] &&
+								periods[key][serviceName].certificate[cert.key].approved) {
+							currentDataItem.amount = periods[key][serviceName].certificate[cert.key].approved;
 						}
-						if (!total[approvedCertsResultItem.length - 2]) {
-							total[approvedCertsResultItem.length - 2] = 0;
-						}
-						total[approvedCertsResultItem.length - 2] +=
-							Number(approvedCertsResultItem.slice(-1));
+						currentItem.data.push(currentDataItem);
 					});
-					approvedCertsResult.push(approvedCertsResultItem);
 				});
 			});
-			result = approvedCertsResult;
-			result.push(total);
+
+			return approvedCertsResult;
+		});
+	};
+
+	var getCertificatesIssuedData = function (query) {
+		return getApprovedCerts(query).then(function (res) {
+			var result = [], currentItem;
+			res.forEach(function (serviceItem) {
+				currentItem = { data: [] };
+				currentItem.header = serviceItem.service.label;
+				serviceItem.data.forEach(function (certItem) {
+					if (certItem.period !== 'inPeriod') return;
+					currentItem.data.push([
+						certItem.certificate.categoryLabel,
+						certItem.certificate.label,
+						certItem.amount
+					]);
+				});
+				result.push(currentItem);
+			});
 			return result;
 		});
 	};
@@ -453,6 +494,21 @@ module.exports = function (config) {
 	getStatusHistoryDateMap(driver).done();
 
 	return assign({
+		'get-certificates-issued-data': function (query) {
+			return queryHandler.resolve(query)(getCertificatesIssuedData);
+		},
+		'certificates-issued.pdf':  makePdf(function (unresolvedQuery) {
+			return certificatesApprovedPrintHandler.resolve(unresolvedQuery)
+				.then(getCertificatesIssuedData).then(function (data) {
+					return issuedCertificatesPrint(data, rendererConfig);
+				});
+		}),
+		'certificates-issued.csv':  makeCsv(function (unresolvedQuery) {
+			return certificatesApprovedPrintHandler.resolve(unresolvedQuery)
+				.then(getCertificatesIssuedData).then(function (data) {
+					return issuedCertficatesCsv(data, rendererConfig);
+				});
+		}),
 		'get-flow-data': function (unresolvedQuery) {
 			return flowQueryHandler.resolve(unresolvedQuery)(calculatePerDateStatusEventsSums);
 		},
@@ -605,7 +661,27 @@ module.exports = function (config) {
 						return deferred(true);
 					}).then(function () {
 						return getApprovedCerts(query).then(function (res) {
-							result.approvedCertsData = res;
+							var approvedCertsData = [], row, nextIndex, totalRow;
+							totalRow = [_("Total")];
+							res.forEach(function (serviceItem) {
+								nextIndex = 0;
+								serviceItem.data.forEach(function (certItem, index) {
+									if (index < nextIndex) return;
+									row = [serviceItem.service.label, certItem.certificate.abbr];
+									getPeriods().forEach(function (period, periodIndex) {
+										if (!totalRow[periodIndex + 1]) {
+											totalRow[periodIndex + 1] = 0;
+										}
+										row.push(serviceItem.data[index + periodIndex].amount);
+										totalRow[periodIndex + 1] +=
+											serviceItem.data[index + periodIndex].amount;
+										nextIndex = index + periodIndex + 1;
+									});
+									approvedCertsData.push(row);
+								});
+							});
+							approvedCertsData.push(totalRow);
+							result.approvedCertsData = approvedCertsData;
 							return result;
 						});
 					});
