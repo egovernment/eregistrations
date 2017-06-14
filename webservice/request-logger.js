@@ -27,6 +27,6 @@ exports.findOne = function (query) {
 exports.getErrored = function () {
 	return mongoDB.connect()(function (db) {
 		var collection = db.collection('wsRequests');
-		return collection.find({ $or: [ { status: null }, { status: 'error' } ] });
+		return collection.find({ $or: [ { status: null }, { status: 'error' } ] }).toArray();
 	});
 };
