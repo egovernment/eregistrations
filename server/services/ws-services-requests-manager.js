@@ -27,6 +27,10 @@ exports.send = function (data) {
 			debug('No request handler defined for %s, aborting send.', data.requestHandler);
 			return;
 		}
+		if (typeof requestHandler !== 'function') {
+			debug('Request handler %s must be a function.', data.requestHandler);
+			return;
+		}
 		return requestHandler(data);
 	});
 };
