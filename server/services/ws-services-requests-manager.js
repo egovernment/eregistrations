@@ -33,7 +33,9 @@ exports.send = function (data) {
 
 exports.resendErrored = function () {
 	return requestLogger.getErrored().then(function (errored) {
-		return deferred.map(errored, function (requestData) {
+		return deferred.map(errored.filter(function (item) {
+			return item.requestType === 'sender';
+		}), function (requestData) {
 			return exports.send(requestData);
 		});
 	});
