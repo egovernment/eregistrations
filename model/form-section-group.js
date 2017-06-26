@@ -122,19 +122,21 @@ module.exports = memoize(function (db) {
 			}
 			return result;
 		} },
-		toWebServiceJSON: { value: function (ignore) {
-			var fields = {}, resolventDescriptor, wsValue, sectionFields;
+		toWebServiceJSON: { value: function (options) {
+			var fields = {}, resolventDescriptor, wsValue, sectionFields, opts, includeFullMeta;
+			opts = Object(options);
+			includeFullMeta = opts.includeFullMeta;
 			if (this.resolventProperty) {
 				resolventDescriptor = this.master.resolveSKeyPath(this.resolventProperty).ownDescriptor;
 				if (!resolventDescriptor.isValueEmpty()) {
 					wsValue = resolventDescriptor.fieldToWebServiceJSON();
-					fields[wsValue.name] = wsValue.value;
+					fields[wsValue.name] = includeFullMeta ? wsValue : wsValue.value;
 				}
 			}
 			if (!this.isUnresolved) {
 				this.internallyApplicableSections.forEach(function (section) {
 					if (section.hasFilledPropertyNamesDeep) {
-						sectionFields = section.toWebServiceJSON();
+						sectionFields = section.toWebServiceJSON(opts);
 						Object.keys(sectionFields).forEach(function (fieldName) {
 							fields[fieldName] = sectionFields[fieldName];
 						});

@@ -139,16 +139,17 @@ module.exports = memoize(function (db) {
 			return this.status === 'approved';
 		} },
 		toWebServiceJSON: {
-			value: function (ignore) {
+			value: function (options) {
 				var data = {
 					code: this.key,
 					files: [],
 					data: null
-				}, owner, db;
+				}, owner, db, opts;
 				db = this.database;
+				opts = Object(options);
 				if (this.dataForm.constructor !== this.database.FormSectionBase) {
 					data.data = this.toWebServiceJSONPrettyData(
-						this.dataForm.toWebServiceJSON({ excludeFiles: true })
+						this.dataForm.toWebServiceJSON(Object.assign({ excludeFiles: true }, opts))
 					);
 				}
 				this.files.ordered.forEach(function (file) {

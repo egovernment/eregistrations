@@ -142,16 +142,19 @@ module.exports = memoize(function (db) {
 			}
 			return result;
 		} },
-		toWebServiceJSON: { value: function (ignore) {
-			var fields = [], resolventDescriptor;
+		toWebServiceJSON: { value: function (options) {
+			var fields = [], resolventDescriptor, opts, includeFullMeta;
+			opts = Object(options);
+			includeFullMeta = opts.includeFullMeta;
 			if (this.resolventProperty) {
 				resolventDescriptor = this.master.resolveSKeyPath(this.resolventProperty).ownDescriptor;
 				if (!resolventDescriptor.isValueEmpty()) {
-					fields.push(resolventDescriptor.fieldToWebServiceJSON());
+					var wsValue = resolventDescriptor.fieldToWebServiceJSON();
+					fields.push(includeFullMeta ? wsValue : wsValue.value);
 				}
 			}
 			if (!this.isUnresolved && this.sourceSection.hasFilledPropertyNamesDeep) {
-				fields = fields.concat(this.toWebServiceJSON());
+				fields = fields.concat(this.toWebServiceJSON(opts));
 			}
 
 			return fields;

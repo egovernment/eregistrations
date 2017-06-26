@@ -45,7 +45,8 @@ module.exports = memoize(function (db) {
 		fieldToWebServiceJSON: function (ignore) {
 			return {
 				name: this.key,
-				value: this.valueToWebServiceJSON()
+				value: this.valueToWebServiceJSON(),
+				keyPath: this.__valueId__
 			};
 		},
 		fieldToMetaJSON: function (ignore) {

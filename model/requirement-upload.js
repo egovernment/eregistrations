@@ -117,8 +117,10 @@ module.exports = memoize(function (db) {
 		},
 
 		toWebServiceJSON: {
-			value: function (ignore) {
-				var result = this.document.toWebServiceJSON();
+			value: function (options) {
+				var opts, result;
+				opts = Object(options);
+				result = this.document.toWebServiceJSON(opts);
 				if (result && result.data && result.data.document) {
 					result.data[this.key] = result.data.document;
 					delete result.data.document;
