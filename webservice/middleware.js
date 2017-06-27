@@ -33,7 +33,7 @@ module.exports = function (configurationsPath) {
 
 		if (config.communicationType !== 'SOAP') {
 			soapWsConfigs.push(config);
-		} else if (config.communicationType !== 'SOAP') {
+		} else if (config.communicationType !== 'REST') {
 			restWsConfigs.push(config);
 		} else {
 			debug('Unsupported web service configuration:', config);
