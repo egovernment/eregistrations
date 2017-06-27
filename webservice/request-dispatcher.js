@@ -1,9 +1,10 @@
 'use strict';
 
-var receiverWsHandler       = require('./handlers/receiver')
-, senderWsHandler         = require('./handlers/sender')
-, receiverSenderWsHandler = require('./handlers/receiver-sender')
-, senderReceiverWsHandler = require('./handlers/sender-receiver');
+var debug                   = require('debug-ext')('webservice-handler:request-dispatcher')
+  , receiverWsHandler       = require('./handlers/receiver')
+  , senderWsHandler         = require('./handlers/sender')
+  , receiverSenderWsHandler = require('./handlers/receiver-sender')
+  , senderReceiverWsHandler = require('./handlers/sender-receiver');
 
 module.exports = function (options) {
 	// TODO: Can we already log something here?
@@ -21,6 +22,6 @@ module.exports = function (options) {
 		senderReceiverWsHandler(options);
 		break;
 	default:
-		throw new Error('Unsupported web service type');
+		debug('Unsupported request:', options.configuration);
 	}
 };
