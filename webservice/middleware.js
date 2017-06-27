@@ -16,8 +16,6 @@ module.exports = function (configurationsPath) {
 	  , soapWsConfigs = []
 	  , soapServerCbs = {};
 
-	var wsConfigs = [];
-
 	debug('Loading Web Service configurations');
 
 	// Scan all configurations
@@ -31,9 +29,9 @@ module.exports = function (configurationsPath) {
 	}).map(function (config) {
 		debug('Register', config.name, 'web service');
 
-		if (config.communicationType !== 'SOAP') {
+		if (config.communicationType === 'SOAP') {
 			soapWsConfigs.push(config);
-		} else if (config.communicationType !== 'REST') {
+		} else if (config.communicationType === 'REST') {
 			restWsConfigs.push(config);
 		} else {
 			debug('Unsupported web service configuration:', config);
@@ -77,7 +75,7 @@ module.exports = function (configurationsPath) {
 		path = path.slice(apiPathname.length);
 
 		// Handle REST Web Services
-		requestHandled = wsConfigs.some(function (wsConfig) {
+		requestHandled = restWsConfigs.some(function (wsConfig) {
 			// Filter out 404's
 			if (!startsWith.call(path, wsConfig.url)) return false;
 
