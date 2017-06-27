@@ -36,31 +36,31 @@ module.exports = function (configurationsPath) {
 		} else {
 			debug('Unsupported web service configuration:', config);
 		}
-	}).done();
-
-	// Setup SOAP server handlers
-	soapWsConfigs.forEach(function (wsConfig) {
-		// This hack gets soap module (that doesn't support connect) to work with our setup
-		var Server = {
-			use: function () {},
-			route: function (path) {
-				if (path !== wsConfig.url) {
-					debug('Error while setting up SOAP handler: Unrecognized path\'', path, '\'');
-					return;
-				}
-
-				return {
-					all: function (callback) {
-						// Register soap module server handler
-						soapServerCbs[path] = callback;
+	}).then(function () {
+		// Setup SOAP server handlers
+		soapWsConfigs.forEach(function (wsConfig) {
+			// This hack gets soap module (that doesn't support connect) to work with our setup
+			var Server = {
+				use: function () {},
+				route: function (path) {
+					if (path !== wsConfig.url) {
+						debug('Error while setting up SOAP handler: Unrecognized path\'', path, '\'');
+						return;
 					}
-				};
-			}
-		};
 
-		// TODO: Setup services and dynamically create wsdl
-		// soap.listen(Server, wsConfig.url, services, wsdl);
-	});
+					return {
+						all: function (callback) {
+							// Register soap module server handler
+							soapServerCbs[path] = callback;
+						}
+					};
+				}
+			};
+
+			// TODO: Setup services and dynamically create wsdl
+			// soap.listen(Server, wsConfig.url, services, wsdl);
+		});
+	}).done();
 
 	// Return middleware for use with connect
 	return function (req, res, next) {
