@@ -7,7 +7,7 @@ var readdir           = require('fs2/readdir')
   , startsWith        = require('es5-ext/string/#/starts-with')
   , objectSome        = require('es5-ext/object/some')
   , soap              = require('soap')
-  , requestDispatcher = require('request-dispatcher')
+  , requestDispatcher = require('./request-dispatcher')
 
   , apiPathname = '/api/';
 
