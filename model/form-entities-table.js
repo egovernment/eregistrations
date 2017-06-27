@@ -249,6 +249,7 @@ module.exports = memoize(function (db) {
 							sectionFields = section.toWebServiceJSON(opts);
 							if (isEntitiesNestedMap) {
 								Object.keys(sectionFields[this.propertyName].map).forEach(function (id) {
+									entityFields.id = id;
 									Object.keys(sectionFields[this.propertyName].map[id]).forEach(function (propKey) {
 										entityFields[propKey] = sectionFields[this.propertyName].map[id][propKey];
 									}, this);
