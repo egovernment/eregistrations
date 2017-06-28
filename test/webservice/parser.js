@@ -21,13 +21,14 @@ module.exports = function (t, a) {
 		}
 	});
 
+
+
 	statusLog = bp.statusLog.map.newUniq();
 	statusLog.setProperties({
 		time: new Date(2017, 0),
 		text: 'First status log',
 		label: 'Log 1'
 	});
-
 	statusLog = bp.statusLog.map.newUniq();
 	statusLog.setProperties({
 		time: new Date(2017, 1),
@@ -59,13 +60,12 @@ module.exports = function (t, a) {
 	expectedResult.request.data.representative.address = { street: 'Cherry Lane' };
 	a.deep(t(bp, inputMap, { theirData: theirData }), expectedResult);
 	// Nested map
-	inputMap['statusLog/*'] = 'mensajos';
-	inputMap['statusLog/*/text'] = 'mensajeTxt';
-	inputMap['statusLog/*/label'] = 'mensajeLabel';
-	console.log('OWNER KEY...............', bp.statusLog.ordered.first.key);
-	theirData.mansajos = [
-		{ id: bp.statusLog.ordered.first.key, mensajeTxt: 'Datos recibidos', 'mensajeLabel': 'Primer' },
-		{ id: bp.statusLog.ordered.last.key, mensajeTxt: 'Datos processados', 'mensajeLabel': 'Secondo' }
+	inputMap['statusLog/*/text'] = 'mensajos/*/mensajeTxt';
+	inputMap['statusLog/*/label'] = 'mensajos/*/mensajeLabel';
+	theirData.mensajos = [
+		{ id: bp.statusLog.ordered.first.key, mensajeTxt: 'Datos recibidos', mensajeLabel: 'Primer' },
+		{ id: bp.statusLog.ordered.last.key, mensajeTxt: 'Datos processados', mensajeLabel: 'Secondo' },
+		{ id: 'nonMatchingId', mensajeTxt: 'Not valid', mensajeLabel: 'Third' }
 	];
 
 	expectedResult.request.data.statusLog = [
