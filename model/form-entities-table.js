@@ -226,9 +226,11 @@ module.exports = memoize(function (db) {
 			return result;
 		} },
 		toWebServiceJSON: {
-			value: function (ignore) {
+			value: function (options) {
 				var fields = {}, resolventDescriptor, sectionFields, wsValue, entityObjects
-				  , isEntitiesNestedMap, entityFields;
+				  , isEntitiesNestedMap, entityFields, opts, includeFullMeta;
+				opts = Object(options);
+				includeFullMeta = opts.includeFullMeta;
 				entityObjects = this.propertyMaster.resolveSKeyPath(this.propertyName);
 				isEntitiesNestedMap = entityObjects.value instanceof this.database.NestedMap;
 				fields[this.propertyName] = [];
@@ -237,14 +239,14 @@ module.exports = memoize(function (db) {
 					resolventDescriptor = this.master.resolveSKeyPath(this.resolventProperty).ownDescriptor;
 					if (!resolventDescriptor.isValueEmpty()) {
 						wsValue = resolventDescriptor.fieldToWebServiceJSON();
-						fields[wsValue.name] = wsValue.value;
+						fields[wsValue.name] = includeFullMeta ? wsValue : wsValue.value;
 					}
 				}
 				if (!this.isUnresolved) {
 					this.entitiesSet.forEach(function (entity) {
 						entityFields  = {};
 						entity.getBySKeyPath(this.sectionProperty).applicable.forEach(function (section) {
-							sectionFields = section.toWebServiceJSON();
+							sectionFields = section.toWebServiceJSON(opts);
 							if (isEntitiesNestedMap) {
 								Object.keys(sectionFields[this.propertyName].map).forEach(function (id) {
 									Object.keys(sectionFields[this.propertyName].map[id]).forEach(function (propKey) {

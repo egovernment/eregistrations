@@ -45,7 +45,7 @@ module.exports = memoize(function (db) {
 			return this.isOnlinePaymentInitialized;
 		} },
 		toWebServiceJSON: {
-			value: function (ignore) {
+			value: function (options) {
 				return {
 					code: this.key,
 					data: {

@@ -265,9 +265,10 @@ module.exports = memoize(function (db) {
 			return result;
 		} },
 		toWebServiceJSON: { type: db.Function, value: function (options) {
-			var fields = {}, opts = Object(options), db, excludeFiles;
+			var fields = {}, opts = Object(options), db, excludeFiles, includeFullMeta;
 			db = this.database;
-			excludeFiles = opts && opts.excludeFiles;
+			excludeFiles    = opts.excludeFiles;
+			includeFullMeta = opts.includeFullMeta;
 			this.filledPropertyNames.forEach(function (name) {
 				var data = this.master.resolveSKeyPath(name), descriptor = data.ownDescriptor
 				  , value, splitByPath, currentFieldScope, owner;
@@ -295,7 +296,7 @@ module.exports = memoize(function (db) {
 				}
 				if (!descriptor.isValueEmpty()) {
 					value = descriptor.fieldToWebServiceJSON();
-					currentFieldScope[value.name] = value.value;
+					currentFieldScope[value.name] = includeFullMeta ? value : value.value;
 				}
 			}, this);
 
