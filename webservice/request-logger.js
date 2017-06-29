@@ -30,3 +30,10 @@ exports.getErrored = function () {
 		return collection.find({ $or: [ { status: null }, { status: 'error' } ] }).toArray();
 	});
 };
+
+exports.getUnfinished = function () {
+	return mongoDB.connect()(function (db) {
+		var collection = db.collection('wsRequests');
+		return collection.find({ $and: [ { status: 'started' }, { finishedAt: null } ] }).toArray();
+	});
+};

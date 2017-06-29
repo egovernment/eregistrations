@@ -35,6 +35,16 @@ exports.send = function (data) {
 	});
 };
 
+exports.resendUnfinished = function () {
+	return requestLogger.getUnfinished().then(function (unfinished) {
+		return deferred.map(unfinished.filter(function (item) {
+			return item.requestType === 'sender';
+		}), function (requestData) {
+			return exports.send(requestData);
+		});
+	});
+};
+
 exports.resendErrored = function () {
 	return requestLogger.getErrored().then(function (errored) {
 		return deferred.map(errored.filter(function (item) {
