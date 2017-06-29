@@ -1,27 +1,65 @@
 'use strict';
 
 var Database   = require('dbjs')
+  , defineFormSection = require('../../model/form-section')
+  , defineFormEntitiesTableSection = require('../../model/form-entities-table')
   , defineBp = require('../../model/business-process-new/index');
 
 module.exports = function (t, a) {
 	var db = new Database()
 	  , BusinessProcess = defineBp(db)
+	  , FormSection = defineFormSection(db)
+	  , FormEntitiesTable = defineFormEntitiesTableSection(db)
 	  , inputMap, theirData, expectedResult, statusLog
 
-	  , bp = new BusinessProcess();
+	  , bp;
+
+	BusinessProcess.prototype.dataForms.map.define('main', {
+		type: FormSection,
+		nested: true
+	});
+
+	BusinessProcess.prototype.dataForms.map.main.setProperties({
+		propertyNames: ['businessName', 'representative/firstName',
+			'representative/lastName', 'representative/address/street']
+	});
+
+	db.StatusLog.prototype.define('dataForms', {
+		type: db.PropertyGroupsProcess,
+		nested: true
+	});
+
+	db.StatusLog.prototype.dataForms.map.define('main', {
+		type: FormSection,
+		nested: true
+	});
+
+	db.StatusLog.prototype.dataForms.map.main.setProperties({
+		propertyMasterType: db.StatusLog,
+		propertyNames: ['text', 'label']
+	});
+
+	BusinessProcess.prototype.dataForms.map.define('statusLogs', {
+		type: FormEntitiesTable,
+		nested: true
+	});
+
+	BusinessProcess.prototype.dataForms.map.statusLogs.setProperties({
+		propertyName: 'statusLog',
+		sectionProperty: 'dataForms'
+	});
 
 	db.Object.extend('Address', {
 		street: { type: db.String }
 	});
 
-	bp.representative.defineProperties({
+	BusinessProcess.prototype.representative.defineProperties({
 		address: {
 			type: db.Address,
 			nested: true
 		}
 	});
-
-
+	bp = new BusinessProcess();
 
 	statusLog = bp.statusLog.map.newUniq();
 	statusLog.setProperties({
@@ -38,30 +76,30 @@ module.exports = function (t, a) {
 
 	/*************** RECEIVING *****************/
 	// simple case
-	inputMap = { businessName: 'nombreDeBusinesso' };
+	inputMap = {};
+	inputMap['request/data/businessName'] = 'nombreDeBusinesso';
 	theirData = { nombreDeBusinesso: 'Tests' };
-	expectedResult = bp.toWebServiceJSON();
-	expectedResult.request.data = { businessName: 'Tests' };
-	a.deep(t(bp, inputMap, { theirData: theirData }), expectedResult);
+	expectedResult = { request: { data: { businessName: 'Tests' } } };
+	a.deep(t(bp, inputMap, theirData), expectedResult);
 	// When trying to send input that does not match mapping - ignore non mapped
 	theirData.notMappedPath = 'bad data';
-	a.deep(t(bp, inputMap, { theirData: theirData }), expectedResult);
+	a.deep(t(bp, inputMap, theirData), expectedResult);
 	// Complex mapping, including nesteds
-	inputMap['representative/firstName'] = 'nombre';
-	inputMap['representative/lastName'] = 'representante/secondoNombre';
+	inputMap['request/data/representative/firstName'] = 'nombre';
+	inputMap['request/data/representative/lastName'] = 'representante/secondoNombre';
 	theirData.nombre = 'Marry';
 	theirData.representante = { secondoNombre: 'Poppins' };
 	expectedResult.request.data.representative = { firstName: 'Marry' };
 	expectedResult.request.data.representative.lastName = 'Poppins';
-	a.deep(t(bp, inputMap, { theirData: theirData }), expectedResult);
+	a.deep(t(bp, inputMap, theirData), expectedResult);
 	// Nested within nested
-	inputMap['representative/address/street'] = 'calle';
+	inputMap['request/data/representative/address/street'] = 'calle';
 	theirData.calle = 'Cherry Lane';
 	expectedResult.request.data.representative.address = { street: 'Cherry Lane' };
-	a.deep(t(bp, inputMap, { theirData: theirData }), expectedResult);
+	a.deep(t(bp, inputMap, theirData), expectedResult);
 	// Nested map
-	inputMap['statusLog/*/text'] = 'mensajos/*/mensajeTxt';
-	inputMap['statusLog/*/label'] = 'mensajos/*/mensajeLabel';
+	inputMap['request/data/statusLog/*/text'] = 'mensajos/*/mensajeTxt';
+	inputMap['request/data/statusLog/*/label'] = 'mensajos/*/mensajeLabel';
 	theirData.mensajos = [
 		{ id: bp.statusLog.ordered.first.key, mensajeTxt: 'Datos recibidos', mensajeLabel: 'Primer' },
 		{ id: bp.statusLog.ordered.last.key, mensajeTxt: 'Datos processados', mensajeLabel: 'Secondo' },
@@ -70,10 +108,10 @@ module.exports = function (t, a) {
 
 	expectedResult.request.data.statusLog = [
 		{ id: bp.statusLog.ordered.first.key, text: 'Datos recibidos', label: 'Primer' },
-		{ id: bp.statusLog.ordered.last.key, text: 'Datos processados', label: 'Secondo' },
+		{ id: bp.statusLog.ordered.last.key, text: 'Datos processados', label: 'Secondo' }
 	];
 
-	a.deep(JSON.stringify(t(bp, inputMap, { theirData: theirData }).request.data.statusLog), JSON.stringify(expectedResult.request.data.statusLog));
+	a.deep(t(bp, inputMap, theirData), expectedResult);
 
 	/*************** END RECEIVING *****************/
 };

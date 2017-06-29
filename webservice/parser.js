@@ -1,8 +1,9 @@
 'use strict';
 
-var assignDeep = require('assign-deep');
+var resolveJSONPath = require('./utils/resolve-json-path')
+  , assignDeep = require('assign-deep');
 
-var setResultByKeyPath = function (keyPath, value) {
+var getResultByKeyPath = function (keyPath, value) {
 	var result, paths = keyPath.split('/'), currentResult;
 	currentResult = result = {};
 	if (!paths.length) return;
@@ -34,112 +35,79 @@ var getTheirValue = function (theirKeyPath, theirData) {
 	return result;
 };
 
-var pathDefinitionToPaths = function (bp, keyPath) {
-	var resultPaths = [], currentPath = '', resolved, paths;
-	paths = keyPath.split('/');
-	paths.forEach(function (segment, index) {
-		if (segment === '*') {
-			currentPath += 'map/';
-			resolved = bp.resolveSKeyPath(currentPath);
-			if (!resolved || !resolved.value) return;
-			resolved.value.forEach(function (item) { // each map item
-				Array.prototype.push.apply(resultPaths,
-					pathDefinitionToPaths(bp,
-						currentPath + item.key + '/' + paths.slice(index + 1).join('/'))
-					);
-			});
-			return; 
-		}
-		currentPath += segment;
-		if (index === (paths.length - 1)) {
-			if (paths.indexOf('*') !== -1) return; // handled by first block
-			resultPaths.push(currentPath);
-		} else {
-			currentPath += '/';
-		}
-	});
-
-	return resultPaths;
-};
-
-var prepareMap = function (bp, mapping/*, opts */) {
-	var resultMap = {}, paths, opts, theirKeyPath, theirCurrentData, theirPathResolved, theirData, theirFinalPath;
-	opts = Object(arguments[2]);
-	theirData = opts.theirData;
-	Object.keys(mapping).forEach(function (keyPath) {
-		if (keyPath.indexOf('*') !== -1) { // a nested map
-			paths = pathDefinitionToPaths(bp, keyPath);
-			theirKeyPath = mapping[keyPath];
-			delete mapping[keyPath];
-			paths.forEach(function (ourKeyPath) {
-				if (theirData) {
-					theirCurrentData = theirData;
-					theirFinalPath = '';
-					ourKeyPath.split('map/').slice(1).map(function (segment) {
-						return segment.split('/')[0];
-					}).map(function (id) {
-						theirPathResolved = theirKeyPath.replace(/\*/, '<ID>' + id);
-					});
-					theirPathResolved = theirPathResolved.split('/');
-					theirPathResolved.every(function (theirSegment, index) {
-						var itemId;
-						if (theirSegment.indexOf('<ID>') === 0) {
-							itemId = theirSegment.split('<ID>')[1];
-							if (!Array.isArray(theirCurrentData)) {
-								return false;
-							}
-							return theirCurrentData.some(function (item, itemIndex) {
-								if (item.id === itemId) {
-									theirCurrentData = theirCurrentData[itemIndex];
-									theirFinalPath += itemIndex + '/';
-									return true;
-								};
-							})
-						}
-						if ((index < theirPathResolved.length - 1) && !theirPathResolved[index]) return false;
-						theirCurrentData = theirCurrentData[theirSegment];
-						theirFinalPath += theirSegment + '/';
-						return true;
-					});
-					if (theirFinalPath) {
-						theirFinalPath = theirFinalPath.replace(/\/$/, '');
-						resultMap[ourKeyPath] = theirFinalPath;
-					} else {
-						delete resultMap[ourKeyPath];
+var setMultipleResult = function (resultJSON, ourKeyPath, theirKeyPath, theirData) {
+	var ourKeyPathArr = ourKeyPath.split('/');
+	var theirKeyPathArr = theirKeyPath.split('/');
+	var ourCurrentResult = resultJSON;
+	var ourCurrentPath = '';
+	var ourResult;
+	theirKeyPathArr.forEach(function (theirSegment, index) {
+		if (theirSegment === '*') {
+			if (!Array.isArray(theirData)) {
+				throw new Error('Bad data for path: ' + theirKeyPath);
+			}
+			ourKeyPathArr.some(function (ourSegment) {
+				if (ourSegment === '*') {
+					ourResult = resolveJSONPath(exports.wsJSON, ourCurrentPath.slice(0, -1));
+					if (!ourResult || !Array.isArray(ourResult)) {
+						throw new Error('No data available');
 					}
-				} else {
-					resultMap[ourKeyPath] = mapping[keyPath];	
+					return true;
 				}
+				ourCurrentPath += ourSegment + '/';
+				ourCurrentResult = ourCurrentResult[ourSegment];
 			});
+			theirData.forEach(function (theirItem) {
+				if (!theirItem.id) {
+					throw new Error('No id for item at path: ' + theirKeyPath);
+				}
+				ourResult.some(function (ourItem) {
+					if (!ourItem.id || ourItem.id !== theirItem.id) return;
+					if (!ourCurrentResult) ourCurrentResult = [];
+					var value = resolveJSONPath(theirItem, theirKeyPathArr.slice(index + 1).join('/'));
+					var jsonSlice = getResultByKeyPath(
+						ourKeyPathArr.slice(ourKeyPathArr.indexOf('*') + 1).join('/'),
+						value
+					);
+					if (!ourCurrentResult.some(function (ourCurrentItem) {
+							if (ourCurrentItem.id === theirItem.id) {
+								assignDeep(ourCurrentItem, jsonSlice);
+								return true;
+							}
+						})) {
+						ourCurrentResult.push(assignDeep({ id: ourItem.id }, jsonSlice));
+					}
+
+					return true;
+				});
+			});
+			if (ourCurrentResult && ourCurrentResult.length) {
+				assignDeep(resultJSON, getResultByKeyPath(ourCurrentPath.slice(0, -1), ourCurrentResult));
+			}
 			return;
 		}
-		resultMap[keyPath] = mapping[keyPath];
+		theirData = theirData[theirSegment];
 	});
-
-	return resultMap;
 };
 
-module.exports = exports = function (bp, mapping/*, options */) {
-	var result = bp.toWebServiceJSON(), resolved, opts, theirData, preparedMap;
-	result.request.data = {};
-	opts = Object(arguments[2]);
-	theirData = opts.theirData || null;
-	preparedMap = prepareMap(bp, mapping, opts);
-	Object.keys(preparedMap).forEach(function (keyPath) {
-		var value, mapKey, map;
+module.exports = exports = function (bp, mapping, theirData) {
+	var result = bp.toWebServiceJSON();
+	result = {};
+	exports.wsJSON = bp.toWebServiceJSON({ includeFullMeta: true });
+	Object.keys(mapping).forEach(function (keyPath) {
+		var value;
 		if (!keyPath) return;
-		resolved = bp.resolveSKeyPath(keyPath);
-		if (!resolved || !resolved.descriptor) return;
-		if (resolved.descriptor.multiple) { // a set
-			return;
-		}
-		if (theirData && preparedMap[keyPath]) {
-			value = getTheirValue(preparedMap[keyPath], theirData);
+		if (keyPath.indexOf('*') !== -1) {
+			setMultipleResult(result, keyPath, mapping[keyPath], theirData);
 		} else {
-			value = resolved.value;
+			if (mapping[keyPath]) {
+				value = getTheirValue(mapping[keyPath], theirData);
+			}
+			assignDeep(result, getResultByKeyPath(keyPath, value));
 		}
-		assignDeep(result.request.data, setResultByKeyPath(keyPath, value));
 	});
 
 	return result;
 };
+
+exports.wsJSON = null;
