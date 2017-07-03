@@ -169,11 +169,16 @@ module.exports = memoize(function (db) {
 		processingWorkingHoursTime: { type: UInteger, value: 0 },
 		toWebServiceJSON: {
 			value: function (options) {
-				var data = {
+				var processor = this.processor, data = {
 					status: { code: this.status },
 					statusTimestamp: this._status.lastModified ?
 							Math.floor(this._status.lastModified / 1000) : null,
-					data: null
+					data: null,
+					processor: processor ? {
+						email: this.processor.email,
+						firstName: this.processor.firstName,
+						lastName: this.processor.lastName
+					} : null
 				}, opts;
 				opts = Object(options);
 				if (this.dataForm.constructor !== this.database.FormSectionBase) {
