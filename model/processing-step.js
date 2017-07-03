@@ -175,9 +175,9 @@ module.exports = memoize(function (db) {
 							Math.floor(this._status.lastModified / 1000) : null,
 					data: null,
 					processor: processor ? {
-						email: this.processor.email,
-						firstName: this.processor.firstName,
-						lastName: this.processor.lastName
+						email: processor.email,
+						firstName: processor.firstName,
+						lastName: processor.lastName
 					} : null
 				}, opts;
 				opts = Object(options);
