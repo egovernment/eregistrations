@@ -202,7 +202,15 @@ module.exports = memoize(function (db) {
 						statusTimestamp: {
 							type: "timestamp"
 						},
-						data: {}
+						data: {},
+						processor: {
+							type: "object",
+							properties: {
+								email: "string",
+								firstName: "string",
+								lastName: "string"
+							}
+						}
 					}
 				};
 				if (this.dataForm.constructor !== this.database.FormSectionBase) {
