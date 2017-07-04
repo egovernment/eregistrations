@@ -22,10 +22,10 @@ module.exports = function (data) {
 			key: 'email',
 			value: serializeValue(email)
 		}, function (foundRecord) {
-			return foundRecord;
-		}).then(function (foundRecord) {
-			if (foundRecord) return;
-			return mano.queryMemoryDb([], 'addUserByEmail', JSON.stringify(data));
+			return foundRecord.split('/')[0];
+		}).then(function (foundId) {
+			if (foundId) return foundId;
+			return mano.queryMemoryDb([], 'addUser', JSON.stringify(data));
 		});
 	});
 };
