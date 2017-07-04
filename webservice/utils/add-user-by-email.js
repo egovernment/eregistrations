@@ -25,7 +25,7 @@ module.exports = function (data) {
 			return foundRecord;
 		}).then(function (foundRecord) {
 			if (foundRecord) return;
-			return mano.queryMemoryDb([], 'addUser', JSON.stringify(data));
+			return mano.queryMemoryDb([], 'addUserByEmail', JSON.stringify(data));
 		});
 	});
 };
