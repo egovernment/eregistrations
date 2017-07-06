@@ -3,7 +3,7 @@
 'use strict';
 
 var memoize           = require('memoizee/plain')
-  , defineCurrency    = require('dbjs-ext/number/currency')
+  , defineCurrency    = require('./lib/currency')
   , defineStringLine  = require('dbjs-ext/string/string-line')
   , defineInstitution = require('./institution');
 
@@ -79,5 +79,6 @@ module.exports = memoize(function (db) {
 			}
 		}
 	});
+
 	return Cost;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
