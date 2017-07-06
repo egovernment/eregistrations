@@ -1,12 +1,7 @@
 'use strict';
 
 var memoize        = require('memoizee/plain')
-  , d              = require('d')
-  , defineCurrency = require('dbjs-ext/number/currency')
-  , isInteger      = require('es5-ext/number/is-integer')
-  , isNumber       = require('es5-ext/object/is-number-value')
-  , BigNumber      = require('bignumber.js')
-  , defineProperty = Object.defineProperty;
+  , defineCurrency = require('dbjs-ext/number/currency');
 
 module.exports = memoize(function (db) {
 	var Currency = defineCurrency(db);
