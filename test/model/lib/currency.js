@@ -19,6 +19,7 @@ module.exports = function (t, a) {
 	a(db.Currency.normalize(1.1, { step: 0.01 }), 1.1);
 	a(db.Currency.normalize(113.99, { step: 0.01 }), 113.99);
 	a(db.Currency.normalize(113.991, { step: 0.01 }), 113.99);
+	a(db.Currency.normalize(113.995, { step: 0.01 }), 114);
 	a(db.Currency.normalize(113.999, { step: 0.01 }), 114);
 	a(db.Currency.normalize(2, { min: 1 }), 2);
 	a(db.Currency.normalize(1, { min: 2 }), null);
