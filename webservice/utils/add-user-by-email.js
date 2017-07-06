@@ -8,6 +8,11 @@ var db = require('../../db')
   , userStorage = dbDriver.getStorage('user')
   , User = require('../../model/user')(db);
 
+/**** Notice ****
+	The method retuns promise which may be rejected.
+	The consumer should take care to process the response also in case of errors.
+*/
+
 module.exports = function (data) {
 	var def = deferred(), email;
 	try {
