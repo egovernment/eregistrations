@@ -247,12 +247,19 @@ module.exports = memoize(function (db) {
 						entityFields  = {};
 						entity.getBySKeyPath(this.sectionProperty).applicable.forEach(function (section) {
 							sectionFields = section.toWebServiceJSON(opts);
+							var entityId = entity.__id__.split('/').pop();
+							if (Array.isArray(sectionFields[Object.keys(sectionFields)[0]])) {
+								entityFields[Object.keys(sectionFields)] =
+									sectionFields[Object.keys(sectionFields)[0]];
+								return;
+							}
+							while (sectionFields && Object.keys(sectionFields)[0] !== entityId) {
+								sectionFields = sectionFields[Object.keys(sectionFields)[0]];
+							}
+							if (!sectionFields) return;
 							if (isEntitiesNestedMap) {
-								Object.keys(sectionFields[this.propertyName].map).forEach(function (id) {
-									Object.keys(sectionFields[this.propertyName].map[id]).forEach(function (propKey) {
-										entityFields[propKey] = sectionFields[this.propertyName].map[id][propKey];
-									}, this);
-								}, this);
+								entityFields.id = Object.keys(sectionFields)[0];
+								Object.assign(entityFields, sectionFields[Object.keys(sectionFields)[0]]);
 							} else { //old model
 								entityFields = sectionFields;
 							}
