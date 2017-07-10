@@ -25,17 +25,18 @@ var unStarPath = function (obj, path, result) {
 	}
 	pathSplit.forEach(function (segment, index) {
 		if (segment === '*') {
+			if (!currentObj) return;
 			currentObj.forEach(function (item) {
 				if (!item.id) return;
-				var itemPath = currentPath + '/' + '<ID>' + item.id + '<END ID>';
-				unStarPath(currentObj, pathSplit.slice(index + 1).join('/')).forEach(
+				var itemPath =  '<ID>' + item.id + '<END ID>';
+				unStarPath(item, pathSplit.slice(index + 1).join('/')).forEach(
 					function (partialPath) {
-						result.push(itemPath + '/' + partialPath);
+						result.push(currentPath + '/' + itemPath + '/' + partialPath);
 					}
 				);
 			});
-			return;
 		}
+		if (!currentObj) return;
 		currentObj = currentObj[segment];
 		currentPath += (index === 0 ? '' : '/') + segment;
 	});
