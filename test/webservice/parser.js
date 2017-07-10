@@ -79,6 +79,7 @@ module.exports = function (t, a) {
 	inputMap = {};
 	inputMap['request/data/businessName'] = 'nombreDeBusinesso';
 	theirData = { nombreDeBusinesso: 'Tests' };
+	bp.businessName = 'Tests';
 	expectedResult = { request: { data: { businessName: 'Tests' } } };
 	a.deep(t(bp, inputMap, theirData), expectedResult);
 	// When trying to send input that does not match mapping - ignore non mapped
@@ -89,12 +90,15 @@ module.exports = function (t, a) {
 	inputMap['request/data/representative/lastName'] = 'representante/secondoNombre';
 	theirData.nombre = 'Marry';
 	theirData.representante = { secondoNombre: 'Poppins' };
+	bp.representative.firstName = 'Marry';
+	bp.representative.lastName = 'Poppins';
 	expectedResult.request.data.representative = { firstName: 'Marry' };
 	expectedResult.request.data.representative.lastName = 'Poppins';
 	a.deep(t(bp, inputMap, theirData), expectedResult);
 	// Nested within nested
 	inputMap['request/data/representative/address/street'] = 'calle';
 	theirData.calle = 'Cherry Lane';
+	bp.representative.address.street = 'Cherry Lane';
 	expectedResult.request.data.representative.address = { street: 'Cherry Lane' };
 	a.deep(t(bp, inputMap, theirData), expectedResult);
 	// Nested map

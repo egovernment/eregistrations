@@ -1,113 +1,137 @@
 'use strict';
 
-var resolveJSONPath = require('./utils/resolve-json-path')
-  , assignDeep = require('assign-deep');
-
-var getResultByKeyPath = function (keyPath, value) {
-	var result, paths = keyPath.split('/'), currentResult;
-	currentResult = result = {};
-	if (!paths.length) return;
-	paths.forEach(function (segment, index) {
-		currentResult[segment] = {};
-		if (index === (paths.length - 1)) {
-			currentResult[segment] = value;
+var isPathValid = function (obj, path) {
+	var splitPath = path.split('/'), currentBranch = obj;
+	return splitPath.every(function (segment) {
+		if (segment === '*') {
+			if (!Array.isArray(currentBranch)) return false;
+			if (!currentBranch.length) return false;
+			currentBranch = currentBranch[0];
 		} else {
-			currentResult = currentResult[segment];
+			if (!currentBranch.hasOwnProperty(segment)) return false;
+			currentBranch = currentBranch[segment];
 		}
-	});
-
-	return result;
-};
-
-var getTheirValue = function (theirKeyPath, theirData) {
-	var currentData = theirData, paths = theirKeyPath.split('/'), result;
-	paths.every(function (segment, index) {
-		// sanity check, don't parse if config path is invalid
-		if ((index < (paths.length - 1)) && !currentData[segment]) return false;
-		currentData = currentData[segment];
-		if (index === (paths.length - 1)) {
-			result = currentData;
-		}
-
 		return true;
 	});
-
-	return result;
 };
 
-var setMultipleResult = function (resultJSON, ourKeyPath, theirKeyPath, theirData) {
-	var ourKeyPathArr = ourKeyPath.split('/');
-	var theirKeyPathArr = theirKeyPath.split('/');
-	var ourCurrentResult = resultJSON;
-	var ourCurrentPath = '';
-	var ourResult;
-	theirKeyPathArr.forEach(function (theirSegment, index) {
-		if (theirSegment === '*') {
-			if (!Array.isArray(theirData)) {
-				throw new Error('Bad data for path: ' + theirKeyPath);
-			}
-			ourKeyPathArr.some(function (ourSegment) {
-				if (ourSegment === '*') {
-					ourResult = resolveJSONPath(exports.wsJSON, ourCurrentPath.slice(0, -1));
-					if (!ourResult || !Array.isArray(ourResult)) {
-						throw new Error('No data available');
+var unStarPath = function (obj, path, result) {
+	var pathSplit = path.split('/'), currentPath = '', currentObj;
+	currentObj = obj;
+	if (!result) result = [];
+	if (path.indexOf('*') === -1) {
+		result.push(path);
+		return result;
+	}
+	pathSplit.forEach(function (segment, index) {
+		if (segment === '*') {
+			currentObj.forEach(function (item) {
+				if (!item.id) return;
+				var itemPath = currentPath + '/' + '<ID>' + item.id + '<END ID>';
+				unStarPath(currentObj, pathSplit.slice(index + 1).join('/')).forEach(
+					function (partialPath) {
+						result.push(itemPath + '/' + partialPath);
 					}
-					return true;
-				}
-				ourCurrentPath += ourSegment + '/';
-				ourCurrentResult = ourCurrentResult[ourSegment];
+				);
 			});
-			theirData.forEach(function (theirItem) {
-				if (!theirItem.id) {
-					throw new Error('No id for item at path: ' + theirKeyPath);
-				}
-				ourResult.some(function (ourItem) {
-					if (!ourItem.id || ourItem.id !== theirItem.id) return;
-					if (!ourCurrentResult) ourCurrentResult = [];
-					var value = resolveJSONPath(theirItem, theirKeyPathArr.slice(index + 1).join('/'));
-					var jsonSlice = getResultByKeyPath(
-						ourKeyPathArr.slice(ourKeyPathArr.indexOf('*') + 1).join('/'),
-						value
-					);
-					if (!ourCurrentResult.some(function (ourCurrentItem) {
-							if (ourCurrentItem.id === theirItem.id) {
-								assignDeep(ourCurrentItem, jsonSlice);
-								return true;
-							}
-						})) {
-						ourCurrentResult.push(assignDeep({ id: ourItem.id }, jsonSlice));
-					}
-
-					return true;
-				});
-			});
-			if (ourCurrentResult && ourCurrentResult.length) {
-				assignDeep(resultJSON, getResultByKeyPath(ourCurrentPath.slice(0, -1), ourCurrentResult));
-			}
 			return;
 		}
-		theirData = theirData[theirSegment];
+		currentObj = currentObj[segment];
+		currentPath += (index === 0 ? '' : '/') + segment;
 	});
+
+	return result;
 };
 
-module.exports = exports = function (bp, mapping, theirData) {
-	var result = bp.toWebServiceJSON();
-	result = {};
-	exports.wsJSON = bp.toWebServiceJSON({ includeFullMeta: true });
-	Object.keys(mapping).forEach(function (keyPath) {
-		var value;
-		if (!keyPath) return;
-		if (keyPath.indexOf('*') !== -1) {
-			setMultipleResult(result, keyPath, mapping[keyPath], theirData);
-		} else {
-			if (mapping[keyPath]) {
-				value = getTheirValue(mapping[keyPath], theirData);
-			}
-			assignDeep(result, getResultByKeyPath(keyPath, value));
+var mapItemPaths = function (ourPaths, theirPaths, pathDefinition) {
+	var result = {};
+	ourPaths.forEach(function (ourPath) {
+		var ids = ourPath.match(/<ID>.+?<END ID>/g);
+		var theirPath = pathDefinition[ourPath.replace(/<ID>.+?<END ID>/g, '*')];
+		ids.forEach(function (id) {
+			theirPath = theirPath.replace('*', id);
+		});
+		if (theirPaths.indexOf(theirPath) !== -1) {
+			result[ourPath] = theirPath;
 		}
 	});
 
 	return result;
+};
+
+var assignValues = function (pathsMap, ourData, theirData) {
+	var currentResult, result, theirCurrentData, ourPathSplit
+	  , theirPath, theirPathSplit, lastSegment;
+	currentResult = result = {};
+
+	Object.keys(pathsMap).forEach(function (ourPath) {
+		currentResult = result;
+		ourPathSplit = ourPath.split('/');
+		ourPathSplit.forEach(function (segment, i) {
+			if (segment.indexOf('<ID>') !== -1) {
+				var id = segment.replace('<ID>', '').replace('<END ID>', ''), matchingIndex = null;
+
+				currentResult.some(function (item, index) {
+					if (item.id === id) {
+						matchingIndex = index;
+						return true;
+					}
+				});
+				if (matchingIndex == null) {
+					matchingIndex = (currentResult.push({ id: id }) - 1);
+				}
+				currentResult = currentResult[matchingIndex];
+				return;
+			}
+			if (!currentResult[segment]) {
+				if (ourPathSplit[i + 1] && (ourPathSplit[i + 1].indexOf('<ID>') !== -1)) {
+					currentResult[segment] = [];
+				} else {
+					currentResult[segment] = {};
+				}
+			}
+			if (i === (ourPathSplit.length - 1)) {
+				lastSegment = segment;
+			} else {
+				currentResult = currentResult[segment];
+			}
+		});
+		theirCurrentData = theirData;
+		theirPath = pathsMap[ourPath];
+		theirPathSplit = theirPath.split('/');
+		theirPathSplit.forEach(function (segment) {
+			if (segment.indexOf('<ID>') !== -1) {
+				var id = segment.replace('<ID>', '').replace('<END ID>', '');
+				return theirCurrentData.some(function (item, index) {
+					if (item.id === id) {
+						theirCurrentData = theirCurrentData[index];
+						return true;
+					}
+				});
+			}
+			theirCurrentData = theirCurrentData[segment];
+		});
+		currentResult[lastSegment] = theirCurrentData;
+	});
+
+	return result;
+};
+
+module.exports = function (bp, inputMap, theirData) {
+	var filteredMap = {};
+	exports.wsJSON = bp.toWebServiceJSON();
+	Object.keys(inputMap).forEach(function (mapKey) {
+		if (!isPathValid(exports.wsJSON, mapKey)) return;
+		if (!isPathValid(theirData, inputMap[mapKey])) return;
+		if (mapKey.indexOf('*') !== -1) {
+			Object.assign(filteredMap,
+				mapItemPaths(unStarPath(exports.wsJSON, mapKey),
+					unStarPath(theirData, inputMap[mapKey]), inputMap));
+		} else {
+			filteredMap[mapKey] = inputMap[mapKey];
+		}
+	});
+	return assignValues(filteredMap, exports.wsJSON, theirData);
 };
 
 exports.wsJSON = null;
