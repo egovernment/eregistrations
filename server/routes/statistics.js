@@ -624,6 +624,9 @@ module.exports = function (config) {
 			});
 		}),
 		'get-dashboard-data': function (query) {
+			return queryHandler.resolve(query)(getCertificatesIssuedData);
+		},
+		'get-dashboard-old-data': function (query) {
 			return queryHandler.resolve(query)(function (query) {
 				return getData(driver)(function (data) {
 					var lastDateQuery = assign({}, query, {
