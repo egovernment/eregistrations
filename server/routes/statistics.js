@@ -185,6 +185,18 @@ var getPeriodsWithData = function (query) {
 	});
 };
 
+var getRejectableSteps = function () {
+	var steps = {};
+	Object.keys(processingStepsMeta).forEach(function (key) {
+		if ((Object.keys(processingStepsMeta[key]).indexOf('rejected') !== -1) ||
+				(Object.keys(processingStepsMeta[key]).indexOf('sentBack') !== -1)) {
+			steps[key] = processingStepsMeta[key];
+		}
+	});
+
+	return steps;
+};
+
 module.exports = function (config) {
 	var driver = ensureDriver(ensureObject(config).driver)
 	  , customChartsController;
@@ -302,14 +314,21 @@ module.exports = function (config) {
 
 	var getPandingToNonPendingCount = function (query) {
 		var result = {};
-		['processingSteps/map/revision', 'processingSteps/map/precal'].forEach(function (stepPath) {
-			result[stepPath] = { all: 0, sentBack: 0, rejected: 0 };
+		Object.keys(getRejectableSteps()).forEach(function (stepKey) {
+			result['processingSteps/map/' + resolveFullStepPath(stepKey)] = {
+				all: 0,
+				sentBack: 0,
+				rejected: 0,
+				label: getStepLabelByShortPath(stepKey)
+			};
 		});
 		return getStatusHistory.find({
 			dateFrom: query.dateFrom,
 			dateTo: query.dateTo,
 			service: query.service,
-			steps: ['processingSteps/map/revision', 'processingSteps/map/precal'],
+			steps: Object.keys(getRejectableSteps()).map(function (stepKey) {
+				return 'processingSteps/map/' + resolveFullStepPath(stepKey);
+			}),
 			sort: {
 				'service.businessName': 1,
 				'service.businessId': 1,

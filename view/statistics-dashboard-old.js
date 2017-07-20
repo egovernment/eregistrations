@@ -13,7 +13,6 @@ var assign              = require('es5-ext/object/assign')
   , getData             = require('mano/lib/client/xhr-driver').get
   , db                  = require('../db')
   , setupQueryHandler   = require('../utils/setup-client-query-handler')
-  , resolveFullStepPath = require('../utils/resolve-processing-step-full-path')
   , getQueryHandlerConf = require('../apps/statistics/get-query-conf')
   , frontDeskNames      = require('./utils/front-desk-names')
   , dateFromToBlock     = require('./components/filter-bar/select-date-range-safe-fallback')
@@ -21,6 +20,7 @@ var assign              = require('es5-ext/object/assign')
   , toArray             = require('es5-ext/object/to-array')
   , toDateInTz          = require('../utils/to-date-in-time-zone')
   , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
+  , getStepLabelByShortPath = require('../utils/get-step-label-by-short-path')
   , approvedCertsPeriods = []
   , completedFilesPeriods = [
 	{ name: 'inPeriod', label: _("Period") },
@@ -174,14 +174,6 @@ var getGroupByCount = function (dateFrom, dateTo) {
 	});
 
 	return groupBy;
-};
-
-var getStepLabelByShortPath = function (processingStepsMeta) {
-	return function (shortStepPath) {
-		return db['BusinessProcess' +
-			capitalize.call(processingStepsMeta[shortStepPath]._services[0])].prototype
-			.processingSteps.map.getBySKeyPath(resolveFullStepPath(shortStepPath)).label;
-	};
 };
 
 var getFilesCompletedPerDay = function (data, query) {
@@ -448,7 +440,6 @@ exports['sub-main'] = {
 	content: function () {
 		var queryHandler, filesCompletedData = new ObservableValue()
 		  , approvedCertsData = new ObservableValue();
-		getStepLabelByShortPath = getStepLabelByShortPath(this.processingStepsMeta);
 
 		queryHandler = setupQueryHandler(getQueryHandlerConf({
 			processingStepsMeta: this.processingStepsMeta

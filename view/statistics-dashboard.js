@@ -49,7 +49,6 @@ var getTablesFromData = function (certData) {
 };
 
 var renderPendingToNonPendingCount = function (data) {
-	console.log('MY DATA', data);
 	return section({ class: 'section-secondary' },
 		table(
 			{ class: 'statistics-table statistics-table-registrations' },
@@ -61,9 +60,8 @@ var renderPendingToNonPendingCount = function (data) {
 			),
 			tbody(data.map(function (value) {
 				return list(Object.keys(value), function (key) {
-					console.log('MY KEY............', key);
 					return tr(
-						td({ class: 'statistics-table-number' }, key),
+						td({ class: 'statistics-table-number' }, value[key].label),
 						td({ class: 'statistics-table-number' }, value[key].all),
 						td({ class: 'statistics-table-number' }, value[key].sentBack),
 						td({ class: 'statistics-table-number' }, value[key].rejected)
