@@ -300,6 +300,36 @@ module.exports = function (config) {
 		});
 	};
 
+	var getPandingToNonPendingCount = function (query) {
+		var result = {};
+		['processingSteps/map/revision', 'processingSteps/map/precal'].forEach(function (stepPath) {
+			result[stepPath] = { all: 0, sentBack: 0, rejected: 0 };
+		});
+		return getStatusHistory.find({
+			dateFrom: query.dateFrom,
+			dateTo: query.dateTo,
+			service: query.service,
+			steps: ['processingSteps/map/revision', 'processingSteps/map/precal'],
+			sort: {
+				'service.businessName': 1,
+				'service.businessId': 1,
+				'processingStep.path': 1,
+				'date.ts': 1
+			}
+		}).then(function (entries) {
+			entries.forEach(function (entry) {
+				if (entry.status.code === 'sentBack' || entry.status.code === 'rejected') {
+					result[entry.processingStep.path][entry.status.code]++;
+					result[entry.processingStep.path].all++;
+				}
+				if (entry.status.code === 'approved') {
+					result[entry.processingStep.path].all++;
+				}
+			});
+			return result;
+		});
+	};
+
 	var resolveTimePerRole = function (query) {
 		var stepsResult = {};
 		Object.keys(processingStepsMetaWithoutFrontDesk).forEach(function (stepShortPath) {
@@ -330,6 +360,7 @@ module.exports = function (config) {
 			sort: {
 				'service.businessName': 1,
 				'service.businessId': 1,
+				'processingStep.path': 1,
 				'date.ts': 1
 			}
 		}).then(function (statusHistory) {
@@ -624,7 +655,19 @@ module.exports = function (config) {
 			});
 		}),
 		'get-dashboard-data': function (query) {
-			return queryHandler.resolve(query)(getCertificatesIssuedData);
+			var result = {};
+			return queryHandler.resolve(query).then(function (resolvedQuery) {
+				return deferred(
+					getCertificatesIssuedData(resolvedQuery).then(function (res) {
+						result.certificatesIssued = res;
+						return result;
+					}),
+					getPandingToNonPendingCount(resolvedQuery).then(function (res) {
+						result.pendingToNonPendingCount = res;
+						return result;
+					})
+				)(result);
+			});
 		},
 		'get-dashboard-old-data': function (query) {
 			return queryHandler.resolve(query)(function (query) {

@@ -21,6 +21,14 @@ var queryCriteria = function (query) {
 	if (query.excludeFrontDesk) {
 		criteria['processingStep.path'] = { $not: /frontDesk/ };
 	}
+	if (query.steps && query.steps.length) {
+		criteria.$or = [];
+		query.steps.forEach(function (step) {
+			criteria.$or.push({
+				'processingStep.path': step
+			});
+		});
+	}
 	if (query.step) {
 		criteria['processingStep.path'] = { $regex: new RegExp(resolveFullStepPath(query.step + '$')) };
 	}
