@@ -60,13 +60,15 @@ var mapItemPaths = function (ourPaths, theirPaths, pathDefinition) {
 	return result;
 };
 
-var assignValues = function (pathsMap, ourData, theirData) {
+var assignValues = function (pathsMap, ourData, theirData/*, opts */) {
 	var currentResult, result, theirCurrentData, ourPathSplit
-	  , theirPath, theirPathSplit, lastSegment;
+	  , theirPath, theirPathSplit, lastSegment, opts, ourCurrentData;
 	currentResult = result = {};
+	opts = Object(arguments[3]);
 
 	Object.keys(pathsMap).forEach(function (ourPath) {
 		currentResult = result;
+		ourCurrentData = ourData;
 		ourPathSplit = ourPath.split('/');
 		ourPathSplit.forEach(function (segment, i) {
 			if (segment.indexOf('<ID>') !== -1) {
@@ -75,6 +77,12 @@ var assignValues = function (pathsMap, ourData, theirData) {
 				currentResult.some(function (item, index) {
 					if (item.id === id) {
 						matchingIndex = index;
+						return true;
+					}
+				});
+				ourCurrentData.some(function (item, index) {
+					if (item.id === id) {
+						ourCurrentData = ourCurrentData[index];
 						return true;
 					}
 				});
@@ -96,6 +104,7 @@ var assignValues = function (pathsMap, ourData, theirData) {
 			} else {
 				currentResult = currentResult[segment];
 			}
+			ourCurrentData = ourCurrentData[segment];
 		});
 		theirCurrentData = theirData;
 		theirPath = pathsMap[ourPath];
@@ -112,14 +121,23 @@ var assignValues = function (pathsMap, ourData, theirData) {
 			}
 			theirCurrentData = theirCurrentData[segment];
 		});
-		currentResult[lastSegment] = theirCurrentData;
+		if (opts.includeFullMeta) {
+			currentResult[lastSegment] = {
+				value: theirCurrentData,
+				keyPath: ourCurrentData.keyPath
+			};
+		} else {
+			currentResult[lastSegment] = theirCurrentData;
+		}
 	});
 
 	return result;
 };
 
-module.exports = function (bp, inputMap, theirData) {
-	var filteredMap = {}, wsJSON = bp.toWebServiceJSON();
+module.exports = function (bp, inputMap, theirData/*, opts */) {
+	var filteredMap = {}, wsJSON, opts;
+	opts = Object(arguments[3]);
+	wsJSON = bp.toWebServiceJSON(opts);
 	Object.keys(inputMap).forEach(function (mapKey) {
 		if (!isPathValid(wsJSON, mapKey)) return;
 		if (!isPathValid(theirData, inputMap[mapKey])) return;
@@ -131,5 +149,5 @@ module.exports = function (bp, inputMap, theirData) {
 			filteredMap[mapKey] = inputMap[mapKey];
 		}
 	});
-	return assignValues(filteredMap, wsJSON, theirData);
+	return assignValues(filteredMap, wsJSON, theirData, opts);
 };

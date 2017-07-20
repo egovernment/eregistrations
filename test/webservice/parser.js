@@ -74,7 +74,6 @@ module.exports = function (t, a) {
 		label: 'Log 2'
 	});
 
-	/*************** RECEIVING *****************/
 	// simple case
 	inputMap = {};
 	inputMap['request/data/businessName'] = 'nombreDeBusinesso';
@@ -116,6 +115,4 @@ module.exports = function (t, a) {
 	];
 
 	a.deep(t(bp, inputMap, theirData), expectedResult);
-
-	/*************** END RECEIVING *****************/
 };
