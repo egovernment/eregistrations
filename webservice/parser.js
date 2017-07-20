@@ -2,6 +2,8 @@
 
 var isPathValid = function (obj, path) {
 	var splitPath = path.split('/'), currentBranch = obj;
+	// forbib internal tags usage
+	if (path.match(/<ID>.+?<END ID>/)) return false;
 	return splitPath.every(function (segment) {
 		if (segment === '*') {
 			if (!Array.isArray(currentBranch)) return false;

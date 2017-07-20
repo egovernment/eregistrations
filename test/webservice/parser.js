@@ -115,4 +115,10 @@ module.exports = function (t, a) {
 	];
 
 	a.deep(t(bp, inputMap, theirData), expectedResult);
+
+	// malicious path
+	delete inputMap['request/data/representative/address/street'];
+	inputMap['request/data/representative/<ID>address<ID END>/street'] = 'calle';
+	delete expectedResult.request.data.representative.address;
+	a.deep(t(bp, inputMap, theirData), expectedResult);
 };
