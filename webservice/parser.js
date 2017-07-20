@@ -119,20 +119,17 @@ var assignValues = function (pathsMap, ourData, theirData) {
 };
 
 module.exports = function (bp, inputMap, theirData) {
-	var filteredMap = {};
-	exports.wsJSON = bp.toWebServiceJSON();
+	var filteredMap = {}, wsJSON = bp.toWebServiceJSON();
 	Object.keys(inputMap).forEach(function (mapKey) {
-		if (!isPathValid(exports.wsJSON, mapKey)) return;
+		if (!isPathValid(wsJSON, mapKey)) return;
 		if (!isPathValid(theirData, inputMap[mapKey])) return;
 		if (mapKey.indexOf('*') !== -1) {
 			Object.assign(filteredMap,
-				mapItemPaths(unStarPath(exports.wsJSON, mapKey),
+				mapItemPaths(unStarPath(wsJSON, mapKey),
 					unStarPath(theirData, inputMap[mapKey]), inputMap));
 		} else {
 			filteredMap[mapKey] = inputMap[mapKey];
 		}
 	});
-	return assignValues(filteredMap, exports.wsJSON, theirData);
+	return assignValues(filteredMap, wsJSON, theirData);
 };
-
-exports.wsJSON = null;
