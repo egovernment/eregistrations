@@ -339,9 +339,8 @@ module.exports = function (config) {
 			entries.forEach(function (entry) {
 				if (entry.status.code === 'sentBack' || entry.status.code === 'rejected') {
 					result[entry.processingStep.path][entry.status.code]++;
-					result[entry.processingStep.path].all++;
 				}
-				if (entry.status.code === 'approved') {
+				if (entry.status.code !== 'pending') {
 					result[entry.processingStep.path].all++;
 				}
 			});
