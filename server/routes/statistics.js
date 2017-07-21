@@ -331,7 +331,7 @@ module.exports = function (config) {
 			}),
 			sort: {
 				'service.businessName': 1,
-				'service.businessId': 1,
+				'service.id': 1,
 				'processingStep.path': 1,
 				'date.ts': 1
 			}
@@ -342,6 +342,63 @@ module.exports = function (config) {
 				}
 				if (entry.status.code !== 'pending') {
 					result[entry.processingStep.path].all++;
+				}
+			});
+			return result;
+		});
+	};
+
+	var getApprovedByRoleWithTimes = function (query) {
+		var result = {};
+		Object.keys(processingStepsMetaWithoutFrontDesk).forEach(function (stepKey) {
+			var stepPath = 'processingSteps/map/' + resolveFullStepPath(stepKey);
+			result[stepPath] = {
+				label: getStepLabelByShortPath(stepKey),
+				services: {}
+			};
+			processingStepsMetaWithoutFrontDesk[stepKey]._services.forEach(function (serviceName) {
+				var BusinessProcess = db['BusinessProcess' + capitalize.call(serviceName)];
+				result[stepPath].services[BusinessProcess.__id__] =
+						{ count: 0, processingTime: 0, avgTime: 0, label: BusinessProcess.prototype.label };
+			});
+		});
+		return getStatusHistory.find({
+			dateFrom: query.dateFrom,
+			dateTo: query.dateTo,
+			service: query.service,
+			steps: Object.keys(processingStepsMetaWithoutFrontDesk).map(function (stepKey) {
+				return 'processingSteps/map/' + resolveFullStepPath(stepKey);
+			}),
+			sort: {
+				'service.businessName': 1,
+				'service.id': 1,
+				'processingStep.path': 1,
+				'date.ts': 1
+			}
+		}).then(function (entries) {
+			var currentEntry = null;
+			entries.forEach(function (entry) {
+				if (entry.status.code === 'pending') {
+					if (currentEntry && currentEntry.service.id === entry.service.id) {
+						currentEntry.date.ts = entry.date.ts;
+					} else {
+						currentEntry = assign({}, entry, { processingTime: 0 });
+					}
+				} else {
+					if (!currentEntry) return;
+					if (currentEntry.service.id !== entry.service.id) return;
+					if (currentEntry.processingStep.path !== entry.processingStep.path) return;
+					currentEntry.processingTime +=
+						getProcessingWorkingHoursTime(currentEntry.date.ts, entry.date.ts);
+
+					if (entry.status.code === 'approved') {
+						var resultEntry =
+							result[currentEntry.processingStep.path].services[currentEntry.service.type];
+						resultEntry.count++;
+						resultEntry.processingTime += currentEntry.processingTime;
+						resultEntry.avgTime = resultEntry.processingTime / resultEntry.count;
+					}
+					currentEntry = null;
 				}
 			});
 			return result;
@@ -377,7 +434,7 @@ module.exports = function (config) {
 			excludeFrontDesk: true,
 			sort: {
 				'service.businessName': 1,
-				'service.businessId': 1,
+				'service.id': 1,
 				'processingStep.path': 1,
 				'date.ts': 1
 			}
@@ -682,6 +739,10 @@ module.exports = function (config) {
 					}),
 					getPandingToNonPendingCount(resolvedQuery).then(function (res) {
 						result.pendingToNonPendingCount = res;
+						return result;
+					}),
+					getApprovedByRoleWithTimes(resolvedQuery).then(function (res) {
+						result.approvedByRoleWithTimes = res;
 						return result;
 					})
 				)(result);
