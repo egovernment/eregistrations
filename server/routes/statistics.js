@@ -386,6 +386,12 @@ module.exports = function (config) {
 						currentEntry = assign({}, entry, { processingTime: 0 });
 					}
 				} else {
+					var resultEntry =
+							result[currentEntry.processingStep.path].services[currentEntry.service.type];
+					// We count all approved, even if processingTime cannot be computed reliably
+					if (entry.status.code === 'approved') {
+						resultEntry.count++;
+					}
 					if (!currentEntry) return;
 					if (currentEntry.service.id !== entry.service.id) return;
 					if (currentEntry.processingStep.path !== entry.processingStep.path) return;
@@ -393,9 +399,6 @@ module.exports = function (config) {
 						getProcessingWorkingHoursTime(currentEntry.date.ts, entry.date.ts);
 
 					if (entry.status.code === 'approved') {
-						var resultEntry =
-							result[currentEntry.processingStep.path].services[currentEntry.service.type];
-						resultEntry.count++;
 						resultEntry.processingTime += currentEntry.processingTime;
 						resultEntry.avgTime = resultEntry.processingTime / resultEntry.count;
 						currentEntry = null;
