@@ -379,7 +379,8 @@ module.exports = function (config) {
 			var currentEntry = null;
 			entries.forEach(function (entry) {
 				if (entry.status.code === 'pending') {
-					if (currentEntry && currentEntry.service.id === entry.service.id) {
+					if (currentEntry && currentEntry.service.id === entry.service.id &&
+							entry.processingStep.path === currentEntry.processingStep.path) {
 						currentEntry.date.ts = entry.date.ts;
 					} else {
 						currentEntry = assign({}, entry, { processingTime: 0 });
@@ -397,8 +398,8 @@ module.exports = function (config) {
 						resultEntry.count++;
 						resultEntry.processingTime += currentEntry.processingTime;
 						resultEntry.avgTime = resultEntry.processingTime / resultEntry.count;
+						currentEntry = null;
 					}
-					currentEntry = null;
 				}
 			});
 			return result;
