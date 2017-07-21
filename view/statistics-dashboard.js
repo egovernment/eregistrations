@@ -142,7 +142,7 @@ exports['sub-main'] = {
 			renderPendingToNonPendingCount(data.pendingToNonPendingCount));
 
 		section({ class: "section-primary" },
-			h3(_("Times of processing of approved certificates")),
+			h3(_("Times of processing")),
 			renderApprovedByRoleWithTimes(data.approvedByRoleWithTimes));
 	}
 };
