@@ -359,11 +359,14 @@ module.exports = function (config) {
 			processingStepsMetaWithoutFrontDesk[stepKey]._services.forEach(function (serviceName) {
 				var BusinessProcess = db['BusinessProcess' + capitalize.call(serviceName)];
 				result[stepPath].services[BusinessProcess.__id__] =
-						{ count: 0, processingTime: 0, avgTime: 0, label: BusinessProcess.prototype.label };
+						{ count: 0, timedCount: 0, processingTime: 0,
+							countLessThanHour: 0, countBetweenHourAnd5Hours: 0, countOver5Hours: 0,
+							avgTime: 0, label: BusinessProcess.prototype.label };
 			});
 		});
+		var dateFrom = Number(db.Date(query.dateFrom || 0));
 		return getStatusHistory.find({
-			dateFrom: query.dateFrom,
+			// don't take date from, as we want to see the whole history
 			dateTo: query.dateTo,
 			service: query.service,
 			steps: Object.keys(processingStepsMetaWithoutFrontDesk).map(function (stepKey) {
@@ -387,9 +390,9 @@ module.exports = function (config) {
 					}
 				} else {
 					var resultEntry =
-							result[currentEntry.processingStep.path].services[currentEntry.service.type];
+							result[entry.processingStep.path].services[entry.service.type];
 					// We count all approved, even if processingTime cannot be computed reliably
-					if (entry.status.code === 'approved') {
+					if (entry.status.code === 'approved' && entry.date.ts >= dateFrom) {
 						resultEntry.count++;
 					}
 					if (!currentEntry) return;
@@ -398,9 +401,17 @@ module.exports = function (config) {
 					currentEntry.processingTime +=
 						getProcessingWorkingHoursTime(currentEntry.date.ts, entry.date.ts);
 
-					if (entry.status.code === 'approved') {
+					if (entry.status.code === 'approved' && entry.date.ts >= dateFrom) {
+						resultEntry.timedCount++;
 						resultEntry.processingTime += currentEntry.processingTime;
-						resultEntry.avgTime = resultEntry.processingTime / resultEntry.count;
+						if (resultEntry.processingTime < 3600000) {
+							resultEntry.countLessThanHour++;
+						} else if (resultEntry.processingTime > 18000000) {
+							resultEntry.countOver5Hours++;
+						} else {
+							resultEntry.countBetweenHourAnd5Hours++;
+						}
+						resultEntry.avgTime = resultEntry.processingTime / resultEntry.timedCount;
 						currentEntry = null;
 					}
 				}
