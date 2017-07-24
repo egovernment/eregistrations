@@ -319,6 +319,8 @@ module.exports = function (config) {
 				all: 0,
 				sentBack: 0,
 				rejected: 0,
+				approved: 0,
+				paused: 0,
 				label: getStepLabelByShortPath(stepKey)
 			};
 		});
@@ -337,7 +339,9 @@ module.exports = function (config) {
 			}
 		}).then(function (entries) {
 			entries.forEach(function (entry) {
-				if (entry.status.code === 'sentBack' || entry.status.code === 'rejected') {
+				if (entry.status.code === 'sentBack' || entry.status.code === 'rejected'
+						|| entry.status.code === 'approved' ||
+						entry.status.code === 'paused') {
 					result[entry.processingStep.path][entry.status.code]++;
 				}
 				if (entry.status.code !== 'pending') {

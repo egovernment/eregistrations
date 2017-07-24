@@ -56,16 +56,20 @@ var renderPendingToNonPendingCount = function (data) {
 			thead(
 				th({ class: 'statistics-table-header-waiting' }, _("Role")),
 				th({ class: 'statistics-table-header-waiting' }, _("All cases")),
+				th({ class: 'statistics-table-header-waiting' }, _("Cases leading to validation")),
 				th({ class: 'statistics-table-header-waiting' }, _("Cases leading to send back")),
-				th({ class: 'statistics-table-header-waiting' }, _("Cases leading to rejection"))
+				th({ class: 'statistics-table-header-waiting' }, _("Cases leading to rejection")),
+				th({ class: 'statistics-table-header-waiting' }, _("Cases leading to pause"))
 			),
 			tbody(data.map(function (value) {
 				return list(Object.keys(value), function (key) {
 					return tr(
 						td({ class: 'statistics-table-number' }, value[key].label),
 						td({ class: 'statistics-table-number' }, value[key].all),
+						td({ class: 'statistics-table-number' }, value[key].approved),
 						td({ class: 'statistics-table-number' }, value[key].sentBack),
-						td({ class: 'statistics-table-number' }, value[key].rejected)
+						td({ class: 'statistics-table-number' }, value[key].rejected),
+						td({ class: 'statistics-table-number' }, value[key].paused)
 					);
 				});
 			}))
