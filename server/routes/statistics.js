@@ -404,9 +404,9 @@ module.exports = function (config) {
 					if (entry.status.code === 'approved' && entry.date.ts >= dateFrom) {
 						resultEntry.timedCount++;
 						resultEntry.processingTime += currentEntry.processingTime;
-						if (resultEntry.processingTime < 3600000) {
+						if (currentEntry.processingTime < 3600000) {
 							resultEntry.countLessThanHour++;
-						} else if (resultEntry.processingTime > 18000000) {
+						} else if (currentEntry.processingTime > 18000000) {
 							resultEntry.countOver5Hours++;
 						} else {
 							resultEntry.countBetweenHourAnd5Hours++;
