@@ -175,7 +175,7 @@ exports['sub-main'] = {
 			renderPendingToNonPendingCount(data.pendingToNonPendingCount));
 
 		section({ class: "section-primary" },
-			h3(_("Times of processing")),
+			h3(_("Times of processing until approval")),
 			renderApprovedByRoleWithTimes(data.approvedByRoleWithTimes));
 
 		section({ class: "section-primary" },
