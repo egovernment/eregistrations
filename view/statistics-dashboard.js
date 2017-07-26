@@ -48,10 +48,36 @@ var getTablesFromData = function (certData) {
 	});
 };
 
+var renderPendingToNonPendingCount = function (data) {
+	return section({ class: 'section-secondary' },
+		table(
+			{ class: 'statistics-table statistics-table-registrations' },
+			thead(
+				th({ class: 'statistics-table-header-waiting' }, _("Role")),
+				th({ class: 'statistics-table-header-waiting' }, _("All cases")),
+				th({ class: 'statistics-table-header-waiting' }, _("Cases leading to send back")),
+				th({ class: 'statistics-table-header-waiting' }, _("Cases leading to rejection"))
+			),
+			tbody(data.map(function (value) {
+				return list(Object.keys(value), function (key) {
+					return tr(
+						td({ class: 'statistics-table-number' }, value[key].label),
+						td({ class: 'statistics-table-number' }, value[key].all),
+						td({ class: 'statistics-table-number' }, value[key].sentBack),
+						td({ class: 'statistics-table-number' }, value[key].rejected)
+					);
+				});
+			}))
+		));
+};
+
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
-		var queryHandler, data = new ObservableValue([]), handlerConf;
+		var queryHandler, data = {}, handlerConf;
+
+		data.certificatesIssued = new ObservableValue([]);
+		data.pendingToNonPendingCount = new ObservableValue({});
 
 		handlerConf = queryHandlerConf.slice(0);
 		queryHandler = setupQueryHandler(handlerConf,
@@ -66,7 +92,8 @@ exports['sub-main'] = {
 				serverQuery.dateTo = serverQuery.dateTo.toJSON();
 			}
 			queryServer(serverQuery).done(function (serverData) {
-				data.value = serverData;
+				data.certificatesIssued.value = serverData.certificatesIssued;
+				data.pendingToNonPendingCount.value = serverData.pendingToNonPendingCount;
 			});
 		});
 
@@ -77,6 +104,10 @@ exports['sub-main'] = {
 
 		section({ class: "section-primary" },
 			h3(_("Certficates issued")),
-			getTablesFromData(data));
+			getTablesFromData(data.certificatesIssued));
+
+		section({ class: "section-primary" },
+			h3(_("Send back to correction")),
+			renderPendingToNonPendingCount(data.pendingToNonPendingCount));
 	}
 };

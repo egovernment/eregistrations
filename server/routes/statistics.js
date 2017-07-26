@@ -185,6 +185,18 @@ var getPeriodsWithData = function (query) {
 	});
 };
 
+var getRejectableSteps = function () {
+	var steps = {};
+	Object.keys(processingStepsMeta).forEach(function (key) {
+		if ((Object.keys(processingStepsMeta[key]).indexOf('rejected') !== -1) ||
+				(Object.keys(processingStepsMeta[key]).indexOf('sentBack') !== -1)) {
+			steps[key] = processingStepsMeta[key];
+		}
+	});
+
+	return steps;
+};
+
 module.exports = function (config) {
 	var driver = ensureDriver(ensureObject(config).driver)
 	  , customChartsController;
@@ -300,6 +312,42 @@ module.exports = function (config) {
 		});
 	};
 
+	var getPandingToNonPendingCount = function (query) {
+		var result = {};
+		Object.keys(getRejectableSteps()).forEach(function (stepKey) {
+			result['processingSteps/map/' + resolveFullStepPath(stepKey)] = {
+				all: 0,
+				sentBack: 0,
+				rejected: 0,
+				label: getStepLabelByShortPath(stepKey)
+			};
+		});
+		return getStatusHistory.find({
+			dateFrom: query.dateFrom,
+			dateTo: query.dateTo,
+			service: query.service,
+			steps: Object.keys(getRejectableSteps()).map(function (stepKey) {
+				return 'processingSteps/map/' + resolveFullStepPath(stepKey);
+			}),
+			sort: {
+				'service.businessName': 1,
+				'service.businessId': 1,
+				'processingStep.path': 1,
+				'date.ts': 1
+			}
+		}).then(function (entries) {
+			entries.forEach(function (entry) {
+				if (entry.status.code === 'sentBack' || entry.status.code === 'rejected') {
+					result[entry.processingStep.path][entry.status.code]++;
+				}
+				if (entry.status.code !== 'pending') {
+					result[entry.processingStep.path].all++;
+				}
+			});
+			return result;
+		});
+	};
+
 	var resolveTimePerRole = function (query) {
 		var stepsResult = {};
 		Object.keys(processingStepsMetaWithoutFrontDesk).forEach(function (stepShortPath) {
@@ -330,6 +378,7 @@ module.exports = function (config) {
 			sort: {
 				'service.businessName': 1,
 				'service.businessId': 1,
+				'processingStep.path': 1,
 				'date.ts': 1
 			}
 		}).then(function (statusHistory) {
@@ -624,7 +673,19 @@ module.exports = function (config) {
 			});
 		}),
 		'get-dashboard-data': function (query) {
-			return queryHandler.resolve(query)(getCertificatesIssuedData);
+			var result = {};
+			return queryHandler.resolve(query).then(function (resolvedQuery) {
+				return deferred(
+					getCertificatesIssuedData(resolvedQuery).then(function (res) {
+						result.certificatesIssued = res;
+						return result;
+					}),
+					getPandingToNonPendingCount(resolvedQuery).then(function (res) {
+						result.pendingToNonPendingCount = res;
+						return result;
+					})
+				)(result);
+			});
 		},
 		'get-dashboard-old-data': function (query) {
 			return queryHandler.resolve(query)(function (query) {

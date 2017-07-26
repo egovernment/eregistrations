@@ -43,7 +43,6 @@ dbService().done(function () {
 					keyPath: 'isSubmitted',
 					value: '11'
 				}, function (path, record) {
-					if (record.stamp < 1485907200000000) return deferred(null); //Feb 01 2017 UTC
 					return deferred(path.slice(0, -('isSubmitted'.length + 1)));
 				}).then(function (ids) {
 					ids = ids.filter(Boolean);
