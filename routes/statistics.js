@@ -15,11 +15,12 @@ module.exports = function () {
 
 	return {
 		// Pages with statistics information
-		'/': {
+		'/': require('../view/statistics-dashboard'),
+		'dashboard-old': {
 			decorateContext: function () {
 				this.processingStepsMeta = processingStepsMeta;
 			},
-			view: require('../view/statistics-dashboard')
+			view: require('../view/statistics-dashboard-old')
 		},
 		'files/certificates-issued': require('../view/statistics-certificates-issued'),
 		'files/by-role': {

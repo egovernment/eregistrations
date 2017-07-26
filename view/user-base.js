@@ -100,6 +100,7 @@ exports._submittedMenu = function () {
 	}
 	if (user.currentRoleResolved === 'statistics') {
 		return [li({ id: 'dashboard-nav' }, a({ href: '/' }, _("Dashboard"))),
+			li({ id: 'dashboard-old-nav' }, a({ href: '/dashboard-old/' }, _("Dashboard old"))),
 			li({ id: 'files-nav' }, a({ href: '/files/certificates-issued/' }, _("Files"))),
 			li({ id: 'time-nav' }, a({ href: '/time/' }, _("Times"))),
 			li({ id: 'rejections-nav' }, a({ href: '/rejections/' }, _("Reasons of rejections"))),
