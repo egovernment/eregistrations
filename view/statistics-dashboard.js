@@ -8,7 +8,8 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , getData           = require('mano/lib/client/xhr-driver').get
   , copy              = require('es5-ext/object/copy')
   , ObservableValue   = require('observable-value')
-  , dateFromToBlock   = require('./components/filter-bar/select-date-range-safe-fallback');
+  , dateFromToBlock   = require('./components/filter-bar/select-date-range-safe-fallback')
+  , getDurationDaysHours = require('./utils/get-duration-days-hours-fine-grain');
 
 var queryServer = memoize(function (query) {
 	return getData('/get-dashboard-data/', query);
@@ -55,17 +56,78 @@ var renderPendingToNonPendingCount = function (data) {
 			thead(
 				th({ class: 'statistics-table-header-waiting' }, _("Role")),
 				th({ class: 'statistics-table-header-waiting' }, _("All cases")),
+				th({ class: 'statistics-table-header-waiting' }, _("Cases leading to validation")),
 				th({ class: 'statistics-table-header-waiting' }, _("Cases leading to send back")),
-				th({ class: 'statistics-table-header-waiting' }, _("Cases leading to rejection"))
+				th({ class: 'statistics-table-header-waiting' }, _("Cases leading to rejection")),
+				th({ class: 'statistics-table-header-waiting' }, _("Cases leading to pause"))
 			),
 			tbody(data.map(function (value) {
 				return list(Object.keys(value), function (key) {
 					return tr(
 						td({ class: 'statistics-table-number' }, value[key].label),
 						td({ class: 'statistics-table-number' }, value[key].all),
+						td({ class: 'statistics-table-number' }, value[key].approved),
 						td({ class: 'statistics-table-number' }, value[key].sentBack),
-						td({ class: 'statistics-table-number' }, value[key].rejected)
+						td({ class: 'statistics-table-number' }, value[key].rejected),
+						td({ class: 'statistics-table-number' }, value[key].paused)
 					);
+				});
+			}))
+		));
+};
+
+var renderApprovedByRoleWithTimes = function (data) {
+	return section({ class: 'section-secondary' },
+		table(
+			{ class: 'statistics-table statistics-table-registrations' },
+			thead(
+				th({ class: 'statistics-table-header-waiting' }, _("Service")),
+				th({ class: 'statistics-table-header-waiting' }, _("Role")),
+				th({ class: 'statistics-table-header-waiting' }, _("Cases")),
+				th({ class: 'statistics-table-header-waiting' }, _("Average time"))
+			),
+			tbody(data.map(function (value) {
+				return list(Object.keys(value), function (key) {
+					var stepEntry = value[key];
+					return list(Object.keys(stepEntry.services), function (serviceName) {
+						var serviceEntry = stepEntry.services[serviceName];
+						return tr(
+							td({ class: 'statistics-table-number' }, serviceEntry.label),
+							td({ class: 'statistics-table-number' }, stepEntry.label),
+							td({ class: 'statistics-table-number' }, serviceEntry.count),
+							td({ class: 'statistics-table-number' }, serviceEntry.avgTime ?
+									getDurationDaysHours(serviceEntry.avgTime) : "-")
+						);
+					});
+				});
+			}))
+		));
+};
+
+var renderApprovedByRoleWithTimeRanges = function (data) {
+	return section({ class: 'section-secondary' },
+		table(
+			{ class: 'statistics-table statistics-table-registrations' },
+			thead(
+				th({ class: 'statistics-table-header-waiting' }, _("Service")),
+				th({ class: 'statistics-table-header-waiting' }, _("Role")),
+				th({ class: 'statistics-table-header-waiting' }, _("Less than 1 hour")),
+				th({ class: 'statistics-table-header-waiting' }, _("Between 1 and 5 hours")),
+				th({ class: 'statistics-table-header-waiting' }, _("More than 5 hours"))
+			),
+			tbody(data.map(function (value) {
+				return list(Object.keys(value), function (key) {
+					var stepEntry = value[key];
+					return list(Object.keys(stepEntry.services), function (serviceName) {
+						var serviceEntry = stepEntry.services[serviceName];
+						return tr(
+							td({ class: 'statistics-table-number' }, serviceEntry.label),
+							td({ class: 'statistics-table-number' }, stepEntry.label),
+							td({ class: 'statistics-table-number' }, serviceEntry.countLessThanHour),
+							td({ class: 'statistics-table-number' }, serviceEntry.countBetweenHourAnd5Hours),
+							td({ class: 'statistics-table-number' }, serviceEntry.countOver5Hours)
+						);
+					});
 				});
 			}))
 		));
@@ -78,6 +140,7 @@ exports['sub-main'] = {
 
 		data.certificatesIssued = new ObservableValue([]);
 		data.pendingToNonPendingCount = new ObservableValue({});
+		data.approvedByRoleWithTimes = new ObservableValue({});
 
 		handlerConf = queryHandlerConf.slice(0);
 		queryHandler = setupQueryHandler(handlerConf,
@@ -94,6 +157,7 @@ exports['sub-main'] = {
 			queryServer(serverQuery).done(function (serverData) {
 				data.certificatesIssued.value = serverData.certificatesIssued;
 				data.pendingToNonPendingCount.value = serverData.pendingToNonPendingCount;
+				data.approvedByRoleWithTimes.value = serverData.approvedByRoleWithTimes;
 			});
 		});
 
@@ -109,5 +173,13 @@ exports['sub-main'] = {
 		section({ class: "section-primary" },
 			h3(_("Send back to correction")),
 			renderPendingToNonPendingCount(data.pendingToNonPendingCount));
+
+		section({ class: "section-primary" },
+			h3(_("Times of processing until approval")),
+			renderApprovedByRoleWithTimes(data.approvedByRoleWithTimes));
+
+		section({ class: "section-primary" },
+			h3(_("Duration of the process")),
+			renderApprovedByRoleWithTimeRanges(data.approvedByRoleWithTimes));
 	}
 };

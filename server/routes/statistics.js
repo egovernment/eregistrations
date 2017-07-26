@@ -319,6 +319,8 @@ module.exports = function (config) {
 				all: 0,
 				sentBack: 0,
 				rejected: 0,
+				approved: 0,
+				paused: 0,
 				label: getStepLabelByShortPath(stepKey)
 			};
 		});
@@ -331,17 +333,91 @@ module.exports = function (config) {
 			}),
 			sort: {
 				'service.businessName': 1,
-				'service.businessId': 1,
+				'service.id': 1,
 				'processingStep.path': 1,
 				'date.ts': 1
 			}
 		}).then(function (entries) {
 			entries.forEach(function (entry) {
-				if (entry.status.code === 'sentBack' || entry.status.code === 'rejected') {
+				if (entry.status.code === 'sentBack' || entry.status.code === 'rejected'
+						|| entry.status.code === 'approved' ||
+						entry.status.code === 'paused') {
 					result[entry.processingStep.path][entry.status.code]++;
 				}
 				if (entry.status.code !== 'pending') {
 					result[entry.processingStep.path].all++;
+				}
+			});
+			return result;
+		});
+	};
+
+	var getApprovedByRoleWithTimes = function (query) {
+		var result = {};
+		Object.keys(processingStepsMetaWithoutFrontDesk).forEach(function (stepKey) {
+			var stepPath = 'processingSteps/map/' + resolveFullStepPath(stepKey);
+			result[stepPath] = {
+				label: getStepLabelByShortPath(stepKey),
+				services: {}
+			};
+			processingStepsMetaWithoutFrontDesk[stepKey]._services.forEach(function (serviceName) {
+				var BusinessProcess = db['BusinessProcess' + capitalize.call(serviceName)];
+				result[stepPath].services[BusinessProcess.__id__] =
+						{ count: 0, timedCount: 0, processingTime: 0,
+							countLessThanHour: 0, countBetweenHourAnd5Hours: 0, countOver5Hours: 0,
+							avgTime: 0, label: BusinessProcess.prototype.label };
+			});
+		});
+		var dateFrom = Number(db.Date(query.dateFrom || 0));
+		return getStatusHistory.find({
+			// don't take date from, as we want to see the whole history
+			dateTo: query.dateTo,
+			service: query.service,
+			steps: Object.keys(processingStepsMetaWithoutFrontDesk).map(function (stepKey) {
+				return 'processingSteps/map/' + resolveFullStepPath(stepKey);
+			}),
+			sort: {
+				'service.businessName': 1,
+				'service.id': 1,
+				'processingStep.path': 1,
+				'date.ts': 1
+			}
+		}).then(function (entries) {
+			var currentEntry = null;
+			entries.forEach(function (entry) {
+				if (entry.status.code === 'pending') {
+					if (currentEntry && currentEntry.service.id === entry.service.id &&
+							entry.processingStep.path === currentEntry.processingStep.path) {
+						currentEntry.date.ts = entry.date.ts;
+					} else {
+						currentEntry = assign({}, entry, { processingTime: 0 });
+					}
+				} else {
+					var resultEntry =
+							result[entry.processingStep.path].services[entry.service.type];
+					// We count all approved, even if processingTime cannot be computed reliably
+					if (entry.status.code === 'approved' && entry.date.ts >= dateFrom) {
+						resultEntry.count++;
+					}
+					if (!currentEntry) return;
+					if (currentEntry.service.id !== entry.service.id) return;
+					if (currentEntry.processingStep.path !== entry.processingStep.path) return;
+					currentEntry.processingTime +=
+						getProcessingWorkingHoursTime(currentEntry.date.ts, entry.date.ts);
+
+					if (entry.status.code === 'approved' && entry.date.ts >= dateFrom) {
+						resultEntry.timedCount++;
+						resultEntry.processingTime += currentEntry.processingTime;
+						if (currentEntry.processingTime < 3600000) {
+							resultEntry.countLessThanHour++;
+						} else if (currentEntry.processingTime > 18000000) {
+							resultEntry.countOver5Hours++;
+						} else {
+							resultEntry.countBetweenHourAnd5Hours++;
+						}
+						resultEntry.avgTime = resultEntry.processingTime / resultEntry.timedCount;
+						currentEntry = null;
+					}
 				}
 			});
 			return result;
@@ -377,7 +453,7 @@ module.exports = function (config) {
 			excludeFrontDesk: true,
 			sort: {
 				'service.businessName': 1,
-				'service.businessId': 1,
+				'service.id': 1,
 				'processingStep.path': 1,
 				'date.ts': 1
 			}
@@ -682,6 +758,10 @@ module.exports = function (config) {
 					}),
 					getPandingToNonPendingCount(resolvedQuery).then(function (res) {
 						result.pendingToNonPendingCount = res;
+						return result;
+					}),
+					getApprovedByRoleWithTimes(resolvedQuery).then(function (res) {
+						result.approvedByRoleWithTimes = res;
 						return result;
 					})
 				)(result);
