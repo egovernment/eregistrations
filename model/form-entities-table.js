@@ -255,7 +255,6 @@ module.exports = memoize(function (db) {
 									return;
 								}
 								while (sectionFields && Object.keys(sectionFields)[0] !== entityId) {
-									console.log('sectionFields', sectionFields);
 									sectionFields = sectionFields[Object.keys(sectionFields)[0]];
 								}
 								if (!sectionFields) return;
