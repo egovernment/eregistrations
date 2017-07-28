@@ -103,6 +103,9 @@ module.exports = memoize(function (db) {
 			if (this.meta && this.members) {
 				return { code: value };
 			}
+			if (db.Currency && (Object.getPrototypeOf(this) === db.Currency)) {
+				return { currency: this.symbol, value: value };
+			}
 			if (db.isObjectType(this)) {
 				if (typeof value.toWebServiceJSON === 'function') {
 					return value.toWebServiceJSON(descriptor);
