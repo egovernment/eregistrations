@@ -23,6 +23,9 @@ exports['set-role'] = true;
 // Institution switch
 exports['set-institution'] = true;
 
+// Zone switch
+exports['set-zone'] = true;
+
 // Active Business Process change
 exports['change-business-process'] = true;
 
