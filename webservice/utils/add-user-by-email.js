@@ -11,6 +11,8 @@ var db = require('../../db')
 /**** Notice ****
 	The method retuns promise which may be rejected.
 	The consumer should take care to process the response also in case of errors.
+	Warining: If a user with a given id exits, the roles passed to this method will be setup
+	for that user.
 */
 
 module.exports = function (data) {
@@ -27,7 +29,17 @@ module.exports = function (data) {
 			key: 'email',
 			value: serializeValue(email)
 		}, function (foundRecord) {
-			return foundRecord.split('/')[0];
+			var id = foundRecord.split('/')[0], promise = deferred(null);
+			if (data.roles) {
+				promise = deferred.map(data.roles, function (role) {
+					if (!db.Role.members.has(role)) return;
+					return userStorage.get(id + '/roles*' + role).then(function (foundRoleRecord) {
+						if (foundRoleRecord && foundRoleRecord.value === '11') return;
+						return userStorage.store(id + '/roles*' + role, serializeValue(true));
+					});
+				});
+			}
+			return promise.then(function () { return id; });
 		}).then(function (foundId) {
 			if (foundId) return foundId;
 			return mano.queryMemoryDb([], 'addUser', JSON.stringify(data));
