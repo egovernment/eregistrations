@@ -155,8 +155,15 @@ module.exports = memoize(function (db/*, options*/) {
 					});
 				});
 
+				// When some fields just aren't there...
+				this.customToWebServiceJSON(result, opts);
+
 				return result;
 			}
+		},
+		customToWebServiceJSON: {
+			type: db.Function,
+			value: function (result, opts) {}
 		},
 		toMetaDataJSON: {
 			type: db.Function,
