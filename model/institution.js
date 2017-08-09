@@ -13,6 +13,11 @@ module.exports = memoize(function (db) {
 		address: { type: StringLine, required: true },
 		toString: { value: function (options) {
 			return this.name;
-		} }
+		} },
+		toWebServiceJSON: {
+			value: function (opts) {
+				return { code: this.__id__ };
+			}
+		}
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
