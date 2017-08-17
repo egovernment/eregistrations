@@ -16,7 +16,8 @@ var ensureCallable = require('es5-ext/object/valid-callable')
   , subject = compileTpl(_("M01 - Create Account email subject - Domain: ${domain}"));
 
 var body = compileTpl(_("Mx1 - General - Email message greeting - Full name: ${fullName}") +
-	"\n\n" + _("M01 - Create Account\n\nEmail: ${email}\n\nUrl: ${domain}/ayuda/.") + "\n\n" +
+	"\n\n" + _("M01 - Create Account\n\nEmail: ${email}\n\nUrl: ${domain}/ayuda/\n\n" +
+		"Confirmation url: ${confimationUrl}.") + "\n\n" +
 	_("Mx2 - General - Email message\n\nsignature ${ domain }"));
 
 module.exports = function (data) {
@@ -25,7 +26,8 @@ module.exports = function (data) {
 	inserts = {
 		domain: domain,
 		fullName: fullNameGetter.call(data),
-		email: data.email
+		email: data.email,
+		confimationUrl: domain + '/confirm-account?token=' + data.createAccountToken
 	};
 	return mailer({
 		from: mano.mail.config.from,
