@@ -2,7 +2,9 @@
 
 module.exports = function () {
 	return {
-		register: require('mano-auth/controller/client/register-and-login'),
+		register: {
+			remoteSubmit: true
+		},
 		login: require('mano-auth/controller/client/login')
 	};
 };
