@@ -44,6 +44,7 @@ predef+ process, __dirname, setInterval, Buffer
 ./client
 ./prototype/client
 ./routes
+./controller/public/client.js
 predef+ window, document, location, $, localStorage
 
 ./prototype/view
