@@ -9,6 +9,7 @@ Thumbs.db
 /i18n-scan-map.generated.json
 /common/client/env.json
 /.idea
+/.vscode
 /log
 /node_modules
 /npm-debug.log
