@@ -79,7 +79,7 @@ exports['create-managed-account'] = {
 				return userStorage.storeMany([
 					{ id: userId + '/createManagedAccountToken', data: { value: '' } },
 					{ id: userId + '/password', data: { value: serializeValue(password) } },
-					{ id: userId + '/isAccountCreationConfirmed', data: { value: serializeValue(true) } }
+					{ id: userId + '/createAccountToken', data: { value: '' } }
 				]).then(function () {
 					userStorage.getObject(userId,
 						{ keyPaths: ['firstName', 'lastName', 'email'] }

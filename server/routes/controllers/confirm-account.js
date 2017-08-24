@@ -16,7 +16,7 @@ module.exports = function () {
 				value: '3' + params.token
 			}, function (id) {
 				var targetId = id.slice(0, id.indexOf('/'));
-				return userStorage.store(targetId + '/isAccountCreationConfirmed', '11');
+				return userStorage.store(targetId + '/createAccountToken', '');
 			});
 		}
 	};

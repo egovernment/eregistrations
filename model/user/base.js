@@ -53,12 +53,9 @@ module.exports = memoize(function (db/*, options */) {
 				"If so, it may expose some extra system specific controls " +
 				"(e.g. switch that allows to change institution or zone). Otherwise has no effect")
 		},
+		// Until user has this token, the account is considered inactive
 		createAccountToken: {
 			type: StringLine
-		},
-		isAccountCreationConfirmed: {
-			type: db.Boolean,
-			value: false
 		},
 		// This is resolved on server and propagated (in resolved form to client)
 		// The client will never have a password so it needs to rely on server
@@ -67,7 +64,7 @@ module.exports = memoize(function (db/*, options */) {
 			value: function () {
 				if (this.isDemo) return false;
 				if (!this.email) return false;
-				if (!this.isAccountCreationConfirmed) return false;
+				if (this.createAccountToken) return false;
 				return this.password;
 			}
 		},
