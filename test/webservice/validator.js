@@ -82,11 +82,13 @@ module.exports = function (t, a) {
 	var wsJSON = bp.toWebServiceJSON({ includeFullMeta: true });
 	a.deep(t(bp, wsJSON), []);
 	wsJSON.request.data.businessName.value = 'The name which is too long';
-	a.deep(t(bp, wsJSON), [{ message: "String too long",
-		code: "STRING_TOO_LONG", name: "DbjsError" }]);
+	var result = t(bp, wsJSON);
+	a(result[0].message, "String too long");
+	a(result[0].code, "STRING_TOO_LONG");
 	wsJSON.request.data.representative.email.value = 'bademail.com';
-	a.deep(t(bp, wsJSON), [
-		{ message: "String too long", code: "STRING_TOO_LONG", name: "DbjsError" },
-		{ message: "bademail.com doesn't match pattern", code: "INVALID_STRING", name: "DbjsError" }
-	]);
+	result = t(bp, wsJSON);
+	a(result[0].message, "String too long");
+	a(result[0].code, "STRING_TOO_LONG");
+	a(result[1].message, "bademail.com doesn't match pattern");
+	a(result[1].code, "INVALID_STRING");
 };
