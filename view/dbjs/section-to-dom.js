@@ -18,10 +18,14 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 		  , cssClass     = options.cssClass || 'entity-data-section'
 		  , displayEmptyFields = options.displayEmptyFields
 		  , resolveValue = options.customResolveValue || defaultResolveValue
-		  , filteredNames;
+		  , filteredNames, defaultHeader;
+
+		defaultHeader = _if(self._label, [headersMap[headerRank](self._label)]);
 
 		return section({ class: cssClass },
-			options.disableHeader ? null : _if(self._label, [headersMap[headerRank](self._label)]),
+			(options.customHeader && typeof options.customHeader === 'function') ?
+					options.customHeader(defaultHeader) :
+					(options.disableHeader ? null : defaultHeader),
 			table(
 				tbody(
 					_if(self._resolventProperty, function () {

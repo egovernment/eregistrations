@@ -61,6 +61,9 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 							id: this.domId,
 							method: 'post',
 							action: actionUrl,
+							onsubmit: function () {
+								this.isAwaitingUpdate = true;
+							}.bind(this),
 							class: ns._if(ns.eq(
 								this._status,
 								1
