@@ -44,10 +44,6 @@ module.exports = memoize(function (db) {
 			type: db.Boolean,
 			value: false
 		},
-		wasUpdated: {
-			type: db.Boolean,
-			value: false
-		},
 		// Optional explanation text.
 		legend: { type: db.String },
 		// When isApplicable !== true the section will not be visible in the view

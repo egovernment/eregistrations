@@ -32,7 +32,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		  , master                 = options.master || this.master
 		  , headerRank             = options.headerRank || 2
 		  , customizeData          = { master: master }
-		  , fieldsetResult
+		  , fieldsetResult, defaultHeader
 		  , sectionFieldsetOptions = {
 			prepend: options.prepend,
 			append: options.append,
@@ -41,6 +41,11 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 			fieldsetOptions: options.fieldsetOptions,
 			viewContext: options.viewContext
 		};
+
+		defaultHeader = insert(headersMap[headerRank](this._label.map(function (label) {
+			if (!label) return;
+			return _d(label, this.getTranslations());
+		}.bind(this))));
 
 		if (options.isChildEntity) {
 			actionUrl = (master.constructor.prototype === master) ?
@@ -70,10 +75,8 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 							), 'completed form-elements', 'form-elements')
 						},
 						ns._if(this._label, [
-							headersMap[headerRank](this._label.map(function (label) {
-								if (!label) return;
-								return _d(label, this.getTranslations());
-							}.bind(this))),
+							(options.customHeader && typeof options.customHeader === 'function') ?
+									options.customHeader(defaultHeader) : defaultHeader,
 							ns._if(this._legend, ns.div({ class: 'section-primary-legend' },
 								ns.md(this._legend.map(function (legend) {
 									if (!legend) return;

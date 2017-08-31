@@ -20,7 +20,7 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 		  , resolveValue = options.customResolveValue || defaultResolveValue
 		  , filteredNames, defaultHeader;
 
-		defaultHeader = _if(self._label, [headersMap[headerRank](self._label)]);
+		defaultHeader = insert(_if(self._label, [headersMap[headerRank](self._label)]));
 
 		return section({ class: cssClass },
 			(options.customHeader && typeof options.customHeader === 'function') ?
