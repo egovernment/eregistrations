@@ -204,6 +204,9 @@ var initializeHandler = function (conf) {
 
 		if (isArray(indexMeta)) {
 			promise = deferred.map(indexMeta.sort(compareIndexMeta), function (indexMeta) {
+				if (indexMeta.direct) {
+					return getDbSet(storages, 'direct', indexMeta.name, indexMeta.value);
+				}
 				return getDbSet(storages, 'computed', indexMeta.name, indexMeta.value);
 			})(function (sets) {
 				return aFrom(sets).reduce(function (set1, set2) { return set1.and(set2); });
