@@ -10,7 +10,7 @@ var memoize          = require('memoizee')
   , debug            = require('debug-ext')('soap')
   , assign           = require('es5-ext/object/assign')
   , env              = require('mano').env
-  , soapClientOptions = env.soapClientOptions
+  , soapClientOptions = env && env.soapClientOptions
 
   , createSoapClient = promisify(soap.createClient);
 
