@@ -17,7 +17,7 @@ var memoize          = require('memoizee')
 var getSoapClientImpl = memoize(function (wsdlUrl/*, options*/) {
 	var options = Object(arguments[1]);
 	if (soapClientOptions) {
-		options = assign(soapClientOptions, options);
+		options = assign({}, soapClientOptions, options);
 	}
 	debug('creating soap client (%s)', options.endpoint);
 
