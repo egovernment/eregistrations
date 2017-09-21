@@ -62,6 +62,7 @@ var saveRejectionReason = function (event) {
 	if (!event.path.startsWith('processingSteps')) return;
 	status = unserializeValue(event.data.value);
 	if (status !== 'rejected' && status !== 'sentBack') return;
+	if (!mano.queryMemoryDb) return;
 
 	mano.queryMemoryDb([event.ownerId], 'businessProcessRejectionReasons', {
 		businessProcessId: event.ownerId
@@ -76,6 +77,7 @@ var saveRejectionReason = function (event) {
 };
 
 var storeLogMongo = function (storeResult) {
+	if (!mano.queryMemoryDb) return;
 	return mano.queryMemoryDb([storeResult.businessProcessId],
 		'processingStepStatusHistoryEntry',
 		storeResult).then(function (processingStepLogData) {
@@ -91,6 +93,7 @@ var storeLogMongo = function (storeResult) {
 
 module.exports = exports = function () {
 	var allStorages = new Set(), driver;
+
 	// Cannot be initialized before call
 	driver = mano.dbDriver;
 	Object.keys(processingStepsMeta).forEach(function (stepMetaKey) {
