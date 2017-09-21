@@ -5,7 +5,13 @@ var requestLogger = require('../../webservice/request-logger')
   , resolveProjectRoot = require('cjs-module/resolve-project-root')
   , path        = require('path')
   , projectRoot = process.cwd()
-  , debug       = require('debug-ext')('ws-setrvices-requests-manager');
+  , debug       = require('debug-ext')('ws-setrvices-requests-manager')
+  , resendFilter;
+
+resendFilter = function (item) {
+	if (item.isExcludedFromResend) return false;
+	return item.requestType === 'sender' || item.requestType === 'senderReceiver';
+};
 
 exports.getRequestsDirectory = function () {
 	return resolveProjectRoot(projectRoot).then(function (root) {
@@ -37,9 +43,7 @@ exports.send = function (data) {
 
 exports.resendUnfinished = function () {
 	return requestLogger.getUnfinished().then(function (unfinished) {
-		return deferred.map(unfinished.filter(function (item) {
-			return item.requestType === 'sender';
-		}), function (requestData) {
+		return deferred.map(unfinished.filter(resendFilter), function (requestData) {
 			return exports.send(requestData);
 		});
 	});
@@ -47,9 +51,7 @@ exports.resendUnfinished = function () {
 
 exports.resendErrored = function () {
 	return requestLogger.getErrored().then(function (errored) {
-		return deferred.map(errored.filter(function (item) {
-			return item.requestType === 'sender';
-		}), function (requestData) {
+		return deferred.map(errored.filter(resendFilter), function (requestData) {
 			return exports.send(requestData);
 		});
 	});
