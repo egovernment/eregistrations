@@ -6,7 +6,10 @@ var assign              = require('es5-ext/object/assign')
   , hash                = require('mano-auth/hash')
   , sendNotification    = require('../../server/email-notifications/create-account')
   , queryMaster         = require('eregistrations/server/services/query-master/slave')
-  , setupSuperUserRoles = require('../../utils/setup-super-user-roles');
+  , setupSuperUserRoles = require('../../utils/setup-super-user-roles')
+  , genId               = require('time-uuid')
+  , env                 = require('mano').env
+  , isAccountConfirmationDisabled = env && env.isAccountConfirmationDisabled;
 
 // Common
 assign(exports, require('../user/server'));
@@ -21,6 +24,9 @@ exports['user-add'] = {
 		}).then(function () {
 			return hash.hash(data['User#/password']).then(function (password) {
 				data['User#/password'] = password;
+				if (!isAccountConfirmationDisabled) {
+					data['User#/createAccountToken'] = genId();
+				}
 
 				submit.apply(this, args);
 				if (data['User#/isSuperUser']) {
