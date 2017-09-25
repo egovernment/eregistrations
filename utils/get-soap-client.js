@@ -8,11 +8,17 @@ var memoize          = require('memoizee')
   , promisify        = require('deferred').promisify
   , soap             = require('soap')
   , debug            = require('debug-ext')('soap')
+  , assign           = require('es5-ext/object/assign')
+  , env              = require('mano').env
+  , soapClientOptions = env && env.soapClientOptions
 
   , createSoapClient = promisify(soap.createClient);
 
 var getSoapClientImpl = memoize(function (wsdlUrl/*, options*/) {
 	var options = Object(arguments[1]);
+	if (soapClientOptions) {
+		options = assign({}, soapClientOptions, options);
+	}
 	debug('creating soap client (%s)', options.endpoint);
 
 	return createSoapClient(wsdlUrl, options)(function (client) {
