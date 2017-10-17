@@ -29,13 +29,8 @@ exports.login = {
 					keyPaths: ['currentBusinessProcess', 'currentlyManagedUser']
 				})(unserializeObjectRecord)(function (user) {
 					var records = [];
-
-					if (user.currentBusinessProcess) {
-						records.push({ id: userId + '/currentBusinessProcess', data: { value: '' } });
-					}
-					if (user.currentlyManagedUser) {
-						records.push({ id: userId + '/currentlyManagedUser', data: { value: '' } });
-					}
+					records.push({ id: userId + '/currentBusinessProcess', data: { value: '' } });
+					records.push({ id: userId + '/currentlyManagedUser', data: { value: '' } });
 
 					return userStorage.storeMany(records);
 				})(function () {
