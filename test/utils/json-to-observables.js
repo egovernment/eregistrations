@@ -17,4 +17,16 @@ module.exports = function (t, a) {
 	collection.push({ prop1: true });
 	a(t({ collection: collection }).collection instanceof ObservableSet, true);
 	a(t({ collection: collection }).collection.size, 2);
+	t({ collection: collection }).collection.forEach(function (item) {
+		a(item._prop1 instanceof ObservableValue, true);
+	});
+	collection.push({ nestedCollection: [{ a: 1, b: 2 }] });
+	var foundCollection = false;
+	t({ collection: collection }).collection.forEach(function (item) {
+		if (item.nestedCollection) {
+			a(item.nestedCollection.size, 1);
+			foundCollection = true;
+		}
+	});
+	a(foundCollection, true);
 };
