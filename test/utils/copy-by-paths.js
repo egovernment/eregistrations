@@ -38,6 +38,7 @@ module.exports = function (t, a) {
 	a.throws(function () { t(businessProcess,  businessProcess2, ['non-existing-path']); },
 		new RegExp('Could not resolve path:'),
 		'throws when given non existing path');
+	t(businessProcess,  businessProcess2, ['non-existing-path'], { suppressErrors: true });
 	t(businessProcess,  businessProcess2, [
 		{ pathFrom: 'representative/email', pathTo: 'businessName' }]);
 	a(businessProcess2.businessName, 'kamsi@asd.com');
