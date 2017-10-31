@@ -9,7 +9,11 @@ module.exports = jsonToObservables = function (source) {
 	if (Array.isArray(source)) {
 		target = new ObservableSet();
 		source.forEach(function (sourceItem) {
-			target.add(jsonToObservables(sourceItem));
+			if (typeof sourceItem !== "object" || sourceItem == null) {
+				target.add(sourceItem);
+			} else {
+				target.add(jsonToObservables(sourceItem));
+			}
 		});
 	} else {
 		Object.keys(source).forEach(function (key) {

@@ -30,4 +30,9 @@ module.exports = function (t, a) {
 		}
 	});
 	a(foundCollection, true);
+	a(t({ nestedArray: [ 1, 2 ] })._nestedArray instanceof ObservableSet, true);
+	a(t({ nestedArray: [ 1, 2 ] })._nestedArray.toArray()[0], 1);
+	a(t({ nestedArray: [ 1, 2 ] }).nestedArray.toArray()[1], 2);
+	a(t({ nestedArray: [ null, null ] })._nestedArray instanceof ObservableSet, true);
+	a(t({ nestedArray: [ null, null ] }).nestedArray.toArray()[0], null);
 };
