@@ -9,10 +9,11 @@ module.exports = jsonToObservables = function (source) {
 	if (Array.isArray(source)) {
 		target = new ObservableSet();
 		source.forEach(function (sourceItem) {
-			if (typeof sourceItem !== "object" || sourceItem == null) {
-				target.add(sourceItem);
-			} else {
+			if (typeof sourceItem === "object" && sourceItem != null) {
 				target.add(jsonToObservables(sourceItem));
+			} else {
+				// primitive value
+				target.add(sourceItem);
 			}
 		});
 	} else {
