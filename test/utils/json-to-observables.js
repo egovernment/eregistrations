@@ -6,6 +6,7 @@ var ObservableValue = require('observable-value')
 module.exports = function (t, a) {
 	var item = {}, collection = [];
 	item.prop1 = 1;
+	a(t({ nullValue: null })._nullValue.value, null);
 	a(t(item)._prop1 instanceof ObservableValue, true);
 	a(t(item)._prop1.value, 1);
 	item.prop2 = false;

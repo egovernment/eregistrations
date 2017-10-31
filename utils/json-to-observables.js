@@ -13,7 +13,7 @@ module.exports = jsonToObservables = function (source) {
 		});
 	} else {
 		Object.keys(source).forEach(function (key) {
-			if (typeof source[key] === "object") {
+			if (typeof source[key] === "object" && source[key] != null) {
 				target[key] = target["_" + key] = jsonToObservables(source[key]);
 			} else {
 				target[key] = target["_" + key] = new ObservableValue(source[key]);
