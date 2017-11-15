@@ -11,7 +11,9 @@ var ensureDbjsObject = require('dbjs/valid-dbjs-object')
  *                         or an object of the form { pathFrom: 'some/path', pathTo: 'other/path' }
  */
 
-module.exports = function (from, to, paths) {
+module.exports = function (from, to, paths/* */) {
+	var opts = Object(arguments[3]), suppressErrors;
+	suppressErrors = opts && opts.suppressErrors;
 	ensureDbjsObject(from);
 	ensureDbjsObject(to);
 	ensureArray(paths);
@@ -24,10 +26,12 @@ module.exports = function (from, to, paths) {
 		}
 		resolvedFrom = from.resolveSKeyPath(pathFrom);
 		if (!resolvedFrom || !resolvedFrom.object.hasPropertyDefined(resolvedFrom.key)) {
+			if (suppressErrors) return;
 			throw new Error('Could not resolve path: ' + pathFrom + ', on object: ' + from.__id__);
 		}
 		resolvedTo = to.resolveSKeyPath(pathTo);
 		if (!resolvedTo || !resolvedTo.object.hasPropertyDefined(resolvedTo.key)) {
+			if (suppressErrors) return;
 			throw new Error('Could not resolve path: ' + pathTo + ', on object: ' + to.__id__);
 		}
 		if (resolvedFrom.value === resolvedTo.value) {
@@ -43,6 +47,12 @@ module.exports = function (from, to, paths) {
 		if (resolvedFrom.descriptor.multiple && !resolvedFrom.value.size) {
 			return;
 		}
-		resolvedTo.object.set(resolvedTo.key, resolvedFrom.value);
+		if (suppressErrors) {
+			try {
+				resolvedTo.object.set(resolvedTo.key, resolvedFrom.value);
+			} catch (ignore) {}
+		} else {
+			resolvedTo.object.set(resolvedTo.key, resolvedFrom.value);
+		}
 	});
 };
