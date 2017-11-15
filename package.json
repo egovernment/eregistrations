@@ -17,7 +17,7 @@
     "deferred": "^0.7.5",
     "es5-ext": "^0.10.11",
     "es6-map": "^0.1.4",
-    "es6-set": "^0.1.4",
+    "es6-set": "0.1.4",
     "es6-template-strings": "2",
     "event-emitter": "^0.3.4",
     "mano": "0.0.5",
