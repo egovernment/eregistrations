@@ -2,16 +2,20 @@
 
 'use strict';
 
-var submit      = require('mano/utils/save')
-  , hash        = require('mano-auth/hash')
-  , queryMaster = require('../../server/services/query-master/slave')
-  , sendNotification = require('../../server/email-notifications/create-account')
-  , genId = require('time-uuid')
-  , env                 = require('mano').env
-  , isAccountConfirmationDisabled = env && env.isAccountConfirmationDisabled;
+var submit                             = require('mano/utils/save')
+  , hash                               = require('mano-auth/hash')
+  , queryMaster                        = require('../../server/services/query-master/slave')
+  , sendNotification                   = require('../../server/email-notifications/create-account')
+  , genId                              = require('time-uuid')
+  , env                                = require('mano').env
+  , isAccountConfirmationDisabled      = env && env.isAccountConfirmationDisabled
+  , useExternalAuthenticationAuthority = env && env.useExternalAuthenticationAuthority;
 
 module.exports = function (/* options */) {
 	var options = Object(arguments[0]);
+
+	if (useExternalAuthenticationAuthority) return {};
+
 	return {
 		register: {
 			submit: function (normalizedData, data) {

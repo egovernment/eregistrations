@@ -7,7 +7,13 @@ var debug          = require('debug-ext')('oauth')
   , generateUnique = require('time-uuid')
   , request        = require('request')
   , jwtDecode      = require('jwt-decode')
-  , env            = require('mano').env;
+  , mano           = require('mano')
+  , env            = mano.env
+  , userStorage    = mano.dbDriver.getStorage('user');
+
+var dbjsDataRecord = function (id, value) {
+	return { id: id, data: { value: serializeValue(value) } };
+};
 
 module.exports = exports = {
 	loginMiddleware: function (req, res, next) {
@@ -18,8 +24,14 @@ module.exports = exports = {
 
 		// Filter out logged in users.
 		if (req.$user) {
-			next();
-			return;
+			// That are not demo accounts.
+			var demoUserId      = res.cookies.get('demoUser')
+			  , isDifferentUser = demoUserId !== req.$user;
+
+			if (!demoUserId || isDifferentUser) {
+				next();
+				return;
+			}
 		}
 
 		var state = generateUnique();
@@ -101,18 +113,34 @@ module.exports = exports = {
 
 				debug('JWT received for:', decoded.email);
 
-				if (!decoded.email_verified) {
-					res.writeHead(302, { Location: '/request-confirm-account/' });
-					res.end();
-					return;
-				}
-
 				userEmailMap(function (map) {
 					return map.get(serializeValue(decoded.email));
+				})(function (userId) {
+					if (userId) return userId;
+
+					var isPublicApp = req.$appName === 'public'
+					  , demoUserId  = isPublicApp ? null : res.cookies.get('demoUser')
+					  , records     = [];
+
+					userId = demoUserId || generateUnique();
+
+					if (demoUserId) {
+						records.push(dbjsDataRecord(userId + '/isDemo', undefined));
+					} else {
+						records.push({ id: userId, data: { value: '7User#' } });
+						records.push(dbjsDataRecord(userId + '/roles*user', true));
+					}
+
+					records.push(dbjsDataRecord(userId + '/firstName', decoded.fname));
+					records.push(dbjsDataRecord(userId + '/lastName', decoded.lname));
+					records.push(dbjsDataRecord(userId + '/email', decoded.email));
+
+					return userStorage.storeMany(records)(function () {
+						return userId;
+					});
 				}).done(function (userId) {
-					if (!userId) {
-						// TODO: Notify user.
-						res.writeHead(302, { Location: '/' });
+					if (!decoded.email_verified) {
+						res.writeHead(302, { Location: '/request-confirm-account/' });
 						res.end();
 						return;
 					}
