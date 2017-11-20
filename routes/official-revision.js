@@ -6,17 +6,15 @@ var hyphenToCamel                  = require('es5-ext/string/#/hyphen-to-camel')
   , findFirstUploadKey             = require('./utils/official-find-first-upload-key')
   , matchUpload                    = require('./utils/official-match-upload')
   , matchFirstRequirementUpload    = require('./utils/official-match-first-requirement-upload')
-  , matchFirstPaymentReceiptUpload = require('./utils/official-match-first-payment-receipt-upload');
+  , matchFirstPaymentReceiptUpload = require('./utils/official-match-first-payment-receipt-upload')
+  , includeProfileController       = require('./utils/include-profile-controller');
 
 module.exports = function (step) {
 	if (!step) {
 		throw new Error('No step provided for official route');
 	}
 	var match = matchBusinessProcess(step);
-	return {
-		// User routes
-		profile: require('../view/user-profile'),
-
+	var routes = {
 		// App routes
 		'/': require('../view/business-processes-table'),
 		'[0-9][a-z0-9]*': {
@@ -93,4 +91,8 @@ module.exports = function (step) {
 		// Print routes
 		'print-business-processes-list': require('../view/print-business-processes-table')
 	};
+
+	includeProfileController(routes);
+
+	return routes;
 };

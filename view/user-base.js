@@ -3,6 +3,7 @@
 var _                    = require('mano').i18n.bind('View: User')
   , startsWith           = require('es5-ext/string/#/starts-with')
   , uncapitalize         = require('es5-ext/string/#/uncapitalize')
+  , env                  = require('mano').env
   , loginDialog          = require('./components/login-dialog')
   , registerDialog       = require('./components/register-dialog')
   , modalContainer       = require('./components/modal-container')
@@ -240,7 +241,7 @@ var userNameMenuItem = function () {
 				li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
 				li(
 					a(
-						{ href: '/profile/' },
+						{ href: env.externalProfilePage || '/profile/' },
 						_("My informations")
 					)
 				),

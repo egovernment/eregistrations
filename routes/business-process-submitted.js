@@ -7,16 +7,10 @@ var hyphenToCamel                  = require('es5-ext/string/#/hyphen-to-camel')
   , matchFirstRequirementUpload    = require('./utils/user-match-first-requirement-upload')
   , matchFirstPaymentReceiptUpload = require('./utils/user-match-first-payment-receipt-upload')
   , matchFirstCertificate          = require('./utils/user-match-first-certificate')
-  , matchCertificate               = require('./utils/user-match-certificate');
+  , matchCertificate               = require('./utils/user-match-certificate')
+  , includeProfileController       = require('./utils/include-profile-controller');
 
-module.exports = {
-	// User routes
-	profile: {
-		view: require('../view/user-profile'),
-		decorateContext: function () {
-			if (this.manager) this.user = this.manager;
-		}
-	},
+module.exports = exports = {
 	'managed-user-profile': require('../view/managed-user-profile'),
 
 	// App routes
@@ -73,3 +67,5 @@ module.exports = {
 		view: require('../view/business-process-submitted-data')
 	}
 };
+
+includeProfileController(exports, true);

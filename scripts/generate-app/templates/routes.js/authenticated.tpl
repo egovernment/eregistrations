@@ -2,7 +2,10 @@
 
 'use strict';
 
-module.exports = {
-	'/': require('../../view/user-base'),
-	profile: require('eregistrations/view/user-profile')
+var includeProfileController = require('eregistrations/routes/utils/include-profile-controller');
+
+module.exports = exports = {
+	'/': require('../../view/user-base')
 };
+
+includeProfileController(exports);

@@ -53,8 +53,9 @@ exports._actionsColumn = {
 	head: th({ class: 'submitted-user-data-table-actions' }),
 	data: function (user) {
 		var isSelfUser = (user === this.user);
+
 		return td({ class: 'actions' },
-			a({ href: isSelfUser ? '/profile/' : url('user', user.__id__) },
+			a({ href: isSelfUser ? (env.externalProfilePage || '/profile/') : url('user', user.__id__) },
 				span({ class: 'fa fa-edit' }, _("Go to"))),
 			_if(and(!isSelfUser, user._canBeDestroyed), postButton({ buttonClass: 'actions-delete',
 				action: url('user', user.__id__, 'delete'),

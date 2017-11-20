@@ -1,69 +1,73 @@
 'use strict';
 
-var emptyPromise     = require('deferred')(null)
-  , genId            = require('time-uuid')
-  , login            = require('mano-auth/server/authentication').login
-  , serverLogin      = require('mano-auth/controller/server-master/login')
-  , registerSubmit   = require('mano-auth/controller/server-master/register').submit
-  , mano             = require('mano')
-  , hash             = require('mano-auth/hash')
-  , sendNotification = require('../../server/email-notifications/create-account')
+var emptyPromise            = require('deferred')(null)
+  , genId                   = require('time-uuid')
+  , login                   = require('mano-auth/server/authentication').login
+  , serverLogin             = require('mano-auth/controller/server-master/login')
+  , registerSubmit          = require('mano-auth/controller/server-master/register').submit
+  , mano                    = require('mano')
+  , hash                    = require('mano-auth/hash')
+  , sendNotification        = require('../../server/email-notifications/create-account')
   , unserializeObjectRecord = require('../../server/utils/unserialize-object-record')
 
-  , dbDriver = mano.dbDriver
-  , maxage = 1000 * 60 * 60 * 24 * 7
-  , customError      = require('es5-ext/error/custom')
-  , serializeValue   = require('dbjs/_setup/serialize/value')
+  , env                     = mano.env
+  , dbDriver                = mano.dbDriver
+  , maxage                  = 1000 * 60 * 60 * 24 * 7
+  , customError             = require('es5-ext/error/custom')
+  , serializeValue          = require('dbjs/_setup/serialize/value')
 
   , userStorage = mano.dbDriver.getStorage('user');
 
-exports.login = {
-	submit: function (data) {
-		var that = this;
+if (!env.useExternalAuthenticationAuthority) {
+	exports.login = {
+		submit: function (data) {
+			var that = this;
 
-		return serverLogin.submit.call(this, data)(function (loginResult) {
-			var userId = that.req.$user;
+			return serverLogin.submit.call(this, data)(function (loginResult) {
+				var userId = that.req.$user;
 
-			if (userId) {
-				return userStorage.getObject(userId, {
-					keyPaths: ['currentBusinessProcess', 'currentlyManagedUser']
-				})(unserializeObjectRecord)(function (user) {
-					var records = [];
+				if (userId) {
+					return userStorage.getObject(userId, {
+						keyPaths: ['currentBusinessProcess', 'currentlyManagedUser']
+					})(unserializeObjectRecord)(function (user) {
+						var records = [];
 
-					if (user.currentBusinessProcess) {
-						records.push({ id: userId + '/currentBusinessProcess', data: { value: '' } });
-					}
-					if (user.currentlyManagedUser) {
-						records.push({ id: userId + '/currentlyManagedUser', data: { value: '' } });
-					}
+						if (user.currentBusinessProcess) {
+							records.push({ id: userId + '/currentBusinessProcess', data: { value: '' } });
+						}
+						if (user.currentlyManagedUser) {
+							records.push({ id: userId + '/currentlyManagedUser', data: { value: '' } });
+						}
 
-					return userStorage.storeMany(records);
-				})(function () {
-					return loginResult;
-				});
+						return userStorage.storeMany(records);
+					})(function () {
+						return loginResult;
+					});
+				}
+
+				return loginResult;
+			});
+		}
+	};
+
+	exports.register = {
+		submit: function (data) {
+			if (data.isManager) {
+				data['User#/roles'] = ['manager'];
+				delete data.isManager;
 			}
 
-			return loginResult;
-		});
-	}
-};
-exports.register = {
-	submit: function (data) {
-		if (data.isManager) {
-			data['User#/roles'] = ['manager'];
-			delete data.isManager;
+			return registerSubmit.apply(this, arguments)(function (result) {
+				dbDriver.onDrain(function () { sendNotification(data).done(null, function (err) {
+					console.log("Cannot send email", err, err.stack);
+				}); });
+			});
 		}
-
-		return registerSubmit.apply(this, arguments)(function (result) {
-			dbDriver.onDrain(function () { sendNotification(data).done(null, function (err) {
-				console.log("Cannot send email", err, err.stack);
-			}); });
-		});
-	}
-};
-exports['reset-password'] = require('mano-auth/controller/server-master/reset-password');
-exports['request-reset-password'] =
-	require('mano-auth/controller/server-master/request-reset-password');
+	};
+	exports['reset-password'] = require('mano-auth/controller/server-master/reset-password');
+	exports['request-reset-password'] =
+		require('mano-auth/controller/server-master/request-reset-password');
+}
 
 exports['create-managed-account'] = {
 	submit: function (data) {

@@ -44,7 +44,7 @@ var baseColumns = [{
 	data: function (user) {
 		var isSelfUser = (user === this.user);
 		return td({ class: 'actions' },
-			a({ href: isSelfUser ? '/profile/' : url('user', user.__id__) },
+			a({ href: isSelfUser ? (env.externalProfilePage || '/profile/') : url('user', user.__id__) },
 				span({ class: 'fa fa-edit' }, _("Go to"))),
 			_if(and(user._canBeDestroyed, !isSelfUser), postButton({ buttonClass: 'actions-delete',
 				action: url('user', user.__id__, 'delete'),
