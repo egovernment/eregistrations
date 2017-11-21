@@ -1,13 +1,14 @@
 "use strict";
 
 var debug          = require('debug-ext')('oauth')
+  , mano           = require('mano')
   , userEmailMap   = require('mano/lib/server/user-email-map')
   , login          = require('mano-auth/server/authentication').login
+  , loadToMemoryDb = require('mano/lib/server/resolve-user-access')
   , serializeValue = require('dbjs/_setup/serialize/value')
   , generateUnique = require('time-uuid')
   , request        = require('request')
   , jwtDecode      = require('jwt-decode')
-  , mano           = require('mano')
   , env            = mano.env
   , userStorage    = mano.dbDriver.getStorage('user');
 
@@ -49,7 +50,6 @@ module.exports = exports = {
 				+ 'redirect_uri=' + encodeURIComponent(env.oauth.redirectUrl)
 		});
 		res.end();
-
 	},
 	callbackMiddleware: function (req, res, next) {
 		var query = req.query;
@@ -122,20 +122,25 @@ module.exports = exports = {
 					  , demoUserId  = isPublicApp ? null : res.cookies.get('demoUser')
 					  , records     = [];
 
-					userId = demoUserId || generateUnique();
-
-					if (demoUserId) {
-						records.push(dbjsDataRecord(userId + '/isDemo', undefined));
-					} else {
-						records.push({ id: userId, data: { value: '7User#' } });
-						records.push(dbjsDataRecord(userId + '/roles*user', true));
+					if (!demoUserId) {
+						return mano.queryMemoryDb([], 'addUser', JSON.stringify({
+							firstName: decoded.fname,
+							lastName: decoded.lname,
+							email: decoded.email,
+							roles: ['user']
+						}));
 					}
 
+					userId = demoUserId;
+
+					records.push(dbjsDataRecord(userId + '/isDemo', undefined));
 					records.push(dbjsDataRecord(userId + '/firstName', decoded.fname));
 					records.push(dbjsDataRecord(userId + '/lastName', decoded.lname));
 					records.push(dbjsDataRecord(userId + '/email', decoded.email));
 
 					return userStorage.storeMany(records)(function () {
+						return loadToMemoryDb([userId]);
+					})(function () {
 						return userId;
 					});
 				}).done(function (userId) {
