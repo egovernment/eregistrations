@@ -1,9 +1,10 @@
 'use strict';
 
-var env = require('mano').env;
+var env                    = require('mano').env
+  , externalAuthentication = (env && env.externalAuthentication) || {};
 
 module.exports = function (routes, canBeManaged) {
-	if (env.externalProfilePage) return;
+	if (externalAuthentication.profilePage) return;
 
 	if (canBeManaged) {
 		routes.profile = {

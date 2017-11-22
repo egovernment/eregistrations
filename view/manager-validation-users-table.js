@@ -13,7 +13,8 @@ var _                   = require('mano').i18n.bind('View: Official: Manager val
   , once                = require('timers-ext/once')
   , dispatch            = require('dom-ext/html-element/#/dispatch-event-2')
 
-  , db = mano.db, env = mano.env, roleMeta = db.Role.meta;
+  , db = mano.db, env = mano.env, roleMeta = db.Role.meta
+  , externalAuthentication = (env && env.externalAuthentication) || {};
 
 exports._parent = require('./user-base');
 
@@ -44,7 +45,8 @@ var baseColumns = [{
 	data: function (user) {
 		var isSelfUser = (user === this.user);
 		return td({ class: 'actions' },
-			a({ href: isSelfUser ? (env.externalProfilePage || '/profile/') : url('user', user.__id__) },
+			a({ href: isSelfUser ? (externalAuthentication.profilePage || '/profile/')
+					: url('user', user.__id__) },
 				span({ class: 'fa fa-edit' }, _("Go to"))),
 			_if(and(user._canBeDestroyed, !isSelfUser), postButton({ buttonClass: 'actions-delete',
 				action: url('user', user.__id__, 'delete'),

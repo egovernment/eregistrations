@@ -1,20 +1,25 @@
 'use strict';
 
-var env                                = require('mano').env
-  , isAccountConfirmationDisabled      = env && env.isAccountConfirmationDisabled
-  , useExternalAuthenticationAuthority = env && env.useExternalAuthenticationAuthority;
+var env                           = require('mano').env
+  , isAccountConfirmationDisabled = env && env.isAccountConfirmationDisabled
+  , externalAuthentication        = (env && env.externalAuthentication) || {};
 
 module.exports = function () {
-	if (useExternalAuthenticationAuthority) return {};
+	var controllers = {};
 
-	return {
-		register: {
+	if (!externalAuthentication.registerPage) {
+		controllers.register = {
 			remoteSubmit: true,
 			processResponse: function () {
 				if (isAccountConfirmationDisabled) return;
 				location.href = '/logout/?redirect=/request-confirm-account/';
 			}
-		},
-		login: require('mano-auth/controller/client/login')
-	};
+		};
+	}
+
+	if (!externalAuthentication.loginPage) {
+		controllers.login = require('mano-auth/controller/client/login');
+	}
+
+	return controllers;
 };

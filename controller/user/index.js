@@ -1,14 +1,15 @@
 'use strict';
 
-var changeOwnPassword = require('mano-auth/controller/change-own-password').validate
-  , validate          = require('mano/utils/validate')
-  , env               = require('mano').env
-  , assign            = require('es5-ext/object/assign');
+var changeOwnPassword      = require('mano-auth/controller/change-own-password').validate
+  , validate               = require('mano/utils/validate')
+  , env                    = require('mano').env
+  , assign                 = require('es5-ext/object/assign')
+  , externalAuthentication = (env && env.externalAuthentication) || {};
 
 assign(exports, require('../common/managed-profile'), require('../common/request-create-account'));
 
 // Profile
-if (!env.externalProfilePage) {
+if (!externalAuthentication.profilePage) {
 	exports.profile = {
 		validate: function (data) {
 			if (data.password || data['password-new']) return changeOwnPassword.call(this, data);

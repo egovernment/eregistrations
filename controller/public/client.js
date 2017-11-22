@@ -2,10 +2,14 @@
 
 var env                           = require('mano').env
   , isAccountConfirmationDisabled = env && env.isAccountConfirmationDisabled
+  , externalAuthentication        = (env && env.externalAuthentication) || {}
   , reloadAfterSync               = require('mano-auth/controller/lib/reload-after-sync');
 
-if (!env.useExternalAuthenticationAuthority) {
+if (!externalAuthentication.loginPage) {
 	exports.login = require('mano-auth/controller/client/login');
+}
+
+if (!externalAuthentication.registerPage) {
 	exports.register = {
 		remoteSubmit: require('mano/client/utils/remote-submit-locked'),
 		processResponse: function (data) {

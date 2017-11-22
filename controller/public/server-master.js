@@ -16,9 +16,10 @@ var emptyPromise            = require('deferred')(null)
   , customError             = require('es5-ext/error/custom')
   , serializeValue          = require('dbjs/_setup/serialize/value')
 
-  , userStorage = mano.dbDriver.getStorage('user');
+  , externalAuthentication  = (env && env.externalAuthentication) || {}
+  , userStorage             = mano.dbDriver.getStorage('user');
 
-if (!env.useExternalAuthenticationAuthority) {
+if (!externalAuthentication.loginPage) {
 	exports.login = {
 		submit: function (data) {
 			var that = this;
@@ -49,7 +50,9 @@ if (!env.useExternalAuthenticationAuthority) {
 			});
 		}
 	};
+}
 
+if (!externalAuthentication.registerPage) {
 	exports.register = {
 		submit: function (data) {
 			if (data.isManager) {

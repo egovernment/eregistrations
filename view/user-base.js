@@ -1,16 +1,17 @@
 'use strict';
 
-var _                    = require('mano').i18n.bind('View: User')
-  , startsWith           = require('es5-ext/string/#/starts-with')
-  , uncapitalize         = require('es5-ext/string/#/uncapitalize')
-  , env                  = require('mano').env
-  , loginDialog          = require('./components/login-dialog')
-  , registerDialog       = require('./components/register-dialog')
-  , modalContainer       = require('./components/modal-container')
-  , roleMenuItem         = require('./components/role-menu-item')
-  , requestAccountDialog = require('./components/request-account-dialog')
-  , greedy               = require('./utils/greedy-menu')
-  , db                   = require('../db');
+var _                      = require('mano').i18n.bind('View: User')
+  , env                    = require('mano').env
+  , startsWith             = require('es5-ext/string/#/starts-with')
+  , uncapitalize           = require('es5-ext/string/#/uncapitalize')
+  , loginDialog            = require('./components/login-dialog')
+  , registerDialog         = require('./components/register-dialog')
+  , modalContainer         = require('./components/modal-container')
+  , roleMenuItem           = require('./components/role-menu-item')
+  , requestAccountDialog   = require('./components/request-account-dialog')
+  , greedy                 = require('./utils/greedy-menu')
+  , db                     = require('../db')
+  , externalAuthentication = (env && env.externalAuthentication) || {};
 
 exports._parent = require('./base');
 
@@ -22,8 +23,11 @@ var myAccountButton = function (user, roleTitle) {
 };
 
 exports.menu = function () {
-	if (env.useExternalAuthenticationAuthority) {
+	if (!externalAuthentication.loginPage) {
 		modalContainer.append(loginDialog);
+	}
+
+	if (!externalAuthentication.registerPage) {
 		modalContainer.append(registerDialog(this));
 	}
 
@@ -33,11 +37,12 @@ exports.menu = function () {
 			ul(
 				{ class: 'header-top-menu-demo' },
 				li(a({ class: 'demo-public-out', href: '/logout/', rel: 'server' }, _("Out of demo mode"))),
-				li(a({ class: 'demo-public-login', href: env.externalLoginPage || '#login' }, _("Log in")))
+				li(a({ class: 'demo-public-login', href: externalAuthentication.loginPage || '#login' },
+					_("Log in")))
 			),
 			div({ class: 'submitted-menu-demo-info' },
 				p(_("Did this demo convinced you?")),
-				a({ href: env.externalRegisterPage || '#register' }, _("Create account")))
+				a({ href: externalAuthentication.registerPage || '#register' }, _("Create account")))
 		),
 		ul(
 			{ class: 'header-top-menu' },
@@ -245,7 +250,7 @@ var userNameMenuItem = function () {
 				li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
 				li(
 					a(
-						{ href: env.externalProfilePage || '/profile/' },
+						{ href: externalAuthentication.profilePage || '/profile/' },
 						_("My informations")
 					)
 				),

@@ -1,14 +1,18 @@
 'use strict';
 
-var copyDeep           = require('es5-ext/object/copy-deep')
-  , customError        = require('es5-ext/error/custom')
-  , isId               = require('time-uuid/is-time-uuid')
-  , passwordValidation = require('mano-auth/utils/password-validation')
-  , env                = require('mano').env;
+var copyDeep               = require('es5-ext/object/copy-deep')
+  , customError            = require('es5-ext/error/custom')
+  , isId                   = require('time-uuid/is-time-uuid')
+  , passwordValidation     = require('mano-auth/utils/password-validation')
+  , env                    = require('mano').env
+  , externalAuthentication = (env && env.externalAuthentication) || {};
 
-if (!env.useExternalAuthenticationAuthority) {
+if (!externalAuthentication.loginPage) {
 	exports.login = require('mano-auth/controller/login');
 	exports.login.formHtmlId = 'login';
+}
+
+if (!externalAuthentication.registerPage) {
 	exports.register = require('mano-auth/controller/register');
 	exports.register.formHtmlId = 'register';
 	exports['reset-password'] = require('mano-auth/controller/reset-password');

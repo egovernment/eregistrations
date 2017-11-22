@@ -9,7 +9,8 @@ var copy          = require('es5-ext/object/copy')
   , location      = require('mano/lib/client/location')
   , dispatch      = require('dom-ext/html-element/#/dispatch-event-2')
 
-  , db = mano.db, env = mano.env, roleMeta = db.Role.meta;
+  , db = mano.db, env = mano.env, roleMeta = db.Role.meta
+  , externalAuthentication = (env && env.externalAuthentication) || {};
 
 exports._parent = require('./user-base');
 
@@ -55,7 +56,8 @@ exports._actionsColumn = {
 		var isSelfUser = (user === this.user);
 
 		return td({ class: 'actions' },
-			a({ href: isSelfUser ? (env.externalProfilePage || '/profile/') : url('user', user.__id__) },
+			a({ href: isSelfUser ? (externalAuthentication.profilePage || '/profile/')
+					: url('user', user.__id__) },
 				span({ class: 'fa fa-edit' }, _("Go to"))),
 			_if(and(!isSelfUser, user._canBeDestroyed), postButton({ buttonClass: 'actions-delete',
 				action: url('user', user.__id__, 'delete'),
