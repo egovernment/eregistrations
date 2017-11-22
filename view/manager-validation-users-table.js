@@ -44,6 +44,7 @@ var baseColumns = [{
 	head: th({ class: 'actions' }),
 	data: function (user) {
 		var isSelfUser = (user === this.user);
+
 		return td({ class: 'actions' },
 			a({ href: isSelfUser ? (externalAuthentication.profilePage || '/profile/')
 					: url('user', user.__id__) },

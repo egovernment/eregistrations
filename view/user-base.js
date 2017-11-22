@@ -37,12 +37,22 @@ exports.menu = function () {
 			ul(
 				{ class: 'header-top-menu-demo' },
 				li(a({ class: 'demo-public-out', href: '/logout/', rel: 'server' }, _("Out of demo mode"))),
-				li(a({ class: 'demo-public-login', href: externalAuthentication.loginPage || '#login' },
-					_("Log in")))
+				li(_if(
+					externalAuthentication.loginPage,
+					a({ class: 'demo-public-login', href: externalAuthentication.loginPage, rel: 'server' },
+						_("Log in")),
+					a({ class: 'demo-public-login', href: '#login' }, _("Log in"))
+				))
 			),
-			div({ class: 'submitted-menu-demo-info' },
+			div(
+				{ class: 'submitted-menu-demo-info' },
 				p(_("Did this demo convinced you?")),
-				a({ href: externalAuthentication.registerPage || '#register' }, _("Create account")))
+				_if(
+					externalAuthentication.registerPage,
+					a({ href: externalAuthentication.registerPage, rel: 'server' }, _("Create account")),
+					a({ href: '#register' }, _("Create account"))
+				)
+			)
 		),
 		ul(
 			{ class: 'header-top-menu' },
@@ -248,12 +258,11 @@ var userNameMenuItem = function () {
 					roleMenuItem(this, 'usersAdmin')
 				]),
 				li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
-				li(
-					a(
-						{ href: externalAuthentication.profilePage || '/profile/' },
-						_("My informations")
-					)
-				),
+				li(_if(
+					externalAuthentication.profilePage,
+					a({ href: externalAuthentication.profilePage, rel: 'server' }, _("My informations")),
+					a({ href: '/profile/' }, _("My informations"))
+				)),
 				li(
 					a(
 						{ href: '/logout/', rel: 'server' },
