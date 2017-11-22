@@ -22,18 +22,22 @@ var myAccountButton = function (user, roleTitle) {
 };
 
 exports.menu = function () {
-	modalContainer.append(loginDialog);
-	modalContainer.append(registerDialog(this));
+	if (env.useExternalAuthenticationAuthority) {
+		modalContainer.append(loginDialog);
+		modalContainer.append(registerDialog(this));
+	}
 
 	insert(_if(this.user._isDemo,
 		div(
 			{ class: 'submitted-menu-demo-info-wrapper' },
-			ul({ class: 'header-top-menu-demo' },
+			ul(
+				{ class: 'header-top-menu-demo' },
 				li(a({ class: 'demo-public-out', href: '/logout/', rel: 'server' }, _("Out of demo mode"))),
-				li(a({ class: 'demo-public-login', href: '#login' }, _("Log in")))),
+				li(a({ class: 'demo-public-login', href: env.externalLoginPage || '#login' }, _("Log in")))
+			),
 			div({ class: 'submitted-menu-demo-info' },
 				p(_("Did this demo convinced you?")),
-				a({ href: '#register' }, _("Create account")))
+				a({ href: env.externalRegisterPage || '#register' }, _("Create account")))
 		),
 		ul(
 			{ class: 'header-top-menu' },
