@@ -22,7 +22,6 @@ module.exports = exports = {
 		next();
 
 		if (req._parsedUrl.pathname === '/logout/') {
-			request({});
 			request(env.oauth.invalidationEndpoint, function (error, response, body) {
 				if (error) {
 					debug('Error received from invalidation endpoint:', error);
