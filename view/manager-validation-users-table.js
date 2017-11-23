@@ -43,12 +43,21 @@ var baseColumns = [{
 }, {
 	head: th({ class: 'actions' }),
 	data: function (user) {
-		var isSelfUser = (user === this.user);
+		var isSelfUser = (user === this.user)
+		  , linkConfig;
+
+		if (isSelfUser) {
+			if (externalAuthentication.profilePage) {
+				linkConfig = { href: externalAuthentication.profilePage, target: '_blank' };
+			} else {
+				linkConfig = { href: '/profile/' };
+			}
+		} else {
+			linkConfig = { href: url('user', user.__id__) };
+		}
 
 		return td({ class: 'actions' },
-			a({ href: isSelfUser ? (externalAuthentication.profilePage || '/profile/')
-					: url('user', user.__id__) },
-				span({ class: 'fa fa-edit' }, _("Go to"))),
+			a(linkConfig, span({ class: 'fa fa-edit' }, _("Go to"))),
 			_if(and(user._canBeDestroyed, !isSelfUser), postButton({ buttonClass: 'actions-delete',
 				action: url('user', user.__id__, 'delete'),
 				confirm: _("Are you sure?"), value: span({ class: 'fa fa-trash-o' }) }), null));

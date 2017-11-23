@@ -260,7 +260,7 @@ var userNameMenuItem = function () {
 				li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
 				li(_if(
 					externalAuthentication.profilePage,
-					a({ href: externalAuthentication.profilePage, rel: 'server' }, _("My informations")),
+					a({ href: externalAuthentication.profilePage, target: '_blank' }, _("My informations")),
 					a({ href: '/profile/' }, _("My informations"))
 				)),
 				li(
