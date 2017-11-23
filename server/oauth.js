@@ -21,13 +21,23 @@ module.exports = exports = {
 		// It's passthru middleware
 		next();
 
-		if (req._parsedUrl.pathname === '/logout/') {
-			request(env.oauth.invalidationEndpoint, function (error, response, body) {
-				if (error) {
-					debug('Error received from invalidation endpoint:', error);
-				}
-			});
-		}
+		if (req._parsedUrl.pathname !== '/logout/') return;
+
+		var accessToken = res.cookies.get('oAuthToken');
+
+		if (!accessToken) return;
+
+		request({
+			uri: env.oauth.invalidationEndpoint,
+			method: 'GET',
+			headers: {
+				Authorization: 'Bearer ' + accessToken
+			}
+		}, function (error, response, body) {
+			if (error) {
+				debug('Error received from invalidation endpoint:', error);
+			}
+		});
 	},
 	loginMiddleware: function (req, res, next) {
 		if (req._parsedUrl.pathname !== '/oauth-login/') {
@@ -161,6 +171,8 @@ module.exports = exports = {
 						res.end();
 						return;
 					}
+
+					res.cookies.set('oAuthToken', accessToken);
 
 					login(userId, req, res);
 
