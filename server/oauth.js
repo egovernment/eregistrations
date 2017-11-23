@@ -17,6 +17,19 @@ var dbjsDataRecord = function (id, value) {
 };
 
 module.exports = exports = {
+	logoutMiddleware: function (req, res, next) {
+		// It's passthru middleware
+		next();
+
+		if (req._parsedUrl.pathname === '/logout/') {
+			request({});
+			request(env.oauth.invalidationEndpoint, function (error, response, body) {
+				if (error) {
+					debug('Error received from invalidation endpoint:', error);
+				}
+			});
+		}
+	},
 	loginMiddleware: function (req, res, next) {
 		if (req._parsedUrl.pathname !== '/oauth-login/') {
 			next();
