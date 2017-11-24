@@ -129,7 +129,8 @@ exports['sub-main'] = {
 				),
 				// Submit button
 				p({ class: 'submit' }, input({ type: 'submit' }))
-			)
+			),
+			exports._customAfterFilters.call(this)
 		);
 
 		searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
@@ -148,6 +149,8 @@ exports['sub-main'] = {
 };
 
 exports._customFilters = Function.prototype;
+
+exports._customAfterFilters = Function.prototype;
 
 exports._getOrderIndex = function (businessProcess) {
 	return businessProcess.lastModified;
