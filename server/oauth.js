@@ -95,30 +95,28 @@ module.exports = exports = {
 		res.end();
 	},
 	logoutMiddleware: function (req, res, next) {
-		// 1. If not proper path, end.
-		if (req._parsedUrl.pathname !== '/logout/') return;
+		var isLogoutPath = req._parsedUrl.pathname === '/logout/'
+		  , accessToken  = res.cookies.get('oAuthToken');
 
-		// 2. Clean the token from cookie if needed.
-		var accessToken = res.cookies.get('oAuthToken');
+		// 1. If proper path and token is set.
+		if (isLogoutPath && accessToken) {
+			// 1.1. Clean the token from cookie.
+			res.cookies.set('oAuthToken', null);
+			// 1.2. Invalidate the token in CAS.
+			request({
+				uri: env.oauth.invalidationEndpoint,
+				method: 'GET',
+				headers: {
+					Authorization: 'Bearer ' + accessToken
+				}
+			}, function (error, response, body) {
+				if (error) {
+					debug('Error received from invalidation endpoint:', error);
+				}
+			});
+		}
 
-		if (!accessToken) return;
-
-		res.cookies.set('oAuthToken', null);
-
-		// 3. Invalidate the token in CAS.
-		request({
-			uri: env.oauth.invalidationEndpoint,
-			method: 'GET',
-			headers: {
-				Authorization: 'Bearer ' + accessToken
-			}
-		}, function (error, response, body) {
-			if (error) {
-				debug('Error received from invalidation endpoint:', error);
-			}
-		});
-
-		// 4. Passthru to default logout middleware.
+		// 2. Passthru to other middlewares.
 		next();
 	},
 	callbackMiddleware: function (req, res, next) {
