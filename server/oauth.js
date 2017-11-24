@@ -138,18 +138,28 @@ module.exports = exports = {
 				userEmailMap(function (map) {
 					return map.get(serializeValue(decoded.email));
 				})(function (userId) {
+					console.log('ALL I HAVE', decoded);
 					if (userId) return userId;
 
 					var isPublicApp = req.$appName === 'public'
 					  , demoUserId  = isPublicApp ? null : res.cookies.get('demoUser')
-					  , records     = [];
+					  , records     = []
+					  , roles = ['user']
+					  , isNotary;
+
+					isNotary = decoded && decoded.ids && decoded.ids.some(function (item) {
+						return item.key === "PROFESSIONAL_ACCOUNT_TYPE" && item.value === 'notaryType';
+					});
+					if (isNotary) {
+						roles.push('manager');
+					}
 
 					if (!demoUserId) {
 						return mano.queryMemoryDb([], 'addUser', JSON.stringify({
 							firstName: decoded.fname,
 							lastName: decoded.lname,
 							email: decoded.email,
-							roles: ['user']
+							roles: roles
 						}));
 					}
 
