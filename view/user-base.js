@@ -263,6 +263,9 @@ var userNameMenuItem = function () {
 					a({ href: externalAuthentication.profilePage, target: '_blank' }, _("My informations")),
 					a({ href: '/profile/' }, _("My informations"))
 				)),
+				_if(and(externalAuthentication.profilePage, eq(user._currentRoleResolved, 'manager')),
+					li(a({ href: externalAuthentication.profilePage, target: '_blank' },
+						_("External authentication profile page")))),
 				li(
 					a(
 						{ href: '/logout/', rel: 'server' },
