@@ -2,6 +2,7 @@
 
 var debug          = require('debug-ext')('oauth')
   , mano           = require('mano')
+  , assign         = require('es5-ext/object/assign')
   , userEmailMap   = require('mano/lib/server/user-email-map')
   , login          = require('mano-auth/server/authentication').login
   , loadToMemoryDb = require('mano/lib/server/resolve-user-access')
@@ -16,6 +17,38 @@ var dbjsDataRecord = function (id, value) {
 	return { id: id, data: { value: serializeValue(value) } };
 };
 
+var createUser = function (data) {
+	return mano.queryMemoryDb([], 'addUser', JSON.stringify(data));
+};
+
+var updateUser = function (userId, data) {
+	var records = [];
+
+	Object.keys(data).forEach(function (key) {
+		records.push(dbjsDataRecord(userId + '/' + key, data[key]));
+	});
+
+	return userStorage.storeMany(records)(function () {
+		return loadToMemoryDb([userId]);
+	})(function () {
+		return userId;
+	});
+};
+
+var generateUrl = function (path, query) {
+	var keys = Object.keys(query);
+
+	keys.forEach(function (key, index) {
+		if (index === 0) path += '?';
+
+		path += key + '=' + encodeURIComponent(query[key]);
+
+		if (index !== (keys.length - 1)) path += '&';
+	});
+
+	return path;
+};
+
 module.exports = exports = {
 	logoutMiddleware: function (req, res, next) {
 		// It's passthru middleware
@@ -26,6 +59,8 @@ module.exports = exports = {
 		var accessToken = res.cookies.get('oAuthToken');
 
 		if (!accessToken) return;
+
+		res.cookies.set('oAuthToken', null);
 
 		request({
 			uri: env.oauth.invalidationEndpoint,
@@ -40,36 +75,42 @@ module.exports = exports = {
 		});
 	},
 	loginMiddleware: function (req, res, next) {
+		// 1. If not proper path, end.
 		if (req._parsedUrl.pathname !== '/oauth-login/') {
 			next();
 			return;
 		}
 
-		// Filter out logged in users.
+		// 2. Is there a user logged in?
 		if (req.$user) {
-			// That are not demo accounts.
 			var demoUserId      = res.cookies.get('demoUser')
 			  , isDifferentUser = demoUserId !== req.$user;
 
+			// 2.1. If he is not current demo user, end.
 			if (!demoUserId || isDifferentUser) {
 				next();
 				return;
 			}
 		}
 
+		// 3. Generate and store unique state.
 		var state = generateUnique();
 		res.cookies.set('OAuthState', state);
 
-		// Redirect user to CAS.
 		debug('Login request. Unique state:', state);
 
+		// 4. Build redirect query.
+		var locationQuery = assign({}, req.query, {
+			response_type: 'code',
+			client_id: env.oauth.clientId,
+			state: state,
+			scope: env.oauth.scope,
+			redirect_uri: env.oauth.redirectUrl
+		});
+
+		// 5. Redirect user to authorization endpoint.
 		res.writeHead(302, {
-			Location: env.oauth.authorizationEndpoint + '?'
-				+ 'response_type=code&'
-				+ 'client_id=' + encodeURIComponent(env.oauth.clientId) + '&'
-				+ 'state=' + encodeURIComponent(state) + '&'
-				+ 'scope=MiEmpresa&'
-				+ 'redirect_uri=' + encodeURIComponent(env.oauth.redirectUrl)
+			Location: generateUrl(env.oauth.authorizationEndpoint, locationQuery)
 		});
 		res.end();
 	},
@@ -141,29 +182,22 @@ module.exports = exports = {
 					if (userId) return userId;
 
 					var isPublicApp = req.$appName === 'public'
-					  , demoUserId  = isPublicApp ? null : res.cookies.get('demoUser')
-					  , records     = [];
+					  , demoUserId  = isPublicApp ? null : res.cookies.get('demoUser');
 
 					if (!demoUserId) {
-						return mano.queryMemoryDb([], 'addUser', JSON.stringify({
+						return createUser({
 							firstName: decoded.fname,
 							lastName: decoded.lname,
 							email: decoded.email,
 							roles: ['user']
-						}));
+						});
 					}
 
-					userId = demoUserId;
-
-					records.push(dbjsDataRecord(userId + '/isDemo', undefined));
-					records.push(dbjsDataRecord(userId + '/firstName', decoded.fname));
-					records.push(dbjsDataRecord(userId + '/lastName', decoded.lname));
-					records.push(dbjsDataRecord(userId + '/email', decoded.email));
-
-					return userStorage.storeMany(records)(function () {
-						return loadToMemoryDb([userId]);
-					})(function () {
-						return userId;
+					return updateUser(demoUserId, {
+						isDemo: undefined,
+						firstName: decoded.fname,
+						lastName: decoded.lname,
+						email: decoded.email
 					});
 				}).done(function (userId) {
 					if (!decoded.email_verified) {
