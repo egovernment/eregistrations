@@ -259,7 +259,7 @@ var userNameMenuItem = function () {
 				]),
 				li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
 				li(_if(
-					externalAuthentication.profilePage,
+					and(externalAuthentication.profilePage, not(eq(user._currentRoleResolved, 'manager'))),
 					a({ href: externalAuthentication.profilePage, target: '_blank' }, _("My informations")),
 					a({ href: '/profile/' }, _("My informations"))
 				)),
