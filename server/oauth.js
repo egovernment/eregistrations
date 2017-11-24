@@ -50,30 +50,6 @@ var generateUrl = function (path, query) {
 };
 
 module.exports = exports = {
-	logoutMiddleware: function (req, res, next) {
-		// It's passthru middleware
-		next();
-
-		if (req._parsedUrl.pathname !== '/logout/') return;
-
-		var accessToken = res.cookies.get('oAuthToken');
-
-		if (!accessToken) return;
-
-		res.cookies.set('oAuthToken', null);
-
-		request({
-			uri: env.oauth.invalidationEndpoint,
-			method: 'GET',
-			headers: {
-				Authorization: 'Bearer ' + accessToken
-			}
-		}, function (error, response, body) {
-			if (error) {
-				debug('Error received from invalidation endpoint:', error);
-			}
-		});
-	},
 	loginMiddleware: function (req, res, next) {
 		// 1. If not proper path, end.
 		if (req._parsedUrl.pathname !== '/oauth-login/') {
@@ -113,6 +89,33 @@ module.exports = exports = {
 			Location: generateUrl(env.oauth.authorizationEndpoint, locationQuery)
 		});
 		res.end();
+	},
+	logoutMiddleware: function (req, res, next) {
+		// 1. Allow passthru to other middlewares.
+		next();
+
+		// 2. If not proper path, end.
+		if (req._parsedUrl.pathname !== '/logout/') return;
+
+		// 3. Clean the token from cookie if needed.
+		var accessToken = res.cookies.get('oAuthToken');
+
+		if (!accessToken) return;
+
+		res.cookies.set('oAuthToken', null);
+
+		// 4. Invalidate the token in CAS.
+		request({
+			uri: env.oauth.invalidationEndpoint,
+			method: 'GET',
+			headers: {
+				Authorization: 'Bearer ' + accessToken
+			}
+		}, function (error, response, body) {
+			if (error) {
+				debug('Error received from invalidation endpoint:', error);
+			}
+		});
 	},
 	callbackMiddleware: function (req, res, next) {
 		var query = req.query;
