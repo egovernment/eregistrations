@@ -84,6 +84,10 @@ module.exports = exports = {
 			redirect_uri: env.oauth.redirectUrl
 		});
 
+		if (env.oauth.extraAuthorizationParameters) {
+			assign(locationQuery, env.oauth.extraAuthorizationParameters);
+		}
+
 		// 5. Redirect user to authorization endpoint.
 		res.writeHead(302, {
 			Location: generateUrl(env.oauth.authorizationEndpoint, locationQuery)
