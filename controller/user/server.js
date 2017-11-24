@@ -9,6 +9,7 @@ assign(exports, require('../common/managed-profile/server'),
 
 if (externalAuthentication.profilePage) {
 	delete exports.profile;
+	delete exports['managed-profile'];
 }
 
 // Active Business Process change

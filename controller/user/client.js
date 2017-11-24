@@ -10,4 +10,5 @@ assign(exports, require('../common/managed-profile/client'),
 
 if (externalAuthentication.profilePage) {
 	delete exports.profile;
+	delete exports['managed-profile'];
 }

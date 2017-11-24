@@ -81,7 +81,7 @@ exports.main = function () {
 				div({ class: 'content' },
 					exports._demoBannerContent.call(this))))),
 
-		insert(_if(this.manager, function () {
+		insert(_if(this.manager && !externalAuthentication.loginPage, function () {
 			return this.manager._currentlyManagedUser.map(function (managedUser) {
 				if (!managedUser) return;
 				var isUserReallyManaged = eq(this.manager, managedUser._manager);

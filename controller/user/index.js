@@ -10,6 +10,7 @@ assign(exports, require('../common/managed-profile'),
 // Profile
 if (externalAuthentication.profilePage) {
 	delete exports.profile;
+	delete exports['managed-profile'];
 }
 
 // Role switch
