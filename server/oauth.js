@@ -91,20 +91,17 @@ module.exports = exports = {
 		res.end();
 	},
 	logoutMiddleware: function (req, res, next) {
-		// 1. Allow passthru to other middlewares.
-		next();
-
-		// 2. If not proper path, end.
+		// 1. If not proper path, end.
 		if (req._parsedUrl.pathname !== '/logout/') return;
 
-		// 3. Clean the token from cookie if needed.
+		// 2. Clean the token from cookie if needed.
 		var accessToken = res.cookies.get('oAuthToken');
 
 		if (!accessToken) return;
 
 		res.cookies.set('oAuthToken', null);
 
-		// 4. Invalidate the token in CAS.
+		// 3. Invalidate the token in CAS.
 		request({
 			uri: env.oauth.invalidationEndpoint,
 			method: 'GET',
@@ -116,6 +113,9 @@ module.exports = exports = {
 				debug('Error received from invalidation endpoint:', error);
 			}
 		});
+
+		// 4. Passthru to default logout middleware.
+		next();
 	},
 	callbackMiddleware: function (req, res, next) {
 		var query = req.query;
