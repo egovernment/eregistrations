@@ -2,6 +2,7 @@
 
 var debug          = require('debug-ext')('oauth')
   , mano           = require('mano')
+  , assign         = require('es5-ext/object/assign')
   , userEmailMap   = require('mano/lib/server/user-email-map')
   , login          = require('mano-auth/server/authentication').login
   , loadToMemoryDb = require('mano/lib/server/resolve-user-access')
@@ -16,62 +17,171 @@ var dbjsDataRecord = function (id, value) {
 	return { id: id, data: { value: serializeValue(value) } };
 };
 
+var createUser = function (data) {
+	return mano.queryMemoryDb([], 'addUser', JSON.stringify(data));
+};
+
+var updateUser = function (userId, data) {
+	var records = [];
+
+	Object.keys(data).forEach(function (key) {
+		records.push(dbjsDataRecord(userId + '/' + key, data[key]));
+	});
+
+	return userStorage.storeMany(records)(function () {
+		return loadToMemoryDb([userId]);
+	})(function () {
+		return userId;
+	});
+};
+
+var generateUrl = function (path, query) {
+	var keys = Object.keys(query);
+
+	keys.forEach(function (key, index) {
+		if (index === 0) path += '?';
+
+		path += key + '=' + encodeURIComponent(query[key]);
+
+		if (index !== (keys.length - 1)) path += '&';
+	});
+
+	return path;
+};
+
 module.exports = exports = {
-	logoutMiddleware: function (req, res, next) {
-		// It's passthru middleware
-		next();
-
-		if (req._parsedUrl.pathname !== '/logout/') return;
-
-		var accessToken = res.cookies.get('oAuthToken');
-
-		if (!accessToken) return;
-
-		request({
-			uri: env.oauth.invalidationEndpoint,
-			method: 'GET',
-			headers: {
-				Authorization: 'Bearer ' + accessToken
-			}
-		}, function (error, response, body) {
-			if (error) {
-				debug('Error received from invalidation endpoint:', error);
-			}
-		});
-	},
 	loginMiddleware: function (req, res, next) {
+		// 1. If not proper path, end.
 		if (req._parsedUrl.pathname !== '/oauth-login/') {
 			next();
 			return;
 		}
 
-		// Filter out logged in users.
+		// 2. Is there a user logged in?
 		if (req.$user) {
-			// That are not demo accounts.
 			var demoUserId      = res.cookies.get('demoUser')
 			  , isDifferentUser = demoUserId !== req.$user;
 
+			// 2.1. If he is not current demo user, end.
 			if (!demoUserId || isDifferentUser) {
 				next();
 				return;
 			}
 		}
 
+		// 3. Generate and store unique state.
 		var state = generateUnique();
 		res.cookies.set('OAuthState', state);
 
-		// Redirect user to CAS.
 		debug('Login request. Unique state:', state);
 
+		// 4. Build redirect query.
+		var locationQuery = assign({}, req.query, {
+			response_type: 'code',
+			client_id: env.oauth.clientId,
+			state: state,
+			scope: env.oauth.scope,
+			redirect_uri: env.oauth.redirectUrl
+		});
+
+		if (env.oauth.extraAuthorizationParameters) {
+			assign(locationQuery, env.oauth.extraAuthorizationParameters);
+		}
+
+		// 5. Redirect user to authorization endpoint.
 		res.writeHead(302, {
-			Location: env.oauth.authorizationEndpoint + '?'
-				+ 'response_type=code&'
-				+ 'client_id=' + encodeURIComponent(env.oauth.clientId) + '&'
-				+ 'state=' + encodeURIComponent(state) + '&'
-				+ 'scope=MiEmpresa&'
-				+ 'redirect_uri=' + encodeURIComponent(env.oauth.redirectUrl)
+			Location: generateUrl(env.oauth.authorizationEndpoint, locationQuery)
 		});
 		res.end();
+	},
+	logoutMiddleware: function (req, res, next) {
+		var isLogoutPath = req._parsedUrl.pathname === '/logout/'
+		  , accessToken  = res.cookies.get('oAuthToken');
+
+		// 1. If proper path and token is set.
+		if (isLogoutPath && accessToken) {
+			debug('Invalidating token');
+
+			// 1.1. Clean the tokens from cookie.
+			res.cookies.set('oAuthToken', null);
+			res.cookies.set('oAuthRefreshToken', null);
+
+			// 1.2. Invalidate the token in CAS.
+			request({
+				uri: env.oauth.invalidationEndpoint,
+				method: 'GET',
+				headers: {
+					Authorization: 'Bearer ' + accessToken
+				}
+			}, function (error, response, body) {
+				if (error) {
+					debug('Error received from invalidation endpoint:', error);
+				}
+			});
+		}
+
+		// 2. Passthru to other middlewares.
+		next();
+	},
+	refreshMiddleware: function (req, res, next) {
+		var accessToken  = res.cookies.get('oAuthToken')
+		  , refreshToken = res.cookies.get('oAuthRefreshToken');
+
+		// 1. If token is set.
+		if (accessToken) {
+			var decoded     = jwtDecode(accessToken)
+			  , issueDate   = decoded.iat
+			  , expiryDate  = decoded.exp
+			  , validLength = expiryDate - issueDate
+			  , currentTime = new Date()
+			  , isExpired, isAlmostUp;
+
+			// Convert to dates.
+			isExpired  = currentTime.getTime() > new Date(expiryDate * 1000).getTime();
+			isAlmostUp = currentTime.getTime() > new Date(
+				Math.floor(expiryDate - (validLength / 10)) * 1000
+			).getTime();
+
+			// 1.1. If already past or almost up, request refresh.
+			if (isExpired || isAlmostUp) {
+				debug('Refreshing token');
+
+				request({
+					uri: env.oauth.tokenEndpoint,
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded',
+						Authorization: 'Basic ' + new Buffer(env.oauth.clientId + ':'
+							+ env.oauth.clientSecret).toString('base64')
+					},
+					form: {
+						grant_type: 'refresh_token',
+						refresh_token: refreshToken,
+						redirect_uri: env.oauth.redirectUrl
+					}
+				}, function (error, response, body) {
+					if (error) {
+						debug('Error received from token endpoint:', error);
+					} else if (response.statusCode >= 200 && response.statusCode < 300) {
+						var parsedBody   = JSON.parse(body)
+						  , accessToken  = parsedBody.access_token
+						  , refreshToken = parsedBody.refresh_token
+						  , decoded      = jwtDecode(accessToken);
+
+						debug('Refreshed JWT received for:', decoded.email);
+
+						res.cookies.set('oAuthToken', accessToken);
+						res.cookies.set('oAuthRefreshToken', refreshToken);
+					} else {
+						debug('Failed to refresh token:', response.body);
+						// debug('Failed to refresh token:', response.statusCode);
+					}
+				});
+			}
+		}
+
+		// 2. Passthru to other middlewares.
+		next();
 	},
 	callbackMiddleware: function (req, res, next) {
 		var query = req.query;
@@ -129,51 +239,37 @@ module.exports = exports = {
 				res.writeHead(302, { Location: '/' });
 				res.end();
 			} else if (response.statusCode >= 200 && response.statusCode < 300) {
-				var parsedBody  = JSON.parse(body)
-				  , accessToken = parsedBody.access_token
-				  , decoded     = jwtDecode(accessToken);
+				var parsedBody   = JSON.parse(body)
+				  , accessToken  = parsedBody.access_token
+				  , refreshToken = parsedBody.refresh_token
+				  , decoded      = jwtDecode(accessToken);
 
 				debug('JWT received for:', decoded.email);
 
 				userEmailMap(function (map) {
 					return map.get(serializeValue(decoded.email));
 				})(function (userId) {
-					console.log('ALL I HAVE', decoded);
-					if (userId) return userId;
-
-					var isPublicApp = req.$appName === 'public'
-					  , demoUserId  = isPublicApp ? null : res.cookies.get('demoUser')
-					  , records     = []
-					  , roles = ['user']
-					  , isNotary;
-
-					isNotary = decoded && decoded.ids && decoded.ids.some(function (item) {
+					var isNotary = decoded && decoded.ids && decoded.ids.some(function (item) {
 						return item.key === "PROFESSIONAL_ACCOUNT_TYPE" && item.value === 'notaryType';
-					});
+					}), roles = ['user'];
 					if (isNotary) {
 						roles.push('manager');
 					}
 
-					if (!demoUserId) {
-						return mano.queryMemoryDb([], 'addUser', JSON.stringify({
+					if (userId) {
+						return updateUser(userId, {
+							isDemo: undefined,
 							firstName: decoded.fname,
 							lastName: decoded.lname,
-							email: decoded.email,
-							roles: roles
-						}));
+							email: decoded.email
+						});
 					}
 
-					userId = demoUserId;
-
-					records.push(dbjsDataRecord(userId + '/isDemo', undefined));
-					records.push(dbjsDataRecord(userId + '/firstName', decoded.fname));
-					records.push(dbjsDataRecord(userId + '/lastName', decoded.lname));
-					records.push(dbjsDataRecord(userId + '/email', decoded.email));
-
-					return userStorage.storeMany(records)(function () {
-						return loadToMemoryDb([userId]);
-					})(function () {
-						return userId;
+					return createUser({
+						firstName: decoded.fname,
+						lastName: decoded.lname,
+						email: decoded.email,
+						roles: roles
 					});
 				}).done(function (userId) {
 					if (!decoded.email_verified) {
@@ -183,6 +279,7 @@ module.exports = exports = {
 					}
 
 					res.cookies.set('oAuthToken', accessToken);
+					res.cookies.set('oAuthRefreshToken', refreshToken);
 
 					login(userId, req, res);
 
