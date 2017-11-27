@@ -2,6 +2,7 @@
 
 var debug          = require('debug-ext')('oauth')
   , mano           = require('mano')
+  , deferred       = require('deferred')
   , assign         = require('es5-ext/object/assign')
   , userEmailMap   = require('mano/lib/server/user-email-map')
   , login          = require('mano-auth/server/authentication').login
@@ -124,64 +125,74 @@ module.exports = exports = {
 		next();
 	},
 	refreshMiddleware: function (req, res, next) {
-		var accessToken  = res.cookies.get('oAuthToken')
-		  , refreshToken = res.cookies.get('oAuthRefreshToken');
+		deferred(null)(function () {
+			var accessToken  = res.cookies.get('oAuthToken')
 
-		// 1. If token is set.
-		if (accessToken) {
-			var decoded     = jwtDecode(accessToken)
-			  , issueDate   = decoded.iat
-			  , expiryDate  = decoded.exp
-			  , validLength = expiryDate - issueDate
-			  , currentTime = new Date()
-			  , isExpired, isAlmostUp;
+			  , refreshToken, decodedAccessToken, issueDate, expiryDate, validLength, currentTime
+			  , isExpired, isAlmostUp, deferredRequest;
 
-			// Convert to dates.
-			isExpired  = currentTime.getTime() > new Date(expiryDate * 1000).getTime();
-			isAlmostUp = currentTime.getTime() > new Date(
-				Math.floor(expiryDate - (validLength / 10)) * 1000
+			// 1. If token is set.
+			if (!accessToken) return;
+
+			refreshToken       = res.cookies.get('oAuthRefreshToken');
+			decodedAccessToken = jwtDecode(accessToken);
+
+			issueDate    = decodedAccessToken.iat;
+			expiryDate   = decodedAccessToken.exp;
+			validLength  = expiryDate - issueDate;
+			currentTime  = new Date();
+
+			isExpired    = currentTime.getTime() > new Date(expiryDate * 1000).getTime();
+			isAlmostUp   = currentTime.getTime() > new Date(
+				Math.floor(expiryDate - (validLength - 5)) * 1000
 			).getTime();
 
-			// 1.1. If already past or almost up, request refresh.
-			if (isExpired || isAlmostUp) {
-				debug('Refreshing token');
+			// 2. If already past or almost up.
+			if (!isExpired && !isAlmostUp) return;
 
-				request({
-					uri: env.oauth.tokenEndpoint,
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded',
-						Authorization: 'Basic ' + new Buffer(env.oauth.clientId + ':'
-							+ env.oauth.clientSecret).toString('base64')
-					},
-					form: {
-						grant_type: 'refresh_token',
-						refresh_token: refreshToken,
-						redirect_uri: env.oauth.redirectUrl
-					}
-				}, function (error, response, body) {
-					if (error) {
-						debug('Error received from token endpoint:', error);
-					} else if (response.statusCode >= 200 && response.statusCode < 300) {
-						var parsedBody   = JSON.parse(body)
-						  , accessToken  = parsedBody.access_token
-						  , refreshToken = parsedBody.refresh_token
-						  , decoded      = jwtDecode(accessToken);
+			// 3. Request refresh.
+			debug('Refreshing token');
 
-						debug('Refreshed JWT received for:', decoded.email);
+			deferredRequest = deferred();
 
-						res.cookies.set('oAuthToken', accessToken);
-						res.cookies.set('oAuthRefreshToken', refreshToken);
-					} else {
-						debug('Failed to refresh token:', response.body);
-						// debug('Failed to refresh token:', response.statusCode);
-					}
-				});
-			}
-		}
+			request({
+				uri: env.oauth.tokenEndpoint,
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+					Authorization: 'Basic ' + new Buffer(env.oauth.clientId + ':'
+						+ env.oauth.clientSecret).toString('base64')
+				},
+				form: {
+					grant_type: 'refresh_token',
+					refresh_token: refreshToken,
+					redirect_uri: env.oauth.redirectUrl
+				}
+			}, function (error, response, body) {
+				if (error) {
+					debug('Error received from token endpoint:', error);
+				} else if (response.statusCode >= 200 && response.statusCode < 300) {
+					var parsedBody            = JSON.parse(body)
+					  , newAccessToken        = parsedBody.access_token
+					  , newRefreshToken       = parsedBody.refresh_token
+					  , decodedNewAccessToken = jwtDecode(newAccessToken);
 
-		// 2. Passthru to other middlewares.
-		next();
+					debug('Refreshed JWT received for:', decodedNewAccessToken.email);
+
+					res.cookies.set('oAuthToken', newAccessToken);
+					res.cookies.set('oAuthRefreshToken', newRefreshToken);
+				} else {
+					debug('Failed to refresh token:', response.statusCode);
+				}
+
+				deferredRequest.resolve();
+			});
+
+			return deferredRequest.promise;
+		}).done(function () {
+			// 4. Passthru to other middlewares.
+			next();
+		});
 	},
 	callbackMiddleware: function (req, res, next) {
 		var query = req.query;
