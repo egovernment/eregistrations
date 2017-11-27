@@ -2,9 +2,7 @@
 
 'use strict';
 
-var _ = require('mano').i18n.bind('View: Manager')
-  , env = require('mano').env
-  , externalAuthentication = (env && env.externalAuthentication);
+var _ = require('mano').i18n.bind('View: Manager');
 
 exports._parent = require('./user-base');
 
@@ -27,10 +25,10 @@ exports['sub-main'] = {
 					id: 'manager-account-requests',
 					href: '/' },
 				_("Requests")),
-			_if(!externalAuthentication, a({ class: 'section-tab-nav-tab user-account-tab',
+			a({ class: 'section-tab-nav-tab user-account-tab',
 					id: 'manager-account-clients',
 					href: '/clients/' },
-				_("Clients"))),
+				_("Clients")),
 			div({ id: 'manager-account-content', class: 'section-primary' }));
 	}
 };
