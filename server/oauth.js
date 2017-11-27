@@ -5,7 +5,7 @@ var debug          = require('debug-ext')('oauth')
   , deferred       = require('deferred')
   , assign         = require('es5-ext/object/assign')
   , userEmailMap   = require('mano/lib/server/user-email-map')
-  , login          = require('mano-auth/server/authentication').login
+  , authentication = require('mano-auth/server/authentication')
   , loadToMemoryDb = require('mano/lib/server/resolve-user-access')
   , serializeValue = require('dbjs/_setup/serialize/value')
   , generateUnique = require('time-uuid')
@@ -48,6 +48,10 @@ var generateUrl = function (path, query) {
 	});
 
 	return path;
+};
+
+var jwtTimeCodeToDate = function (timeCode) {
+	return new Date(timeCode * 1000);
 };
 
 module.exports = exports = {
@@ -127,30 +131,50 @@ module.exports = exports = {
 	refreshMiddleware: function (req, res, next) {
 		deferred(null)(function () {
 			var accessToken  = res.cookies.get('oAuthToken')
+			  , refreshToken = res.cookies.get('oAuthRefreshToken')
+			  , currentTime  = new Date()
 
-			  , refreshToken, decodedAccessToken, issueDate, expiryDate, validLength, currentTime
-			  , isExpired, isAlmostUp, deferredRequest;
+			  , decodedAccessToken, accIssueTimeCode, accExpiryTimeCode, accExpiryDate, accValidLength
+			  , refExpiryDate, isRefExpired, isAccExpired, isAccSoonToExpire, deferredRequest;
 
-			// 1. If token is set.
-			if (!accessToken) return;
+			// 1. If tokens are set.
+			if (!accessToken || !refreshToken) return;
 
-			refreshToken       = res.cookies.get('oAuthRefreshToken');
+			// 1.1. Decode access token.
 			decodedAccessToken = jwtDecode(accessToken);
 
-			issueDate    = decodedAccessToken.iat;
-			expiryDate   = decodedAccessToken.exp;
-			validLength  = expiryDate - issueDate;
-			currentTime  = new Date();
+			// 1.2. Get issue and expiry dates from token.
+			accIssueTimeCode  = decodedAccessToken.iat;
+			accExpiryTimeCode = decodedAccessToken.exp;
+			accExpiryDate     = jwtTimeCodeToDate(accExpiryTimeCode);
 
-			isExpired    = currentTime.getTime() > new Date(expiryDate * 1000).getTime();
-			isAlmostUp   = currentTime.getTime() > new Date(
-				Math.floor(expiryDate - (validLength - 5)) * 1000
-			).getTime();
+			// 1.3. Calculate for how long access token is going to be valid.
+			accValidLength = accExpiryTimeCode - accIssueTimeCode;
 
-			// 2. If already past or almost up.
-			if (!isExpired && !isAlmostUp) return;
+			// 1.4. Calculate refresh token expiry date.
+			refExpiryDate = jwtTimeCodeToDate(accIssueTimeCode);
+			refExpiryDate.setDate(refExpiryDate.getDate() + 1);
 
-			// 3. Request refresh.
+			// 2. If refresh token is already expired.
+			isRefExpired = currentTime.getTime() > refExpiryDate.getTime();
+
+			if (isRefExpired) {
+				// 2.1 Logout user.
+				debug('Refresh token expired');
+
+				authentication.logout(req, res);
+				return;
+			}
+
+			// 3. If access token is already expired or soon will be.
+			isAccExpired      = currentTime.getTime() > accExpiryDate.getTime();
+			isAccSoonToExpire = currentTime.getTime() > jwtTimeCodeToDate(Math.floor(
+				accExpiryTimeCode - (accValidLength / 10)
+			)).getTime();
+
+			if (!isAccExpired && !isAccSoonToExpire) return;
+
+			// 3.1. Request refresh.
 			debug('Refreshing token');
 
 			deferredRequest = deferred();
@@ -169,8 +193,12 @@ module.exports = exports = {
 					redirect_uri: env.oauth.redirectUrl
 				}
 			}, function (error, response, body) {
+				var failed = false;
+
 				if (error) {
 					debug('Error received from token endpoint:', error);
+
+					failed = true;
 				} else if (response.statusCode >= 200 && response.statusCode < 300) {
 					var parsedBody            = JSON.parse(body)
 					  , newAccessToken        = parsedBody.access_token
@@ -183,6 +211,12 @@ module.exports = exports = {
 					res.cookies.set('oAuthRefreshToken', newRefreshToken);
 				} else {
 					debug('Failed to refresh token:', response.statusCode);
+
+					failed = true;
+				}
+
+				if (failed && isAccExpired) {
+					authentication.logout(req, res);
 				}
 
 				deferredRequest.resolve();
@@ -292,7 +326,7 @@ module.exports = exports = {
 					res.cookies.set('oAuthToken', accessToken);
 					res.cookies.set('oAuthRefreshToken', refreshToken);
 
-					login(userId, req, res);
+					authentication.login(userId, req, res);
 
 					res.writeHead(303, {
 						Location: '/',
