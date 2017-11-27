@@ -294,27 +294,29 @@ module.exports = exports = {
 				userEmailMap(function (map) {
 					return map.get(serializeValue(decoded.email));
 				})(function (userId) {
-					var isNotary = decoded && decoded.ids && decoded.ids.some(function (item) {
+					if (userId) return userId;
+
+					var isNotary = decoded.ids && decoded.ids.some(function (item) {
 						return item.key === "PROFESSIONAL_ACCOUNT_TYPE" && item.value === 'notaryType';
-					}), roles = ['user'];
+					}), roles = ['user'], isPublicApp, demoUserId;
+					isPublicApp = req.$appName === 'public';
+					demoUserId = isPublicApp ? null : res.cookies.get('demoUser');
 					if (isNotary) {
 						roles.push('manager');
 					}
-
-					if (userId) {
-						return updateUser(userId, {
-							isDemo: undefined,
+					if (!demoUserId) {
+						return createUser({
 							firstName: decoded.fname,
 							lastName: decoded.lname,
-							email: decoded.email
+							email: decoded.email,
+							roles: roles
 						});
 					}
-
-					return createUser({
+					return updateUser(demoUserId, {
+						isDemo: undefined,
 						firstName: decoded.fname,
 						lastName: decoded.lname,
-						email: decoded.email,
-						roles: roles
+						email: decoded.email
 					});
 				}).done(function (userId) {
 					if (!decoded.email_verified) {
