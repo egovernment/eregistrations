@@ -303,7 +303,7 @@ module.exports = exports = {
 						email: decoded.email
 					});
 				}).done(function (userId) {
-					if (!decoded.email_verified) {
+					if (!env.isAccountConfirmationDisabled && !decoded.email_verified) {
 						res.writeHead(302, { Location: '/request-confirm-account/' });
 						res.end();
 						return;
