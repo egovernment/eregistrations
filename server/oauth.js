@@ -296,18 +296,22 @@ module.exports = exports = {
 				})(function (userId) {
 					if (userId) return userId;
 
-					var isPublicApp = req.$appName === 'public'
-					  , demoUserId  = isPublicApp ? null : res.cookies.get('demoUser');
-
+					var isNotary = decoded.ids && decoded.ids.some(function (item) {
+						return item.key === "PROFESSIONAL_ACCOUNT_TYPE" && item.value === 'notaryType';
+					}), roles = ['user'], isPublicApp, demoUserId;
+					isPublicApp = req.$appName === 'public';
+					demoUserId = isPublicApp ? null : res.cookies.get('demoUser');
+					if (isNotary) {
+						roles.push('manager');
+					}
 					if (!demoUserId) {
 						return createUser({
 							firstName: decoded.fname,
 							lastName: decoded.lname,
 							email: decoded.email,
-							roles: ['user']
+							roles: roles
 						});
 					}
-
 					return updateUser(demoUserId, {
 						isDemo: undefined,
 						firstName: decoded.fname,
