@@ -81,7 +81,7 @@ exports.main = function () {
 				div({ class: 'content' },
 					exports._demoBannerContent.call(this))))),
 
-		insert(_if(this.manager, function () {
+		insert(_if(this.manager && !externalAuthentication.loginPage, function () {
 			return this.manager._currentlyManagedUser.map(function (managedUser) {
 				if (!managedUser) return;
 				var isUserReallyManaged = eq(this.manager, managedUser._manager);
@@ -259,10 +259,13 @@ var userNameMenuItem = function () {
 				]),
 				li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
 				li(_if(
-					externalAuthentication.profilePage,
+					and(externalAuthentication.profilePage, not(eq(user._currentRoleResolved, 'manager'))),
 					a({ href: externalAuthentication.profilePage, target: '_blank' }, _("My informations")),
 					a({ href: '/profile/' }, _("My informations"))
 				)),
+				_if(and(externalAuthentication.profilePage, eq(user._currentRoleResolved, 'manager')),
+					li(a({ href: externalAuthentication.profilePage, target: '_blank' },
+						_("External authentication profile page")))),
 				li(
 					a(
 						{ href: '/logout/', rel: 'server' },
