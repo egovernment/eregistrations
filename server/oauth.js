@@ -6,34 +6,18 @@ var debug          = require('debug-ext')('oauth')
   , assign         = require('es5-ext/object/assign')
   , userEmailMap   = require('mano/lib/server/user-email-map')
   , authentication = require('mano-auth/server/authentication')
-  , loadToMemoryDb = require('mano/lib/server/resolve-user-access')
   , serializeValue = require('dbjs/_setup/serialize/value')
   , generateUnique = require('time-uuid')
   , request        = require('request')
   , jwtDecode      = require('jwt-decode')
-  , env            = mano.env
-  , userStorage    = mano.dbDriver.getStorage('user');
-
-var dbjsDataRecord = function (id, value) {
-	return { id: id, data: { value: serializeValue(value) } };
-};
+  , env            = mano.env;
 
 var createUser = function (data) {
 	return mano.queryMemoryDb([], 'addUser', JSON.stringify(data));
 };
 
-var updateUser = function (userId, data) {
-	var records = [];
-
-	Object.keys(data).forEach(function (key) {
-		records.push(dbjsDataRecord(userId + '/' + key, data[key]));
-	});
-
-	return userStorage.storeMany(records)(function () {
-		return loadToMemoryDb([userId]);
-	})(function () {
-		return userId;
-	});
+var registerDemoUser = function (userId, data) {
+	return mano.queryMemoryDb([userId], 'registerDemoUser', { userId: userId, data: data });
 };
 
 var generateUrl = function (path, query) {
@@ -308,8 +292,7 @@ module.exports = exports = {
 						});
 					}
 
-					return updateUser(demoUserId, {
-						isDemo: undefined,
+					return registerDemoUser(demoUserId, {
 						firstName: decoded.fname,
 						lastName: decoded.lname,
 						email: decoded.email
