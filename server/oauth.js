@@ -271,7 +271,9 @@ module.exports = exports = {
 				var parsedBody   = JSON.parse(body)
 				  , accessToken  = parsedBody.access_token
 				  , refreshToken = parsedBody.refresh_token
-				  , decoded      = jwtDecode(accessToken);
+				  , decoded      = jwtDecode(accessToken)
+				  , isPublicApp  = req.$appName === 'public'
+				  , demoUserId   = isPublicApp ? null : res.cookies.get('demoUser');
 
 				debug('JWT received for:', decoded.email);
 
@@ -282,9 +284,8 @@ module.exports = exports = {
 
 					var isNotary = decoded.ids && decoded.ids.some(function (item) {
 						return item.key === "PROFESSIONAL_ACCOUNT_TYPE" && item.value === 'notaryType';
-					}), roles = ['user'], isPublicApp, demoUserId;
-					isPublicApp = req.$appName === 'public';
-					demoUserId = isPublicApp ? null : res.cookies.get('demoUser');
+					}), roles = ['user'];
+
 					if (isNotary) {
 						roles.push('manager');
 					}
@@ -304,6 +305,10 @@ module.exports = exports = {
 					});
 				}).done(function (userId) {
 					if (!env.isAccountConfirmationDisabled && !decoded.email_verified) {
+						if (demoUserId) {
+							authentication.logout(req, res);
+						}
+
 						res.writeHead(302, { Location: '/request-confirm-account/' });
 						res.end();
 						return;
