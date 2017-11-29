@@ -10,7 +10,9 @@ var debug          = require('debug-ext')('oauth')
   , generateUnique = require('time-uuid')
   , request        = require('request')
   , jwtDecode      = require('jwt-decode')
-  , env            = mano.env;
+  , env            = mano.env
+  , driver         = require('mano').dbDriver
+  , userStorage   = driver.getStorage('user');
 
 var createUser = function (data) {
 	return mano.queryMemoryDb([], 'addUser', JSON.stringify(data));
@@ -284,7 +286,7 @@ module.exports = exports = {
 
 					var isNotary = decoded.ids && decoded.ids.some(function (item) {
 						return item.key === "PROFESSIONAL_ACCOUNT_TYPE" && item.value === 'notaryType';
-					}), roles = ['user'];
+					}), roles = ['user'], notaryExtraProps = [];
 
 					if (isNotary) {
 						roles.push('manager');
@@ -295,6 +297,28 @@ module.exports = exports = {
 							lastName: decoded.lname,
 							email: decoded.email,
 							roles: roles
+						}).then(function (userId) {
+							if (isNotary) {
+								decoded.ids.forEach(function (item) {
+									if (item.key === "DUI") {
+										notaryExtraProps.push({
+											id: userId + '/duiNumber',
+											data: { value: '3' + item.value }
+										});
+									}
+									if (item.key === "NIT") {
+										notaryExtraProps.push({
+											id: userId + '/nitNumber',
+											data: { value: '3' + item.value }
+										});
+									}
+								});
+								if (notaryExtraProps.length) {
+									return userStorage.storeMany(notaryExtraProps)(userId);
+								}
+							} else {
+								return userId;
+							}
 						});
 					}
 
