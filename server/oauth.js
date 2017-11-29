@@ -333,5 +333,20 @@ module.exports = exports = {
 				res.end();
 			}
 		});
+	},
+	profileMiddleware: function (req, res, next) {
+		var isProfilePath = req._parsedUrl.pathname === '/oauth-profile/'
+		  , accessToken   = res.cookies.get('oAuthToken');
+
+		// 1. If not proper path or token is not set, end.
+		if (!isProfilePath || !accessToken) {
+			next();
+			return;
+		}
+
+		res.writeHead(303, {
+			Location: generateUrl(env.oauth.profileEndoint, { token: accessToken })
+		});
+		res.end();
 	}
 };
