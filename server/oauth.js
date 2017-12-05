@@ -316,9 +316,9 @@ module.exports = exports = {
 								if (notaryExtraProps.length) {
 									return userStorage.storeMany(notaryExtraProps)(userId);
 								}
-							} else {
-								return userId;
 							}
+
+							return userId;
 						});
 					}
 
