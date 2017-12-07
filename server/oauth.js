@@ -348,6 +348,12 @@ module.exports = exports = {
 						Authorization: 'Bearer ' + accessToken
 					});
 					res.end();
+				}, function (error) {
+					debug('Error while logging in:', error);
+
+					// TODO: Notify user.
+					res.writeHead(302, { Location: '/' });
+					res.end();
 				});
 			} else {
 				debug('Failed to authorize:', response.statusCode);
