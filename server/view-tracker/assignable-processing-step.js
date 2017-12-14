@@ -4,12 +4,12 @@ var resolveFullPath = require('../../utils/resolve-processing-step-full-path')
   , getDbSet        = require('../utils/get-db-set')
   , trackStep       = require('./processing-step');
 
-module.exports = function (officialId, stepPath, meta, data) {
+module.exports = function (officialId, stepPath, meta, data, dbStore) {
 	return trackStep(stepPath, meta, {
 		businessProcessStorage: data.businessProcessStorage,
 		reducedStorage: data.reducedStorage,
 		filter: function (set) {
-			return getDbSet(data.businessProcessStorage, 'direct',
+			return getDbSet(data.businessProcessStorage, dbStore || 'direct',
 				'processingSteps/map/' + resolveFullPath(stepPath) + '/assignee', '7' + officialId)(
 				function (assignedBusinessProcesses) { return set.and(assignedBusinessProcesses); }
 			);
