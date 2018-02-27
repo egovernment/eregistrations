@@ -12,15 +12,16 @@ module.exports = function (context/*, options*/) {
 
 	return section({ class: 'section-primary' },
 		options.prependContent,
-		div({ class: 'business-process-submitted-data-print-only' }, ' ',
-			a({
-				href: mmap(businessProcess.dataForms._lastEditStamp, function (lastEditStamp) {
-					return '/business-process-data-forms-' + businessProcess.__id__ +
-						'.pdf?' + lastEditStamp;
-				}),
-				target: '_blank'
-			}, span({ class: 'fa fa-print' }),
-				span(_("Print your application form")))),
+		_if(not(options.skipPrintLink),
+			div({ class: 'business-process-submitted-data-print-only' }, ' ',
+				a({
+					href: mmap(businessProcess.dataForms._lastEditStamp, function (lastEditStamp) {
+						return '/business-process-data-forms-' + businessProcess.__id__ +
+							'.pdf?' + lastEditStamp;
+					}),
+					target: '_blank'
+				}, span({ class: 'fa fa-print' }),
+					span(_("Print your application form"))))),
 		div({ class: 'document-preview-data business-process-submitted-data' },
 			renderSections(businessProcess.dataForms.dataSnapshot)));
 };
