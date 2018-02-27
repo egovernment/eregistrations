@@ -12,7 +12,7 @@ var _            = require('mano').i18n.bind('View: Component: Business Process 
 
 columns.push(tableCols.businessProcessArchiverColumn);
 
-module.exports = function (context) {
+module.exports = exports = function (context) {
 	var businessProcess = context.businessProcess
 	  , statusLogs      = businessProcess.statusLog.ordered
 	  , scrollableElem;
@@ -51,6 +51,7 @@ module.exports = function (context) {
 				successMsg.parentNode.removeChild(successMsg);
 			}, 10000);
 		})),
+		exports._extraContent.call(context),
 		section(
 			{ class: 'section-primary' },
 			h2(
@@ -79,3 +80,5 @@ module.exports = function (context) {
 		nextTick(function () { scrollBottom(scrollableElem); })
 	];
 };
+
+exports._extraContent = Function.prototype;
