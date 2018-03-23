@@ -392,3 +392,19 @@ e.g.:
 .fa-bars:before {
 	content: "\f0c9";
 }
+
+.fa-caret-right {
+	width: 1em;
+}
+
+.fa-caret-right:before {
+	content: "\f0da";
+}
+
+.fa-caret-down {
+	width: 1em;
+}
+
+.fa-caret-down:before {
+	content: "\f0d7";
+}

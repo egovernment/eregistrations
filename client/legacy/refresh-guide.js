@@ -2,9 +2,10 @@
 
 'use strict';
 
-var camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
-  , $              = require('mano-legacy')
-  , formatCurrency = require('./format-currency');
+var camelToHyphen       = require('es5-ext/string/#/camel-to-hyphen')
+  , $                   = require('mano-legacy')
+  , formatCurrency      = require('./format-currency')
+  , buildCostsPrintLink = require('./build-costs-print-link');
 
 require('es3-ext/array/#/for-each/implement');
 require('mano-legacy/for-each');
@@ -38,15 +39,6 @@ var getPropertyValue = function (target, property) {
 	var result = typeof target[property] === 'function'
 		? target[property]($.dbjsObserveMock) : target[property];
 	return result || ''; // Do not pass null/undefined literally
-};
-
-var buildCostsPrintLink = function (currentLink, cost, field, prefix) {
-	if (!prefix) prefix = '';
-	currentLink.search += (currentLink.search.length) ?
-			'&' + prefix + cost.key + '=' + cost[field].toFixed(2) :
-			'?' + prefix + cost.key + '=' + cost[field].toFixed(2);
-
-	return currentLink;
 };
 
 var toggleConditionally = function (element, condition) {

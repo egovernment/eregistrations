@@ -103,6 +103,9 @@ module.exports = memoize(function (db) {
 			if (this.meta && this.members) {
 				return { code: value };
 			}
+			if (db.Currency && (Object.getPrototypeOf(this) === db.Currency)) {
+				return { currency: this.symbol, value: value };
+			}
 			if (db.isObjectType(this)) {
 				if (typeof value.toWebServiceJSON === 'function') {
 					return value.toWebServiceJSON(descriptor);
@@ -123,6 +126,9 @@ module.exports = memoize(function (db) {
 			// file
 			if (this.__id__ === "File" || this.prototype instanceof db.File) {
 				return { type: "file" };
+			}
+			if (this.__id__ === 'Currency' || this.prototype instanceof db.Currency) {
+				return { type: "currency" };
 			}
 			// primitives
 			if (this.__id__ === "String" || this.prototype instanceof db.String) {
