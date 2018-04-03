@@ -284,7 +284,7 @@ module.exports = exports = {
 				})(function (userId) {
 					if (userId) return userId;
 
-					var isNotary = decoded.ids && decoded.ids.some(function (item) {
+					var isNotary = decoded.properties && decoded.properties.some(function (item) {
 						return item.key === "PROFESSIONAL_ACCOUNT_TYPE" && item.value === 'notaryType';
 					}), roles = ['user'], notaryExtraProps = [];
 
@@ -299,7 +299,7 @@ module.exports = exports = {
 							roles: roles
 						}).then(function (userId) {
 							if (isNotary) {
-								decoded.ids.forEach(function (item) {
+								decoded.properties.forEach(function (item) {
 									if (item.key === "DUI") {
 										notaryExtraProps.push({
 											id: userId + '/duiNumber',
