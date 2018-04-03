@@ -217,7 +217,7 @@ exports._requirementsSection = function () {
 							{ id: 'requirement-label-' + camelToHyphen.call(requirement.key) },
 							requirement.label
 						),
-						requirement.legend && [br(), small(mdi(requirement.legend))]
+						requirement.legend && [br(), small(md(requirement.legend))]
 					]
 				);
 			}),

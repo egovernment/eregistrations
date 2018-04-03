@@ -49,7 +49,10 @@ module.exports = memoize(function (db) {
 				return {
 					code: this.key,
 					data: {
-						amount: this.amount
+						amount: {
+							currency: this.getOwnDescriptor('amount').type.symbol,
+							value: this.amount
+						}
 					}
 				};
 			}
@@ -70,8 +73,8 @@ module.exports = memoize(function (db) {
 								type: "enum",
 								ref: "costs"
 							},
-							amount: {
-								type: "number"
+							data: {
+								amount: { type: "currency" }
 							}
 						}
 					}
