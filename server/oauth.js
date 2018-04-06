@@ -284,41 +284,12 @@ module.exports = exports = {
 				})(function (userId) {
 					if (userId) return userId;
 
-					var isNotary = decoded.properties && decoded.properties.some(function (item) {
-						return item.key === "PROFESSIONAL_ACCOUNT_TYPE" && item.value === 'notaryType';
-					}), roles = ['user'], notaryExtraProps = [];
-
-					if (isNotary) {
-						roles.push('manager');
-					}
 					if (!demoUserId) {
 						return createUser({
 							firstName: decoded.fname,
 							lastName: decoded.lname,
 							email: decoded.email,
 							roles: roles
-						}).then(function (userId) {
-							if (isNotary) {
-								decoded.properties.forEach(function (item) {
-									if (item.key === "DUI") {
-										notaryExtraProps.push({
-											id: userId + '/duiNumber',
-											data: { value: '3' + item.value }
-										});
-									}
-									if (item.key === "NIT") {
-										notaryExtraProps.push({
-											id: userId + '/nitNumber',
-											data: { value: '3' + item.value }
-										});
-									}
-								});
-								if (notaryExtraProps.length) {
-									return userStorage.storeMany(notaryExtraProps)(userId);
-								}
-							}
-
-							return userId;
 						});
 					}
 
