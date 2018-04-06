@@ -10,9 +10,7 @@ var debug          = require('debug-ext')('oauth')
   , generateUnique = require('time-uuid')
   , request        = require('request')
   , jwtDecode      = require('jwt-decode')
-  , env            = mano.env
-  , driver         = require('mano').dbDriver
-  , userStorage   = driver.getStorage('user');
+  , env            = mano.env;
 
 var createUser = function (data) {
 	return mano.queryMemoryDb([], 'addUser', JSON.stringify(data));
@@ -288,8 +286,7 @@ module.exports = exports = {
 						return createUser({
 							firstName: decoded.fname,
 							lastName: decoded.lname,
-							email: decoded.email,
-							roles: roles
+							email: decoded.email
 						});
 					}
 
