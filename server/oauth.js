@@ -273,6 +273,7 @@ module.exports = exports = {
 				  , refreshToken = parsedBody.refresh_token
 				  , decoded      = jwtDecode(accessToken)
 				  , isPublicApp  = req.$appName === 'public'
+				  , roles        = ['user']
 				  , demoUserId   = isPublicApp ? null : res.cookies.get('demoUser');
 
 				debug('JWT received for:', decoded.email);
@@ -286,14 +287,16 @@ module.exports = exports = {
 						return createUser({
 							firstName: decoded.fname,
 							lastName: decoded.lname,
-							email: decoded.email
+							email: decoded.email,
+							roles: roles
 						});
 					}
 
 					return registerDemoUser(demoUserId, {
 						firstName: decoded.fname,
 						lastName: decoded.lname,
-						email: decoded.email
+						email: decoded.email,
+						roles: roles
 					});
 				}).done(function (userId) {
 					if (!env.isAccountConfirmationDisabled && !decoded.email_verified) {
