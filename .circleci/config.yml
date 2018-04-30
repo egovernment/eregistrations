@@ -13,6 +13,16 @@ jobs:
         command: /sbin/init
     steps:
       - checkout
+      - run:
+          working_directory: ~/egovernment
+          command: git clone git@github.com:egovernment/eregistrations-lomas.git eregistrations-lomas
+      - run:
+          working_directory: ~/egovernment/eregistrations-lomas
+          command: rm -r node_modules/eregistrations
+      - run:
+          working_directory: ~/egovernment/eregistrations-lomas
+          command: ln -s ~/egovernment/eregistrations node_modules/
+      - run: ln -s ~/egovernment/eregistrations-lomas/node_modules .
       - run: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
       - run:
           working_directory: ~/egovernment/eregistrations
