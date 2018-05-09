@@ -408,3 +408,10 @@ e.g.:
 .fa-caret-down:before {
 	content: "\f0d7";
 }
+
+.fa-retweet {
+	width: 1.1em;
+}
+.fa-retweet:before {
+	content: "\f079";
+}
