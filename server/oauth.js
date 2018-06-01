@@ -97,7 +97,7 @@ module.exports = exports = {
 
 			// 1.2. Invalidate the token in CAS.
 			request({
-				uri: env.oauth.invalidationEndpoint,
+				uri: env.oauth.invalidationEndpoint + '?redirect_uri=' + env.oauth.redirectUrl,
 				method: 'GET',
 				headers: {
 					Authorization: 'Bearer ' + accessToken
