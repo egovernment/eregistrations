@@ -1,15 +1,17 @@
 'use strict';
 
-var _                    = require('mano').i18n.bind('View: User')
-  , startsWith           = require('es5-ext/string/#/starts-with')
-  , uncapitalize         = require('es5-ext/string/#/uncapitalize')
-  , loginDialog          = require('./components/login-dialog')
-  , registerDialog       = require('./components/register-dialog')
-  , modalContainer       = require('./components/modal-container')
-  , roleMenuItem         = require('./components/role-menu-item')
-  , requestAccountDialog = require('./components/request-account-dialog')
-  , greedy               = require('./utils/greedy-menu')
-  , db                   = require('../db');
+var _                      = require('mano').i18n.bind('View: User')
+  , env                    = require('mano').env
+  , startsWith             = require('es5-ext/string/#/starts-with')
+  , uncapitalize           = require('es5-ext/string/#/uncapitalize')
+  , loginDialog            = require('./components/login-dialog')
+  , registerDialog         = require('./components/register-dialog')
+  , modalContainer         = require('./components/modal-container')
+  , roleMenuItem           = require('./components/role-menu-item')
+  , requestAccountDialog   = require('./components/request-account-dialog')
+  , greedy                 = require('./utils/greedy-menu')
+  , db                     = require('../db')
+  , externalAuthentication = (env && env.externalAuthentication) || {};
 
 exports._parent = require('./base');
 
@@ -21,18 +23,36 @@ var myAccountButton = function (user, roleTitle) {
 };
 
 exports.menu = function () {
-	modalContainer.append(loginDialog);
-	modalContainer.append(registerDialog(this));
+	if (!externalAuthentication.loginPage) {
+		modalContainer.append(loginDialog);
+	}
+
+	if (!externalAuthentication.registerPage) {
+		modalContainer.append(registerDialog(this));
+	}
 
 	insert(_if(this.user._isDemo,
 		div(
 			{ class: 'submitted-menu-demo-info-wrapper' },
-			ul({ class: 'header-top-menu-demo' },
+			ul(
+				{ class: 'header-top-menu-demo' },
 				li(a({ class: 'demo-public-out', href: '/logout/', rel: 'server' }, _("Out of demo mode"))),
-				li(a({ class: 'demo-public-login', href: '#login' }, _("Log in")))),
-			div({ class: 'submitted-menu-demo-info' },
+				li(_if(
+					externalAuthentication.loginPage,
+					a({ class: 'demo-public-login', href: externalAuthentication.loginPage, rel: 'server' },
+						_("Log in")),
+					a({ class: 'demo-public-login', href: '#login' }, _("Log in"))
+				))
+			),
+			div(
+				{ class: 'submitted-menu-demo-info' },
 				p(_("Did this demo convinced you?")),
-				a({ href: '#register' }, _("Create account")))
+				_if(
+					externalAuthentication.registerPage,
+					a({ href: externalAuthentication.registerPage, rel: 'server' }, _("Create account")),
+					a({ href: '#register' }, _("Create account"))
+				)
+			)
 		),
 		ul(
 			{ class: 'header-top-menu' },
@@ -61,7 +81,7 @@ exports.main = function () {
 				div({ class: 'content' },
 					exports._demoBannerContent.call(this))))),
 
-		insert(_if(this.manager, function () {
+		insert(_if(this.manager && !externalAuthentication.loginPage, function () {
 			return this.manager._currentlyManagedUser.map(function (managedUser) {
 				if (!managedUser) return;
 				var isUserReallyManaged = eq(this.manager, managedUser._manager);
@@ -238,12 +258,14 @@ var userNameMenuItem = function () {
 					roleMenuItem(this, 'usersAdmin')
 				]),
 				li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
-				li(
-					a(
-						{ href: '/profile/' },
-						_("My informations")
-					)
-				),
+				li(_if(
+					and(externalAuthentication.profilePage, not(eq(user._currentRoleResolved, 'manager'))),
+					a({ href: externalAuthentication.profilePage, target: '_blank' }, _("My informations")),
+					a({ href: '/profile/' }, _("My informations"))
+				)),
+				_if(and(externalAuthentication.profilePage, eq(user._currentRoleResolved, 'manager')),
+					li(a({ href: externalAuthentication.profilePage, target: '_blank' },
+						_("External authentication profile page")))),
 				li(
 					a(
 						{ href: '/logout/', rel: 'server' },

@@ -9,7 +9,8 @@ var copy          = require('es5-ext/object/copy')
   , location      = require('mano/lib/client/location')
   , dispatch      = require('dom-ext/html-element/#/dispatch-event-2')
 
-  , db = mano.db, env = mano.env, roleMeta = db.Role.meta;
+  , db = mano.db, env = mano.env, roleMeta = db.Role.meta
+  , externalAuthentication = (env && env.externalAuthentication) || {};
 
 exports._parent = require('./user-base');
 
@@ -52,10 +53,21 @@ exports._creationDateColumn = {
 exports._actionsColumn = {
 	head: th({ class: 'submitted-user-data-table-actions' }),
 	data: function (user) {
-		var isSelfUser = (user === this.user);
+		var isSelfUser = (user === this.user)
+		  , linkConfig;
+
+		if (isSelfUser) {
+			if (externalAuthentication.profilePage) {
+				linkConfig = { href: externalAuthentication.profilePage, target: '_blank' };
+			} else {
+				linkConfig = { href: '/profile/' };
+			}
+		} else {
+			linkConfig = { href: url('user', user.__id__) };
+		}
+
 		return td({ class: 'actions' },
-			a({ href: isSelfUser ? '/profile/' : url('user', user.__id__) },
-				span({ class: 'fa fa-edit' }, _("Go to"))),
+			a(linkConfig, span({ class: 'fa fa-edit' }, _("Go to"))),
 			_if(and(!isSelfUser, user._canBeDestroyed), postButton({ buttonClass: 'actions-delete',
 				action: url('user', user.__id__, 'delete'),
 				confirm: _("Are you sure?"), value: span({ class: 'fa fa-trash-o' }) })));

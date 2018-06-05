@@ -6,7 +6,8 @@ var hyphenToCamel               = require('es5-ext/string/#/hyphen-to-camel')
   , db                          = require('mano').db
   , matchUpload                 = require('./utils/user-match-upload')
   , matchFirstRequirementUpload = require('./utils/user-match-first-requirement-upload')
-  , matchCertificate            = require('./utils/user-match-certificate');
+  , matchCertificate            = require('./utils/user-match-certificate')
+  , includeProfileController    = require('./utils/include-profile-controller');
 
 var matchBusinessProcess = function (businessProcessId) {
 	this.businessProcess = db.BusinessProcess.getById(businessProcessId);
@@ -14,16 +15,8 @@ var matchBusinessProcess = function (businessProcessId) {
 	return this.businessProcess.isSubmitted;
 };
 
-module.exports = {
+module.exports = exports = {
 	'/': require('../view/user-home'),
-	profile: {
-		view: require('../view/user-profile'),
-		decorateContext: function () {
-			if (this.manager) {
-				this.user = this.manager;
-			}
-		}
-	},
 	'managed-user-profile': require('../view/managed-user-profile'),
 	requests: require('../view/user-requests'),
 	'requests/[0-9][a-z0-9]+': {
@@ -64,3 +57,5 @@ module.exports = {
 		view: require('../view/user-business-process-data')
 	}
 };
+
+includeProfileController(exports, true);

@@ -2,18 +2,21 @@
 
 'use strict';
 
-var submit      = require('mano/utils/save')
-  , hash        = require('mano-auth/hash')
-  , queryMaster = require('../../server/services/query-master/slave')
-  , sendNotification = require('../../server/email-notifications/create-account')
-  , genId = require('time-uuid')
-  , env                 = require('mano').env
-  , isAccountConfirmationDisabled = env && env.isAccountConfirmationDisabled;
+var submit                        = require('mano/utils/save')
+  , hash                          = require('mano-auth/hash')
+  , queryMaster                   = require('../../server/services/query-master/slave')
+  , sendNotification              = require('../../server/email-notifications/create-account')
+  , genId                         = require('time-uuid')
+  , env                           = require('mano').env
+  , isAccountConfirmationDisabled = env && env.isAccountConfirmationDisabled
+  , externalAuthentication        = (env && env.externalAuthentication) || {};
 
 module.exports = function (/* options */) {
-	var options = Object(arguments[0]);
-	return {
-		register: {
+	var options     = Object(arguments[0])
+	  , controllers = {};
+
+	if (!externalAuthentication.registerPage) {
+		controllers.register = {
 			submit: function (normalizedData, data) {
 				var user = this.user;
 				user.delete('isDemo');
@@ -45,6 +48,8 @@ module.exports = function (/* options */) {
 					}.bind(this));
 				}.bind(this));
 			}
-		}
-	};
+		};
+	}
+
+	return controllers;
 };

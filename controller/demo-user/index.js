@@ -2,12 +2,16 @@
 
 'use strict';
 
-var dbjsValidate       = require('mano/lib/utils/dbjs-form-validate')
-  , passwordValidation = require('mano-auth/utils/password-validation');
+var dbjsValidate           = require('mano/lib/utils/dbjs-form-validate')
+  , passwordValidation     = require('mano-auth/utils/password-validation')
+  , env                    = require('mano').env
+  , externalAuthentication = (env && env.externalAuthentication) || {};
 
 module.exports = function () {
-	return {
-		register: {
+	var controllers = {};
+
+	if (!externalAuthentication.registerPage) {
+		controllers.register = {
 			validate: function (data) {
 				var user = this.user
 				  , userId = user.__id__;
@@ -18,7 +22,12 @@ module.exports = function () {
 
 				return data;
 			}
-		},
-		login: require('mano-auth/controller/login')
-	};
+		};
+	}
+
+	if (!externalAuthentication.loginPage) {
+		controllers.login = require('mano-auth/controller/login');
+	}
+
+	return controllers;
 };

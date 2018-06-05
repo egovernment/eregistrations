@@ -9,15 +9,13 @@ var hyphenToCamel                  = require('es5-ext/string/#/hyphen-to-camel')
   , matchFirstRequirementUpload    = require('./utils/page-match-first-requirement-upload')
   , matchFirstPaymentReceiptUpload = require('./utils/page-match-first-payment-receipt-upload')
   , matchFirstCertificate          = require('./utils/page-match-first-certificate')
-  , matchCertificate               = require('./utils/user-match-certificate');
+  , matchCertificate               = require('./utils/user-match-certificate')
+  , includeProfileController       = require('./utils/include-profile-controller');
 
 module.exports = function () {
 	var match = matchBusinessProcess('inspector');
 
-	return {
-		// User routes
-		profile: require('../view/user-profile'),
-
+	var routes = {
 		// App routes
 		'/': require('../view/inspector'),
 		'[0-9][a-z0-9]*': {
@@ -93,4 +91,8 @@ module.exports = function () {
 			view: require('../view/business-process-official-data')
 		}
 	};
+
+	includeProfileController(routes);
+
+	return routes;
 };

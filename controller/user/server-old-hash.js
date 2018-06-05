@@ -1,19 +1,14 @@
 'use strict';
 
-var assign        = require('es5-ext/object/assign')
-  , oldClientHash = require('mano-auth/utils/client-hash')
-  , profileSubmit = require('./server').profile.submit;
+var assign                 = require('es5-ext/object/assign')
+  , oldClientHash          = require('mano-auth/utils/client-hash')
+  , env                    = require('mano').env
+  , externalAuthentication = (env && env.externalAuthentication) || {};
 
 assign(exports, require('./server'),
-	require('../demo-user/server')({ oldClientHash: oldClientHash }));
+	require('../demo-user/server')({ oldClientHash: oldClientHash }),
+	require('../common/profile/server-old-hash'));
 
-exports.profile = {
-	submit: function (normalizedData, data) {
-		if (normalizedData.password || normalizedData['password-new']) {
-			normalizedData.password = oldClientHash(this.user.email, normalizedData.password);
-			normalizedData['password-new'] =
-				oldClientHash(this.user.email, normalizedData['password-new']);
-		}
-		return profileSubmit.apply(this, arguments);
-	}
-};
+if (externalAuthentication.profilePage) {
+	delete exports.profile;
+}

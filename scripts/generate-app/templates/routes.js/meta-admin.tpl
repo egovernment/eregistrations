@@ -2,9 +2,12 @@
 
 'use strict';
 
+var includeProfileController = require('eregistrations/routes/utils/include-profile-controller');
+
 require('../../view/user-base');
 
-module.exports = {
-	'/': require('../../view/meta-admin/translations-panel'),
-	profile: require('eregistrations/view/user-profile')
+module.exports = exports = {
+	'/': require('../../view/meta-admin/translations-panel')
 };
+
+includeProfileController(exports);
