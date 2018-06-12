@@ -1,21 +1,17 @@
 'use strict';
 
-var changeOwnPassword = require('mano-auth/controller/change-own-password').validate
-  , validate          = require('mano/utils/validate')
-  , assign            = require('es5-ext/object/assign');
+var env                    = require('mano').env
+  , assign                 = require('es5-ext/object/assign')
+  , externalAuthentication = (env && env.externalAuthentication) || {};
 
-assign(exports, require('../common/managed-profile'), require('../common/request-create-account'));
+assign(exports, require('../common/managed-profile'),
+	require('../common/request-create-account'), require('../common/profile/index'));
 
 // Profile
-exports.profile = {
-	validate: function (data) {
-		if (data.password || data['password-new']) return changeOwnPassword.call(this, data);
-		delete data.password;
-		delete data['password-new'];
-		delete data['password-repeat'];
-		return validate.call(this, data, { partial: true });
-	}
-};
+if (externalAuthentication.profilePage) {
+	delete exports.profile;
+	delete exports['managed-profile'];
+}
 
 // Role switch
 exports['set-role'] = true;

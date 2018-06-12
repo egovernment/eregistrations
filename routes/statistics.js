@@ -8,12 +8,13 @@ var hyphenToCamel                  = require('es5-ext/string/#/hyphen-to-camel')
   , matchFirstPaymentReceiptUpload = require('./utils/page-match-first-payment-receipt-upload')
   , matchFirstCertificate          = require('./utils/page-match-first-certificate')
   , matchCertificate               = require('./utils/user-match-certificate')
-  , processingStepsMeta            = require('../processing-steps-meta');
+  , processingStepsMeta            = require('../processing-steps-meta')
+  , includeProfileController       = require('./utils/include-profile-controller');
 
 module.exports = function () {
 	var match = matchBusinessProcess('statistics');
 
-	return {
+	var routes = {
 		// Pages with statistics information
 		'/': require('../view/statistics-dashboard'),
 		'dashboard-old': {
@@ -125,10 +126,10 @@ module.exports = function () {
 				this.dataSnapshot = this.businessProcess.dataForms.dataSnapshot.resolved;
 			},
 			view: require('../view/business-process-official-data')
-		},
-
-		// Other
-
-		profile: require('../view/user-profile')
+		}
 	};
+
+	includeProfileController(routes);
+
+	return routes;
 };

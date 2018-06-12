@@ -2,12 +2,13 @@
 
 'use strict';
 
-var db         = require('mano').db
-  , deferred   = require('deferred')
-  , xhrGet     = require('mano/lib/client/xhr-driver').get
-  , serverSync = require('mano/lib/client/server-sync');
+var db                       = require('mano').db
+  , deferred                 = require('deferred')
+  , xhrGet                   = require('mano/lib/client/xhr-driver').get
+  , serverSync               = require('mano/lib/client/server-sync')
+  , includeProfileController = require('./utils/include-profile-controller');
 
-module.exports = {
+module.exports = exports = {
 	'/': require('../view/manager-validation-users-table'),
 	'new-user': require('../view/manager-validation-user-create'),
 	'user/[0-9][0-9a-z-]+': {
@@ -38,6 +39,7 @@ module.exports = {
 			}.bind(this));
 		},
 		view: require('../view/manager-validation-user-edit')
-	},
-	profile: require('../view/user-profile')
+	}
 };
+
+includeProfileController(exports);

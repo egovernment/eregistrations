@@ -8,14 +8,12 @@ var hyphenToCamel                  = require('es5-ext/string/#/hyphen-to-camel')
   , matchFirstRequirementUpload    = require('./utils/official-match-first-requirement-upload')
   , matchFirstPaymentReceiptUpload = require('./utils/official-match-first-payment-receipt-upload')
   , matchFirstCertificate          = require('./utils/official-match-first-certificate')
-  , matchCertificate               = require('./utils/official-match-certificate');
+  , matchCertificate               = require('./utils/official-match-certificate')
+  , includeProfileController       = require('./utils/include-profile-controller');
 
 module.exports = function () {
 	var match = matchBusinessProcess(false);
-	return {
-		// User routes
-		profile: require('../view/user-profile'),
-
+	var routes = {
 		// App routes
 		'/': {
 			view: require('../view/dispatcher-assignments-panel')
@@ -94,4 +92,8 @@ module.exports = function () {
 		// Print routes
 		'print-business-processes-list': require('../view/print-business-processes-table')
 	};
+
+	includeProfileController(routes);
+
+	return routes;
 };
