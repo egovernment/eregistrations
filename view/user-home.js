@@ -26,10 +26,9 @@ exports['user-account-content'] = function () {
 			businessProcesses.add(event.value);
 		}
 		if (event.type === 'delete') {
-			businessProcesses.some(function (bp) {
+			businessProcesses.forEach(function (bp) {
 				if (bp.__id__ === event.value.__id__) {
 					businessProcesses.delete(bp);
-					return true;
 				}
 			});
 		}
