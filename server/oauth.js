@@ -303,7 +303,8 @@ module.exports = exports = {
 						if (demoUserId) {
 							authentication.logout(req, res);
 						}
-
+						// It has to be here to make token invalidation possible
+						res.cookies.set('oAuthToken', accessToken);
 						res.writeHead(302, { Location: '/request-confirm-account/' });
 						res.end();
 						return;
