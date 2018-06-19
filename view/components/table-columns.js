@@ -196,6 +196,9 @@ exports.businessProcessRejectionDateColumn = {
 exports.businessProcessActionsColumn = {
 	class: 'submitted-user-data-table-actions',
 	data: function (businessProcess) {
+		if (businessProcess._link) {
+			return a({ href: businessProcess._link, target: "_blank" }, i({ class: 'fa fa-search' }));
+		}
 		return _if(businessProcess._isAtDraft,
 			[postButton({
 				buttonClass: 'actions-edit',
