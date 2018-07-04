@@ -257,6 +257,7 @@ var userNameMenuItem = function () {
 					roleMenuItem(this, 'metaAdmin'),
 					roleMenuItem(this, 'usersAdmin')
 				]),
+				exports._customMenuItems.call(this, user),
 				li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
 				li(_if(
 					and(externalAuthentication.profilePage, not(eq(user._currentRoleResolved, 'manager'))),
@@ -307,6 +308,8 @@ var userNameMenuItem = function () {
 		})
 	];
 };
+
+exports._customMenuItems = Function.prototype;
 
 exports._menuItems = [
 	exports._extraRoleLabel,
