@@ -144,7 +144,8 @@ module.exports = function (t, a) {
 
 	defineConstrainedValue(MasterType.prototype.constrainedProperty, db.Number, {
 		dynamicConstraints: {
-			min: function () { return 1000; }
+			min: function () { return 0; },
+			max: function () { return 50000; }
 		}
 	});
 
@@ -455,4 +456,42 @@ module.exports = function (t, a) {
 				}
 			}
 		});
+
+	a(section.filledPropertyNames.size, 8);
+	a.deep(aFrom(section.filledPropertyNames), [
+		'resolventProperty',
+		'notRequiredProperty',
+		'property',
+		'secondProperty',
+		'propertyWithDefaultValue',
+		'nestedObject/notRequiredProperty',
+		'constrainedProperty',
+		'nestedObject/otherNested/reallyNestedProp'
+	]);
+	masterObject.constrainedProperty.value = 0;
+
+	a(section.filledPropertyNames.size, 8);
+	a.deep(aFrom(section.filledPropertyNames), [
+		'resolventProperty',
+		'notRequiredProperty',
+		'property',
+		'secondProperty',
+		'propertyWithDefaultValue',
+		'nestedObject/notRequiredProperty',
+		'constrainedProperty',
+		'nestedObject/otherNested/reallyNestedProp'
+	]);
+
+	masterObject.constrainedProperty.value = null;
+
+	a(section.filledPropertyNames.size, 7);
+	a.deep(aFrom(section.filledPropertyNames), [
+		'resolventProperty',
+		'notRequiredProperty',
+		'property',
+		'secondProperty',
+		'propertyWithDefaultValue',
+		'nestedObject/notRequiredProperty',
+		'nestedObject/otherNested/reallyNestedProp'
+	]);
 };

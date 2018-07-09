@@ -100,7 +100,7 @@ module.exports = memoize(function (db) {
 				// Constrained Value
 				if (value && (typeof value === 'object') && value.__id__ &&
 						(typeof value.getDescriptor('resolvedValue')._value_ === 'function')) {
-					return Boolean(_observe(value._resolvedValue));
+					return null != _observe(value._resolvedValue);
 				}
 
 				// Simple multiple
