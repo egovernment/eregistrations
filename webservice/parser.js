@@ -106,6 +106,9 @@ var assignValues = function (pathsMap, ourData, theirData/*, opts */) {
 			} else {
 				currentResult = currentResult[segment];
 			}
+			if (opts.ignoreCurrentWS) {
+				ourCurrentData[segment] = {};
+			}
 			ourCurrentData = ourCurrentData[segment];
 		});
 		theirCurrentData = theirData;
@@ -139,9 +142,9 @@ var assignValues = function (pathsMap, ourData, theirData/*, opts */) {
 module.exports = function (bp, inputMap, theirData/*, opts */) {
 	var filteredMap = {}, wsJSON, opts;
 	opts = Object(arguments[3]);
-	wsJSON = bp.toWebServiceJSON(opts);
+	wsJSON = opts.ignoreCurrentWS ? {} : bp.toWebServiceJSON(opts);
 	Object.keys(inputMap).forEach(function (mapKey) {
-		if (!isPathValid(wsJSON, mapKey)) return;
+		if (!opts.ignoreCurrentWS && !isPathValid(wsJSON, mapKey)) return;
 		if (!isPathValid(theirData, inputMap[mapKey])) return;
 		if (mapKey.indexOf('*') !== -1) {
 			Object.assign(filteredMap,
