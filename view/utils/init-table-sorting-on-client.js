@@ -34,9 +34,16 @@ module.exports = function (domElement/*, opts */) {
 		type: 'numeric'
 	});
 	var opts = normalizeOptions(arguments[1]);
-	setInterval(function () {
+	var additionalOpts = normalizeOptions(arguments[2]);
+
+	setTimeout(function () {
 		var element = window.jQuery(domElement);
-		element.trigger('update');
+		if (additionalOpts && additionalOpts.beforeSortStartFn) {
+			element.bind("sortStart", function () {
+				additionalOpts.beforeSortStartFn(element);
+			});
+		}
 		element.tablesorter(opts);
-	}, 500);
+	}, 1000);
+
 };

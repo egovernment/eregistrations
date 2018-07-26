@@ -13,6 +13,7 @@ var copy                 = require('es5-ext/object/copy')
   , getDurationDaysHours = require('./utils/get-duration-days-hours-fine-grain')
   , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
   , getDynamicUrl        = require('./utils/get-dynamic-url')
+  , initTableSortingOnClient = require('./utils/init-table-sorting-on-client')
   , initializeRowOnClick = require('./utils/statistics-time-row-onclick')
   , processingStepsMetaWithoutFrontDesk
 	= require('./../utils/processing-steps-meta-without-front-desk');
@@ -120,37 +121,49 @@ exports['statistics-main'] = function () {
 		insert(list(Object.keys(stepsMap), function (shortStepPath) {
 			return stepsMap[shortStepPath].map(function (data) {
 				if (!data) return;
+				var statisticsTable = table({ class: 'statistics-table' },
+					thead(
+						tr(
+							th(),
+							th({ class: 'statistics-table-number' }, _("Processing periods")),
+							th({ class: 'statistics-table-number' }, _("Average time")),
+							th({ class: 'statistics-table-number' }, _("Min time")),
+							th({ class: 'statistics-table-number' }, _("Max time"))
+						)
+					),
+					tbody({
+						onEmpty: tr(td({ class: 'empty statistics-table-number', colspan: 5 },
+							_("There are no files processed at this step")))
+					}, data, function (rowData) {
+						var props = {};
+
+						if (rowData && rowData.processor && rowData.processingPeriods) {
+							initializeRowOnClick(rowData, props, false);
+						}
+
+						return tr(props,
+							td(rowData.processor),
+							td({ class: 'statistics-table-number' }, rowData.timedCount),
+							td({ class: 'statistics-table-number' }, rowData.avgTime),
+							td({ class: 'statistics-table-number' }, rowData.minTime),
+							td({ class: 'statistics-table-number' }, rowData.maxTime)
+							);
+					})
+					);
+				initTableSortingOnClient(statisticsTable,
+					{ headers: {
+						0: { sorter: false },
+						2: { sorter: 'times' },
+						3: { sorter: 'times' },
+						4: { sorter: 'times' }
+					} },
+					{ beforeSortStartFn: function (jqueryTableElem) {
+						jqueryTableElem.find('.detail').remove();
+					} }
+					);
 				return [section({ class: "section-primary" },
 					h3(queryResult[shortStepPath].label),
-					table({ class: 'statistics-table' },
-						thead(
-							tr(
-								th(),
-								th({ class: 'statistics-table-number' }, _("Processing periods")),
-								th({ class: 'statistics-table-number' }, _("Average time")),
-								th({ class: 'statistics-table-number' }, _("Min time")),
-								th({ class: 'statistics-table-number' }, _("Max time"))
-							)
-						),
-						tbody({
-							onEmpty: tr(td({ class: 'empty statistics-table-number', colspan: 5 },
-								_("There are no files processed at this step")))
-						}, data, function (rowData) {
-							var props = {};
-
-							if (rowData && rowData.processor && rowData.processingPeriods) {
-								initializeRowOnClick(rowData, props, false);
-							}
-
-							return tr(props,
-								td(rowData.processor),
-								td({ class: 'statistics-table-number' }, rowData.timedCount),
-								td({ class: 'statistics-table-number' }, rowData.avgTime),
-								td({ class: 'statistics-table-number' }, rowData.minTime),
-								td({ class: 'statistics-table-number' }, rowData.maxTime)
-								);
-						})
-						)), br()];
+					statisticsTable), br()];
 			});
 		})));
 
