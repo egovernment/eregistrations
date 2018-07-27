@@ -1,0 +1,10 @@
+.section-update-header-container {
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+}
+
+.section-update-header-side-panel span {
+	color: #009900;
+	padding-right: 1em;
+}

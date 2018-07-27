@@ -6,8 +6,11 @@
 'use strict';
 
 var customError = require('es5-ext/error/custom')
+  , _           = require('mano').i18n
   , isSet       = require('es6-set/is-set')
-  , document    = require('mano').domjs.document;
+  , assign      = require('es5-ext/object/assign')
+  , document    = require('mano').domjs.document
+  , getUpdateSectionHeader = require('./get-update-section-header');
 
 module.exports = function (sections/*, options */) {
 	var result, options;
@@ -19,7 +22,29 @@ module.exports = function (sections/*, options */) {
 	}
 	if (isSet(sections)) {
 		return list(sections, function (section) {
-			return section.toDOMForm(document, options);
+			return _if(section._isDisplayableForUpdate,
+				_if(section._isAwaitingUpdate, section.toDOM(document,
+					assign({}, options,
+						{
+							headerRank: 2,
+							cssClass: "section-primary entity-data-section",
+							displayEmptyFields: true,
+							customHeader: getUpdateSectionHeader(
+								section,
+								false,
+								_("Update"),
+								_("This section has been updated")
+							)
+						}
+						)), section.toDOMForm(document, assign({}, options,
+							{
+						customHeader: getUpdateSectionHeader(
+							section,
+							true,
+							_("Cancel")
+						)
+					}))),
+				section.toDOMForm(document, options));
 		});
 	}
 	//TODO: Below is deprecated code which expects map (old model version)

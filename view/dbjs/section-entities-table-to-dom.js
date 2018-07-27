@@ -10,11 +10,17 @@ var d                   = require('d')
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 	d(function (document/*, options */) {
 
-		var self, headerRank, options, resolved, cssClass;
+		var self, headerRank, options, resolved, cssClass, defaultHeader;
 		self = this;
 		options = Object(arguments[1]);
 		headerRank = options.headerRank || 3;
 		cssClass   = options.cssClass || 'entity-data-section';
+		defaultHeader = (function () {
+			if (self.label) {
+				return [headersMap[headerRank++](self._label)];
+			}
+			headerRank++;
+		}());
 
 		var childOptions = normalizeOptions(options);
 		childOptions.headerRank++;
@@ -22,12 +28,9 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 		resolved = resolvePropertyPath(this.propertyMaster, this.propertyName).value;
 		if (resolved instanceof db.NestedMap) resolved = resolved.ordered;
 		return section({ class: cssClass },
-			(function () {
-				if (self.label) {
-					return [headersMap[headerRank++](self._label)];
-				}
-				headerRank++;
-			}()),
+			(options.customHeader && typeof options.customHeader === 'function') ?
+					options.customHeader(defaultHeader) :
+					(options.disableHeader ? null : defaultHeader),
 			_if(self._isUnresolved,
 				function () {
 					var resolvent = resolvePropertyPath(self.master, self.resolventProperty);
