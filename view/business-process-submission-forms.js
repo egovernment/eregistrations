@@ -47,7 +47,8 @@ exports.step = function () {
 							_("Some mandatory fields on tab 'Send' have not been completed"))))
 				)),
 			form(
-				{ action: '/application-submit/', method: 'post', id: 'submit-form' },
+				{ action: '/application-submit/', method: 'post', id: 'submit-form',
+					onsubmit: exports._onAppSubmit },
 				section(
 					{ class: 'section-primary user-submission-sworn-declaration' },
 					h2(_("Acceptance")),
@@ -58,10 +59,12 @@ exports.step = function () {
 						control: { id: 'input-certified-truth' }
 					})), " ", exports._swornDeclaration.call(this))
 				),
+				exports._onSubmitError.call(this),
 				div(p({ id: 'application-submit-button' },
 					_if(user._isDemo,
 						a({ class: 'user-submission-button', href: '#register' }, _("Send request")),
-						button({ type: 'submit', class: 'user-submission-button' }, _("Send request"))))),
+						button({ type: 'submit', class: 'user-submission-button' }, _("Send request"))))
+					),
 				script(
 					function () {
 						var checkbox = $('input-certified-truth')
@@ -110,6 +113,14 @@ exports._submissionHeading = function () {
 			p(_("Approve the sworn declaration and submit your application."))
 		)
 	);
+};
+
+exports._onSubmitError = function () {
+	return p({ id: 'app-submit-err-message', class: 'error-message hidden' });
+};
+
+exports._onAppSubmit = function () {
+	$('app-submit-err-message').classList.add('hidden');
 };
 
 // Displayed together with error info and 'global' optional info
