@@ -490,7 +490,12 @@ module.exports = exports = function (db, dbDriver, data) {
 		if (globalFragment && (roleName !== 'memoryDb')) fragment.addFragment(globalFragment);
 
 		// Add eventual custom role fragment
-		if (customRoleFragments[roleName]) fragment.addFragment(customRoleFragments[roleName]());
+		if (customRoleFragments[roleName]) {
+			fragment.addFragment(customRoleFragments[roleName](userId, {
+				getOfficialFragment: getOfficialFragment,
+				getRecentlyVisitedBusinessProcessesFragment: getRecentlyVisitedBusinessProcessesFragment
+			}));
+		}
 
 		if ((roleName === 'user') || (roleName === 'memoryDb')) {
 			if (custom) {
